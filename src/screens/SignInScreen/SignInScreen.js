@@ -3,30 +3,28 @@ import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import React, { useState } from 'react'
 import corkscrew from '../../../assets/images/corkscrew.png'
+import SocialSignInButtons from '../../components/SocialSignInButtons'
+import { useNavigation } from '@react-navigation/native'
 
 const SignInScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const onSignInPressed = () => {
     console.warn("Sign in pressed")
+    // validate user
+    navigation.navigate('Home')
   }
   const onForgotPasswordPressed = () => {
     console.warn("Forgot password pressed")
-  }
-  const onSignInFacebook = () => {
-    console.warn("Sign in Facebook pressed")
-  }
-  const onSignInGoogle = () => {
-    console.warn("Sign in Google pressed")
-  }
-  const onSignInApple = () => {
-    console.warn("Sign in Apple pressed")
+    navigation.navigate('ForgotPassword')
   }
   const onSignUpPressed = () => {
     console.warn("Sign up pressed")
+    navigation.navigate('SignUp')
   }
 
   const { height } = useWindowDimensions()
+  const navigation = useNavigation()
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
@@ -35,9 +33,7 @@ const SignInScreen = () => {
         <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry />
         <CustomButton text="Sign in" onPress={onSignInPressed} />
         <CustomButton text="Forgot password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
-        <CustomButton text="Sign in with Facebook" onPress={onSignInFacebook} bgColor='#E7EAF4' fgColor='#4765A9' />
-        <CustomButton text="Sign in with Google" onPress={onSignInGoogle} bgColor='#FAE9EA' fgColor='#DD4D44' />
-        <CustomButton text="Sign in with Apple" onPress={onSignInApple} bgColor='#e3e3e3' fgColor='#363636' />
+        <SocialSignInButtons />
         <CustomButton text="Don't have an account? Create one" onPress={onSignUpPressed} type="TERTIARY" />
       </View>
     </ScrollView>
