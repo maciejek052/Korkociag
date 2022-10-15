@@ -21,11 +21,11 @@ const ConfirmEmailScreen = () => {
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
-                <Text style={styles.title}>Confirm your email</Text>
-                <CustomInput placeholder="Enter your confirmation code" value={code} setValue={setCode} />
-                <CustomButton text="Confirm" onPress={onConfirmPressed} />
-                <CustomButton text="Resend code" onPress={onResendPress} type="SECONDARY" />
-                <CustomButton text="Back to sign in" onPress={onSignInPress} type="TERTIARY" />
+                <Text style={styles.title}>Potwierdź swój email</Text>
+                <CustomInput placeholder="Wpisz kod potwierdzający" value={code} setValue={setCode} />
+                <CustomButton text="Potwierdź" onPress={onConfirmPressed} />
+                <CustomButton text="Wyślij kod ponownie" onPress={onResendPress} type="SECONDARY" />
+                <CustomButton text="Powrót do logowania" onPress={onSignInPress} type="TERTIARY" />
             </View>
         </ScrollView>
     )
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#051C60',
-        margin: 10
+        marginVertical: 30
     },
     text: {
         color: 'gray',

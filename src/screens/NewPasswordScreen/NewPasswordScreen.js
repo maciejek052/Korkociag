@@ -19,11 +19,11 @@ const NewPasswordScreen = () => {
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
-                <Text style={styles.title}>Reset your password</Text>
-                <CustomInput placeholder="Code" value={code} setValue={setCode} />
-                <CustomInput placeholder="New password" value={newPassword} setValue={setNewPassword} secureTextEntry />
-                <CustomButton text="Submit" onPress={onSubmitPressed} />
-                <CustomButton text="Back to sign in" onPress={onSignInPress} type="TERTIARY" />
+                <Text style={styles.title}>Resetuj swoje hasło</Text>
+                <CustomInput placeholder="Kod" value={code} setValue={setCode} />
+                <CustomInput placeholder="Nowe hasło" value={newPassword} setValue={setNewPassword} secureTextEntry />
+                <CustomButton text="Wyślij" onPress={onSubmitPressed} />
+                <CustomButton text="Powrót do logowania" onPress={onSignInPress} type="TERTIARY" />
             </View>
         </ScrollView>
     )
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#051C60',
-        margin: 10
+        marginVertical: 30
     },
     text: {
         color: 'gray',

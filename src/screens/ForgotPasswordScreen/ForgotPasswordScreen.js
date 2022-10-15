@@ -18,10 +18,10 @@ const ForgotPasswordScreen = () => {
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
-                <Text style={styles.title}>Reset your password</Text>
-                <CustomInput placeholder="Username" value={username} setValue={setUsername} />
-                <CustomButton text="Confirm" onPress={onConfirmPressed} />
-                <CustomButton text="Back to sign in" onPress={onSignInPress} type="TERTIARY" />
+                <Text style={styles.title}>Resetuj hasło</Text>
+                <CustomInput placeholder="Nazwa użytkownika" value={username} setValue={setUsername} />
+                <CustomButton text="Potwierdź" onPress={onConfirmPressed} />
+                <CustomButton text="Powrót do logowania" onPress={onSignInPress} type="TERTIARY" />
             </View>
         </ScrollView>
     )
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#051C60',
-        margin: 10
+        marginVertical: 30
     },
     text: {
         color: 'gray',

@@ -6,7 +6,7 @@ import SocialSignInButtons from '../../components/SocialSignInButtons'
 import { useNavigation } from '@react-navigation/native'
 
 const SignUpScreen = () => {
-    const navigation = userNavigation()
+    const navigation = useNavigation()
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,21 +28,21 @@ const SignUpScreen = () => {
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
-                <Text style={styles.title}>Create an account</Text>
-                <CustomInput placeholder="Username" value={username} setValue={setUsername} />
+                <Text style={styles.title}>Załóż konto</Text>
+                <CustomInput placeholder="Nazwa użytkownika" value={username} setValue={setUsername} />
                 <CustomInput placeholder="E-mail" value={email} setValue={setEmail} />
-                <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry />
-                <CustomInput placeholder="Repeat password" value={passwordRepeat} setValue={setPasswordRepeat} secureTextEntry />
-                <CustomButton text="Register" onPress={onRegisterPressed} />
+                <CustomInput placeholder="Hasło" value={password} setValue={setPassword} secureTextEntry />
+                <CustomInput placeholder="Powtórz hasło" value={passwordRepeat} setValue={setPasswordRepeat} secureTextEntry />
+                <CustomButton text="Zarejestruj się" onPress={onRegisterPressed} />
                 <Text style={styles.text}>
-                    By registering, confirm that you accept our{' '}
+                    Rejestrując się, potwierdzasz że akceptujesz nasz{' '}
                     <Text style={styles.link} onPress={onTermsOfUsePressed}>
-                        Terms of Use</Text> and{' '}
+                        regulamin świadczenia usług</Text> oraz{' '}
                     <Text style={styles.link} onPress={onPrivacyPolicyPressed}>
-                        Privacy Policy</Text>
+                        politykę prywatności</Text>
                 </Text>
                 <SocialSignInButtons />
-                <CustomButton text="Have an account? Sign in" onPress={onSignInPressed} type="TERTIARY" />
+                <CustomButton text="Masz już konto? Zaloguj się" onPress={onSignInPressed} type="TERTIARY" />
             </View>
         </ScrollView>
     )
@@ -57,11 +57,12 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#051C60',
-        margin: 10
+        marginVertical: 30
     },
     text: {
         color: 'gray',
-        marginVertical: 10
+        marginVertical: 10,
+        textAlign: "center"
     },
     link: {
         color: '#FDB075',
