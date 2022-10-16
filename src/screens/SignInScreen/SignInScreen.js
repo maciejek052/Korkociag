@@ -12,7 +12,7 @@ const SignInScreen = () => {
   const onSignInPressed = () => {
     console.warn("Sign in pressed")
     // validate user
-    navigation.navigate('Home')
+    navigation.navigate('TabNavigator')
   }
   const onForgotPasswordPressed = () => {
     console.warn("Forgot password pressed")

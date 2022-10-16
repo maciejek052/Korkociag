@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
         width: '100%',
         maxWidth: 400,
         maxHeight: 250,
-        margin: 20
     },
     heading: {
         fontSize: 40,
@@ -57,7 +56,8 @@ const styles = StyleSheet.create({
         fontSize: 24,
         marginVertical: 10,
         color: "#f8c23b",
-        fontWeight: "800"
+        fontWeight: "800",
+        textAlign: "center"
     }
 })
 
