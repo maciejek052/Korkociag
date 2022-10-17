@@ -9,6 +9,7 @@ import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LandingScreen from '../screens/LandingScreen';
+import SearchSelectSubject from '../screens/SearchScreen/SearchSelectSubject';
 
 import TabNavigator from './TabNavigator';
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ const Navigation = () => {
         <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="SearchSelectSubject" component={SearchSelectSubject} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   )
