@@ -6,21 +6,9 @@ import CustomButton from '../../components/CustomButton'
 
 const SearchLandingScreen = () => {
   const { height } = useWindowDimensions()
-  const onPrimarySchoolPressed = () => {
-    console.warn("Primary school pressed")
-    navigation.navigate('SearchSelectSubject', {level: 'Szkoła podstawowa'})
-  }
-  const onHighSchoolPressed = () => {
-    console.warn("High school pressed")
-    navigation.navigate('SearchSelectSubject', {level: 'Szkoła średnia'})
-  }
-  const onCollegePressed = () => {
-    console.warn("College pressed")
-    navigation.navigate('SearchSelectSubject', {level: 'Studia'})
-  }
-  const onAfterSchoolPressed = () => {
-    console.warn("After-school pressed")
-    navigation.navigate('SearchSelectSubject', {level: 'Aktywności pozaszkolne'})
+  const onLevelPressed = (level) => {
+    console.warn(level + " pressed")
+    navigation.navigate('SearchSelectSubject', { level: level })
   }
   const navigation = useNavigation()
 
@@ -31,10 +19,10 @@ const SearchLandingScreen = () => {
       <Text style={styles.text}>Aby dobrać Ci jak najlepszego nauczyciela w naszej aplikacji występuje podział na poziomy. Wybierz odpowiedni poziom, a jeżeli
         interesują cię korepetycje z zagadnień pozaszkolnych wybierz ostatnią opcję
       </Text>
-      <CustomButton text="Szkoła podstawowa" bgColor={'#ffb600'} onPress={onPrimarySchoolPressed} />
-      <CustomButton text="Szkoła średnia" bgColor={'#1ca600'} onPress={onHighSchoolPressed} />
-      <CustomButton text="Studia" bgColor={'#ff0f0f'} onPress={onCollegePressed} />
-      <CustomButton text="Aktywności pozaszkolne" onPress={onAfterSchoolPressed} />
+      <CustomButton text="Szkoła podstawowa" bgColor={'#ffb600'} onPress={() => onLevelPressed('Szkoła podstawowa')} />
+      <CustomButton text="Szkoła średnia" bgColor={'#1ca600'} onPress={() => onLevelPressed('Szkoła średnia')} />
+      <CustomButton text="Studia" bgColor={'#ff0f0f'} onPress={() => onLevelPressed('Studia')} />
+      <CustomButton text="Aktywności pozaszkolne" onPress={() => onLevelPressed('Aktywności pozaszkolne')} />
 
     </View>
   )
@@ -48,7 +36,7 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 350,
     maxHeight: 250,
-    marginVertical: 15
+    marginVertical: 0
   },
   heading: {
     fontSize: 40,
