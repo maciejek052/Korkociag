@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native'
 
 const LandingScreen = () => {
     const onJoinUsPressed = () => {
-        console.warn("Join us pressed")
         navigation.navigate('SignIn')
     }
     const { height } = useWindowDimensions()

@@ -8,11 +8,9 @@ const ForgotPasswordScreen = () => {
     const navigation = useNavigation()
     const [username, setUsername] = useState('');
     const onConfirmPressed = () => {
-        console.warn("Confirm pressed")
         navigation.navigate('NewPassword')
     }
     const onSignInPress = () => {
-        console.warn("Sign in pressed")
         navigation.navigate('SignIn')
     }
     return (

@@ -7,15 +7,12 @@ const ConfirmEmailScreen = () => {
     const navigation = useNavigation()
     const [code, setCode] = useState('');
     const onConfirmPressed = () => {
-        console.warn("Register pressed")
         navigation.navigate('Home')
     }
     const onResendPress = () => {
         console.warn("Resend pressed")
-        
     }
     const onSignInPress = () => {
-        console.warn("Back to sign in pressed")
         navigation.navigate('SignIn')
     }
     return (

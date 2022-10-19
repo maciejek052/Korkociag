@@ -10,16 +10,13 @@ const SignInScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const onSignInPressed = () => {
-    console.warn("Sign in pressed")
     // validate user
     navigation.navigate('TabNavigator')
   }
   const onForgotPasswordPressed = () => {
-    console.warn("Forgot password pressed")
     navigation.navigate('ForgotPassword')
   }
   const onSignUpPressed = () => {
-    console.warn("Sign up pressed")
     navigation.navigate('SignUp')
   }
 
@@ -43,7 +40,7 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
-    padding: 20
+    padding: 20,
   },
   logo: {
     width: '70%',

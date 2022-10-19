@@ -12,11 +12,9 @@ const SignUpScreen = () => {
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
     const onSignInPressed = () => {
-        console.warn("Sign in pressed")
         navigation.navigate('SignIn')
     }
     const onRegisterPressed = () => {
-        console.warn("Register pressed")
         navigation.navigate('ConfirmEmail')
     }
     const onTermsOfUsePressed = () => {

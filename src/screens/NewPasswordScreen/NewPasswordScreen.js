@@ -9,11 +9,9 @@ const NewPasswordScreen = () => {
     const [code, setCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const onSubmitPressed = () => {
-        console.warn("Submit pressed")
         navigation.navigate('Home')
     }
     const onSignInPress = () => {
-        console.warn("Sign in pressed")
         navigation.navigate('SignIn')
     }
     return (
