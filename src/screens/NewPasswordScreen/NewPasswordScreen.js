@@ -3,8 +3,13 @@ import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { useForm } from 'react-hook-form'
+
+const PASSWORD_REGEX = /./
 
 const NewPasswordScreen = () => {
+
+    const { control, handleSubmit, watch } = useForm();
     const navigation = useNavigation()
     const [code, setCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -18,9 +23,16 @@ const NewPasswordScreen = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
                 <Text style={styles.title}>Resetuj swoje hasło</Text>
-                <CustomInput placeholder="Kod" value={code} setValue={setCode} />
-                <CustomInput placeholder="Nowe hasło" value={newPassword} setValue={setNewPassword} secureTextEntry />
-                <CustomButton text="Wyślij" onPress={onSubmitPressed} />
+                <CustomInput
+                    name="code" placeholder="Wpisz kod potwierdzający"
+                    control={control} rules={{ required: 'Kod jest wymagany' }} />
+                <CustomInput
+                    name="password" placeholder="Hasło"
+                    control={control} secureTextEntry rules={{
+                        required: 'Hasło jest wymagane',
+                        pattern: { value: PASSWORD_REGEX, message: "Hasło powinno zawierać..." }
+                    }} />
+                <CustomButton text="Wyślij" onPress={handleSubmit(onSubmitPressed)} />
                 <CustomButton text="Powrót do logowania" onPress={onSignInPress} type="TERTIARY" />
             </View>
         </ScrollView>

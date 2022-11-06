@@ -6,10 +6,10 @@ import React, { useState } from 'react'
 import Checkbox from 'expo-checkbox'
 import MapView from 'react-native-maps'
 import MapImage from '../../../assets/images/undraw_map_dark_re_36sy.svg'
-import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import Slider from '@react-native-community/slider'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
+import BasicInput from '../../components/BasicInput'
 
 const SearchSelectLocalization = ({ route, navigation }) => {
     const { height } = useWindowDimensions()
@@ -31,7 +31,7 @@ const SearchSelectLocalization = ({ route, navigation }) => {
             <MapImage style={[styles.logo, { maxHeight: height * 0.15 }]} />
             <Text style={styles.heading}>Wybierz lokalizację korepetycji</Text>
             <Text style={styles.text}>Wybierz na mapie w jakim miejscu chcesz znaleźć nauczycieli, następnie wybierz zakres odległości</Text>
-            <CustomInput placeholder="Wyszukaj lokalizację" setValue={setLocalization} />
+            <BasicInput placeholder="Wyszukaj lokalizację" setValue={setLocalization} />
             <MapView style={[styles.map, { height: height * 0.25 }]} provider='google' />
             <View style={{ flexDirection: 'row' }}>
                 <Slider style={styles.slider} minimumValue={0} minimumTrackTintColor='#3b71f3' thumbTintColor='#3b71f3'

@@ -3,8 +3,10 @@ import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { useForm } from 'react-hook-form'
 
 const ForgotPasswordScreen = () => {
+    const { control, handleSubmit, watch } = useForm();
     const navigation = useNavigation()
     const [username, setUsername] = useState('');
     const onConfirmPressed = () => {
@@ -17,8 +19,10 @@ const ForgotPasswordScreen = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
                 <Text style={styles.title}>Resetuj hasło</Text>
-                <CustomInput placeholder="Nazwa użytkownika" value={username} setValue={setUsername} />
-                <CustomButton text="Potwierdź" onPress={onConfirmPressed} />
+                <CustomInput
+                    name="username" placeholder="Nazwa użytkownika"
+                    control={control} rules={{ required: 'Nazwa jest wymagana' }} />
+                <CustomButton text="Potwierdź" onPress={handleSubmit(onConfirmPressed)} />
                 <CustomButton text="Powrót do logowania" onPress={onSignInPress} type="TERTIARY" />
             </View>
         </ScrollView>

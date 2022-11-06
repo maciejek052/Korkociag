@@ -4,8 +4,16 @@ import CustomButton from '../../components/CustomButton'
 import React, { useState } from 'react'
 import SocialSignInButtons from '../../components/SocialSignInButtons'
 import { useNavigation } from '@react-navigation/native'
+import { useForm } from 'react-hook-form'
+
+// regex
+const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+const PASSWORD_REGEX = /./
+
 
 const SignUpScreen = () => {
+    const { control, handleSubmit, watch } = useForm();
+    const pwd = watch('password')
     const navigation = useNavigation()
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -27,11 +35,32 @@ const SignUpScreen = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
                 <Text style={styles.title}>Załóż konto</Text>
-                <CustomInput placeholder="Nazwa użytkownika" value={username} setValue={setUsername} />
-                <CustomInput placeholder="E-mail" value={email} setValue={setEmail} />
-                <CustomInput placeholder="Hasło" value={password} setValue={setPassword} secureTextEntry />
-                <CustomInput placeholder="Powtórz hasło" value={passwordRepeat} setValue={setPasswordRepeat} secureTextEntry />
-                <CustomButton text="Zarejestruj się" onPress={onRegisterPressed} />
+                <CustomInput
+                    name="username" placeholder="Nazwa użytkownika"
+                    control={control} rules={{
+                        required: 'Nazwa użytkownika jest wymagana',
+                        minLength: { value: 3, message: 'Nazwa użytkownika powinna mieć przynajmniej 3 znaki' },
+                        maxLength: { value: 24, message: 'Nazwa użytkownika powinna mieć maksymalnie 24 znaki' }
+                    }} />
+                <CustomInput
+                    name="email" placeholder="Adres e-mail"
+                    control={control} rules={{
+                        required: 'Adres e-mail jest wymagany',
+                        pattern: { value: EMAIL_REGEX, message: "Adres e-mail jest nieprawidłowy" }
+                    }} />
+                <CustomInput
+                    name="password" placeholder="Hasło"
+                    control={control} secureTextEntry rules={{
+                        required: 'Hasło jest wymagane',
+                        pattern: { value: PASSWORD_REGEX, message: "Hasło powinno zawierać..." }
+                    }} />
+                <CustomInput
+                    name="repeatPassword" placeholder="Powtórz hasło"
+                    control={control} secureTextEntry rules={{
+                        validate: value =>
+                            value === pwd || 'Hasła się nie zgadzają'
+                    }} />
+                <CustomButton text="Zarejestruj się" onPress={handleSubmit(onRegisterPressed)} />
                 <Text style={styles.text}>
                     Rejestrując się, potwierdzasz że akceptujesz nasz{' '}
                     <Text style={styles.link} onPress={onTermsOfUsePressed}>

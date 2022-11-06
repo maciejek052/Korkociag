@@ -3,7 +3,10 @@ import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { useForm } from 'react-hook-form'
+
 const ConfirmEmailScreen = () => {
+    const { control, handleSubmit, watch } = useForm();
     const navigation = useNavigation()
     const [code, setCode] = useState('');
     const onConfirmPressed = () => {
@@ -19,8 +22,10 @@ const ConfirmEmailScreen = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
                 <Text style={styles.title}>Potwierdź swój email</Text>
-                <CustomInput placeholder="Wpisz kod potwierdzający" value={code} setValue={setCode} />
-                <CustomButton text="Potwierdź" onPress={onConfirmPressed} />
+                <CustomInput
+                    name="code" placeholder="Wpisz kod potwierdzający"
+                    control={control} rules={{ required: 'Kod jest wymagany' }} />
+                <CustomButton text="Potwierdź" onPress={handleSubmit(onConfirmPressed)} />
                 <CustomButton text="Wyślij kod ponownie" onPress={onResendPress} type="SECONDARY" />
                 <CustomButton text="Powrót do logowania" onPress={onSignInPress} type="TERTIARY" />
             </View>

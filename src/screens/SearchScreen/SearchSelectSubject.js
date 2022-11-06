@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, useWindowDimensions, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import BlackboardImage from '../../../assets/images/undraw_teaching_f-1-cm.svg'
-import CustomInput from '../../components/CustomInput'
+import BasicInput from '../../components/BasicInput'
 
 const data = ['język angielski', 'język polski', 'matematyka', 'fizyka', 'geografia', 'chemia', 'informatyka', 'przyroda',
   'biologia', 'język hiszpański', 'język niemiecki', 'język rosyjski', 'plastyka', 'muzyka']
@@ -38,7 +38,7 @@ const SearchSelectSubject = ({ route, navigation }) => {
       <Text>Wybrano poziom: {level}</Text>
       <Text style={styles.heading}>Wybierz przedmiot</Text>
       <Text style={styles.text}>Wpisz w poniższym polu fragment nazwy przedmiotu, którego chcesz się nauczyć i wybierz przedmiot z propozycji</Text>
-      <CustomInput setValue={(text) => searchName(text)}></CustomInput>
+      <BasicInput setValue={(text) => searchName(text)}></BasicInput>
 
       <FlatList showsVerticalScrollIndicator={false} style={styles.list} data={dataFromState} renderItem={({ item }) => (
         <Text onPress={() => onSubjectPressed(item)} style={styles.item}>{item}</Text>
