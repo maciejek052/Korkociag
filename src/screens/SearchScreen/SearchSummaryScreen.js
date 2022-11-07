@@ -35,8 +35,8 @@ const SearchSummaryScreen = ({ route, navigation }) => {
     }
     const parseLoc = () => {
         var locStr = ""
-        if (placeStudent) locStr = "u ucznia, "
-        if (placeTeacher) locStr = "u nauczyciela, "
+        if (placeStudent) locStr += "u ucznia, "
+        if (placeTeacher) locStr += "u nauczyciela, "
         return locStr.slice(0, -2)
     }
 

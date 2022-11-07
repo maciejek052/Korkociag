@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeNavigation from './HomeNavigation';
 import SearchNavigation from './SearchNavigation';
 import SettingsNavigation from './SettingsNavigation'
+import TeachNavigation from './TeachNavigation'
 
 import Ionicons from '@expo/vector-icons/Ionicons'
 import Feather from '@expo/vector-icons/Feather'
@@ -22,12 +23,16 @@ const TabNavigator = () => {
                     <Ionicons name="search" size={size} color={color} />
                 )
             }} />
+            <Tab.Screen name="Nauczaj" component={TeachNavigation} options={{
+                tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="school-outline" size={size} color={color} />
+                )
+            }} />
             <Tab.Screen name="Ustawienia" component={SettingsNavigation} options={{
                 tabBarIcon: ({ color, size }) => (
                     <Ionicons name="settings" size={size} color={color} />
                 )
             }} />
-
         </Tab.Navigator>
     );
 }

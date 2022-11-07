@@ -1,12 +1,66 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native'
+import React, { useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
+import CustomButton from '../../components/CustomButton'
+import ProfilePicture from '../../../assets/images/sydney.jpg'
 
 const SettingsScreen = () => {
+  const navigation = useNavigation()
+  const { height } = useWindowDimensions();
+  const [showStudent, setStudent] = useState(true)
+  const [notificationsBtn, setNotificationsBtn] = useState(true)
+
+  const goEditProfileScreen = () => {
+    navigation.navigate('EditProfileScreen')
+  }
+
   return (
-    <View>
-      <Text>SettingsScreen</Text>
-    </View>
+
+    <>
+
+      <View style={styles.box1}>
+        <Image source={ProfilePicture} style={[styles.profilePict, { maxHeight: height * 0.2 }]} />
+        <Text style={styles.userNameHeading}>Witaj{'\n'}Jan Kowalski!</Text>
+      </View>
+      <View style={styles.box2}>
+        <CustomButton text="Edytuj profil" btnSize="30" onPress={goEditProfileScreen} />
+        <CustomButton text="Zmień hasło" btnSize="30" />
+        <CustomButton text={notificationsBtn ? "Powiadomienia: włączone" : "Powiadomienia: wyłączone"} btnSize="30"
+          bgColor={notificationsBtn ? "green" : "red"} onPress={() => { setNotificationsBtn(!notificationsBtn) }} />
+        <CustomButton text="O aplikacji" btnSize="30" bgColor="#b5b3b9" fgColor="#555" />
+      </View>
+    </>
   )
 }
+const styles = StyleSheet.create({
+  box1: {
+    flex: 1,
+    backgroundColor: '#f6c64e',
+    alignItems: 'center'
+  },
+  box2: {
+    flex: 1.5,
+    paddingHorizontal: 30
+  },
+  profilePict: {
+    maxWidth: 200,
+    //maxHeight: 200,
+    borderRadius: 400,
+    margin: 10
+  },
+  userNameHeading: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 40,
+    color: '#4f89ff'
+  },
+  horizontalBox: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginVertical: 10
+  }
+})
 
 export default SettingsScreen

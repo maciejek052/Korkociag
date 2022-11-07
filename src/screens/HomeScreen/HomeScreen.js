@@ -1,17 +1,18 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native'
 import React, { useState } from 'react'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
 
 const HomeScreen = () => {
+  const { height } = useWindowDimensions();
   const [showStudent, setStudent] = useState(true)
   return (
 
     <>
 
       <View style={styles.box1}>
-        <Image source={ProfilePicture} style={styles.profilePict} />
-        <Text style={styles.userNameHeading}>Witaj{'\n'}Sydney!</Text>
+        <Image source={ProfilePicture} style={[styles.profilePict, { maxHeight: height * 0.2 }]} />
+        <Text style={styles.userNameHeading}>Witaj{'\n'}Jan Kowalski!</Text>
       </View>
       <View style={styles.box2}>
         <View style={styles.horizontalBox}>
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
   },
   profilePict: {
     maxWidth: 200,
-    maxHeight: 200,
+    //maxHeight: 200,
     borderRadius: 400,
     margin: 10
   },

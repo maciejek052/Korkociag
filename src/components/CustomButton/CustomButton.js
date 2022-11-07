@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 
-const CustomButton = ({ onPress, text, type = "PRIMARY", bgColor, fgColor}) => {
+const CustomButton = ({ onPress, text, type = "PRIMARY", bgColor, fgColor, btnSize }) => {
     return (
         <Pressable onPress={onPress} style={[
             styles.container,
             styles[`container_${type}`],
             bgColor ? { backgroundColor: bgColor } : {},
+            btnSize ? { padding: parseInt(btnSize) } : {padding: 15}
         ]}>
             <Text style={[
                 styles.text, styles[`text_${type}`],
@@ -21,7 +22,7 @@ const CustomButton = ({ onPress, text, type = "PRIMARY", bgColor, fgColor}) => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        padding: 15,
+        // padding: 15,
         marginVertical: 5,
         alignItems: 'center',
         borderRadius: 5
@@ -38,14 +39,14 @@ const styles = StyleSheet.create({
     },
     container_LANDING: {
         backgroundColor: '#3B71F3',
-    }, 
+    },
     text: {
         fontWeight: 'bold',
         color: 'white'
     },
     text_SECONDARY: {
         color: '#3B71F3'
-    },  
+    },
     text_TERTIARY: {
         color: 'gray'
     },
