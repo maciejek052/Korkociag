@@ -4,6 +4,7 @@ import SearchLandingScreen from '../screens/SearchScreen/SearchLandingScreen';
 import SearchSelectSubject from '../screens/SearchScreen/SearchSelectSubject';
 import SearchSelectLocalization from '../screens/SearchScreen/SearchSelectLocalization'
 import SearchSelectSchedule from '../screens/SearchScreen/SearchSelectSchedule'
+import SearchSummaryScreen from '../screens/SearchScreen/SearchSummaryScreen'
 const Stack = createNativeStackNavigator()
 const SearchNavigation = () => {
   return <Stack.Navigator>
@@ -11,6 +12,7 @@ const SearchNavigation = () => {
       <Stack.Screen name="SearchSelectSubject" component={SearchSelectSubject} options={{headerShown: false}} />
       <Stack.Screen name="SearchSelectLocalization" component={SearchSelectLocalization} options={{headerShown: false}} />
       <Stack.Screen name="SearchSelectSchedule" component={SearchSelectSchedule} options={{headerShown: false}} />
+      <Stack.Screen name="SearchSummaryScreen" component={SearchSummaryScreen} options={{headerShown: false}} />
     </Stack.Navigator>
   
 }
