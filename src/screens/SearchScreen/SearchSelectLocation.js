@@ -13,7 +13,7 @@ import Slider from '@react-native-community/slider'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import BasicInput from '../../components/BasicInput'
 
-const SearchSelectLocalization = ({ route, navigation }) => {
+const SearchSelectLocation = ({ route, navigation }) => {
     const { height } = useWindowDimensions()
     const [isPlaceTeacherChecked, setPlaceTeacherChecked] = useState(true)
     const [isPlaceStudentChecked, setPlaceStudentChecked] = useState(false)
@@ -94,4 +94,4 @@ const styles = StyleSheet.create({
         width: 200,
     }
 })
-export default SearchSelectLocalization
+export default SearchSelectLocation

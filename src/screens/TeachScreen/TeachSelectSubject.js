@@ -6,7 +6,7 @@ import BasicInput from '../../components/BasicInput'
 const data = ['język angielski', 'język polski', 'matematyka', 'fizyka', 'geografia', 'chemia', 'informatyka', 'przyroda',
   'biologia', 'język hiszpański', 'język niemiecki', 'język rosyjski', 'plastyka', 'muzyka']
 
-const SearchSelectSubject = ({ route, navigation }) => {
+const TeachSelectSubject = ({ route, navigation }) => {
   const { height } = useWindowDimensions()
   const { level } = route.params
   const [dataFromState, setData] = useState(data)
@@ -30,13 +30,13 @@ const SearchSelectSubject = ({ route, navigation }) => {
   }
   const onSubjectPressed = (subject) => {
     console.warn(subject + " pressed")
-    navigation.navigate('SearchSelectLocation', { level: level, subject: subject })
+    navigation.navigate('TeachSelectLocation', { level: level, subject: subject })
   }
   return (
     <View style={styles.root}>
       <BlackboardImage style={[styles.logo, { height: height * 0.5 }]} resizeMode="contain" />
       <Text style={styles.heading}>Wybierz przedmiot</Text>
-      <Text style={styles.text}>Wpisz w poniższym polu fragment nazwy przedmiotu, którego chcesz się nauczyć i wybierz przedmiot z propozycji</Text>
+      <Text style={styles.text}>Wpisz w poniższym polu fragment nazwy przedmiotu, którego chcesz nauczać i wybierz przedmiot z propozycji</Text>
       <BasicInput setValue={(text) => searchName(text)}></BasicInput>
 
       <FlatList showsVerticalScrollIndicator={false} style={styles.list} data={dataFromState} renderItem={({ item }) => (
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
 
   }
 })
-export default SearchSelectSubject
+export default TeachSelectSubject
