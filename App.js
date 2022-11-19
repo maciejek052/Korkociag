@@ -1,6 +1,11 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { Amplify } from 'aws-amplify'
+import awsconfig from './src/aws-exports'
 
 import Navigation from './src/navigation';
+
+Amplify.configure(awsconfig)
+
 const App = () => {
   return (
     <SafeAreaView style={styles.root}>

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import CustomButton from '../../components/CustomButton'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
+import { Auth, Hub } from 'aws-amplify'
 
 const SettingsScreen = () => {
   const navigation = useNavigation()
@@ -13,6 +14,10 @@ const SettingsScreen = () => {
 
   const goEditProfileScreen = () => {
     navigation.navigate('EditProfileScreen')
+  }
+
+  const signOut = () => {
+    Auth.signOut()
   }
 
   return (
@@ -28,7 +33,7 @@ const SettingsScreen = () => {
         <CustomButton text="Zmień hasło" btnSize="30" />
         <CustomButton text={notificationsBtn ? "Powiadomienia: włączone" : "Powiadomienia: wyłączone"} btnSize="30"
           bgColor={notificationsBtn ? "green" : "red"} onPress={() => { setNotificationsBtn(!notificationsBtn) }} />
-        <CustomButton text="O aplikacji" btnSize="30" bgColor="#b5b3b9" fgColor="#555" />
+        <CustomButton text="Wyloguj się" btnSize="30" bgColor="#b5b3b9" fgColor="#555" onPress={signOut} />
       </View>
     </>
   )
