@@ -1,17 +1,19 @@
 import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import CustomButton from '../../components/CustomButton'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
 import { Auth, Hub } from 'aws-amplify'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchUser } from '../../redux/userInformation'
 
 const SettingsScreen = () => {
+  const { user, loading } = useSelector((state) => state.userInformation)
   const navigation = useNavigation()
   const { height } = useWindowDimensions();
   const [showStudent, setStudent] = useState(true)
   const [notificationsBtn, setNotificationsBtn] = useState(true)
-
   const goEditProfileScreen = () => {
     navigation.navigate('EditProfileScreen')
   }
@@ -26,7 +28,7 @@ const SettingsScreen = () => {
 
       <View style={styles.box1}>
         <Image source={ProfilePicture} style={[styles.profilePict, { maxHeight: height * 0.2 }]} />
-        <Text style={styles.userNameHeading}>Witaj{'\n'}Jan Kowalski!</Text>
+        <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes.name}</Text>
       </View>
       <View style={styles.box2}>
         <CustomButton text="Edytuj profil" btnSize="30" onPress={goEditProfileScreen} />

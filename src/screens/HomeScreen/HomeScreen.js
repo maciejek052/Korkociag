@@ -1,13 +1,21 @@
-import { View, Text, StyleSheet, Image, useWindowDimensions, FlatList, TouchableWithoutFeedback } from 'react-native'
-import React, { useState } from 'react'
+import {
+  View, Text, StyleSheet, Image, useWindowDimensions,
+  FlatList, TouchableWithoutFeedback, Alert, ActivityIndicator
+} from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
 
+import { Auth } from 'aws-amplify'
+
 import { lessons } from '../../../mocks/lessons'
 import { users } from '../../../mocks/users'
+import { useSelector, useDispatch } from 'react-redux'
 
 const HomeScreen = () => {
+
+  const { user, loading } = useSelector((state) => state.userInformation)
 
   // mock shit only to show progress at uni
   var lessonsAsStudent = [lessons[0], lessons[1]]
@@ -58,14 +66,13 @@ const HomeScreen = () => {
       avatarUrl={showStudent ? item.teacher.profileInfo.avatarUrl : item.student.profileInfo.avatarUrl}
     />
   );
-
   return (
 
     <>
 
       <View style={styles.box1}>
         <Image source={ProfilePicture} style={[styles.profilePict, { maxHeight: height * 0.2 }]} />
-        <Text style={styles.userNameHeading}>Witaj{'\n'}Jan Kowalski!</Text>
+        <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes?.name}</Text>
       </View>
       <View style={styles.box2}>
         <View style={styles.horizontalBox}>

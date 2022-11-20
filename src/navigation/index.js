@@ -12,8 +12,13 @@ import LandingScreen from '../screens/LandingScreen';
 import TabNavigator from './TabNavigator';
 
 import { Auth, Hub } from 'aws-amplify';
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchUser } from '../redux/userInformation'
 
 const Stack = createNativeStackNavigator();
+
+
+
 
 
 const Navigation = () => {
@@ -24,6 +29,7 @@ const Navigation = () => {
     try {
       const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true })
       setUser(authUser)
+
     } catch (e) {
       setUser(null)
     }
@@ -32,6 +38,14 @@ const Navigation = () => {
   useEffect(() => {
     checkUser()
   }, []);
+
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchUser());
+    console.log("user fetched")
+  }, []);
+
 
   useEffect(() => {
     const listener = (data) => {
@@ -42,6 +56,9 @@ const Navigation = () => {
     Hub.listen('auth', listener)
     return () => Hub.remove('auth', listener)
   }, [])
+
+  // save user info in store to use in bunch of screens
+
 
   if (user === undefined) {
     return (

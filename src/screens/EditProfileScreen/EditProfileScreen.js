@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, useWindowDimensions } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StyleSheet, useWindowDimensions, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { useNavigation } from '@react-navigation/native'
@@ -7,26 +7,49 @@ import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
 import CustomInput from '../../components/CustomInput'
+import { useSelector, useDispatch } from 'react-redux'
+import { Auth } from 'aws-amplify'
+import { fetchUser } from '../../redux/userInformation'
 
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
-const PHONE_REGEX = /^\d{9}$/
+const PHONE_REGEX = /./
 
 const EditProfileScreen = () => {
+
+    const { user, loading } = useSelector((state) => state.userInformation)
+
+
     const { height } = useWindowDimensions();
     const navigation = useNavigation()
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            username: "jan_kowalski",
-            fullname: "Jan Kowalski",
-            email: "jan_kowalski@wp.pl",
-            phonenumber: "123123123",
-            location: "Wiejska 45a, Białystok"
+            username: user.attributes.preferred_username,
+            fullname: user.attributes.name,
+            email: user.attributes.email,
+            phonenumber: user.attributes.phone_number,
+            location: user.attributes.address,
         }
     })
     //const [image, setImage] = useState({ProfilePicture})
     const [image, setImage] = useState(null)
-    const pressedEdit = () => {
-        navigation.goBack();
+    const dispatch = useDispatch();
+
+    const pressedEdit = async (data) => {
+        try {
+            const user = await Auth.currentAuthenticatedUser()
+            await Auth.updateUserAttributes(user, {
+                'preferred_username': data.username,
+                'name': data.fullname,
+                'email': data.email,
+                'phone_number': data.phonenumber,
+                'address': data.location
+            })
+            // Alert.alert('Sukces', "Edytowano profil użytkownika")
+            dispatch(fetchUser());
+            navigation.goBack()
+        } catch (e) {
+            Alert.alert('Błąd', e.message)
+        }
     }
 
     const changeProfilePict = async () => {

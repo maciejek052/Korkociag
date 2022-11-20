@@ -17,6 +17,7 @@ const ConfirmEmailScreen = () => {
 
         try {
             await Auth.confirmSignUp(data.username, data.code);
+            Alert.alert('Sukces', "Zarejestrowano się pomyślnie, teraz zaloguj się na utworzone konto")
             navigation.navigate('SignIn')
         } catch (e) {
             Alert.alert('Błąd', e.message)
