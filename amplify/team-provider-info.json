@@ -14,6 +14,15 @@
     "categories": {
       "auth": {
         "korkociag": {}
+      },
+      "function": {
+        "S3Trigger11d0d7f4": {
+          "deploymentBucketName": "amplify-korkociag-staging-12932-deployment",
+          "s3Key": "amplify-builds/S3Trigger11d0d7f4-2b784836616c30473833-build.zip"
+        }
+      },
+      "storage": {
+        "profilePict": {}
       }
     }
   }

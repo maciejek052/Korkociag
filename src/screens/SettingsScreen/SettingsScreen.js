@@ -27,8 +27,8 @@ const SettingsScreen = () => {
     <>
 
       <View style={styles.box1}>
-        <Image source={ProfilePicture} style={[styles.profilePict, { maxHeight: height * 0.2 }]} />
-        <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes.name}</Text>
+        <Image source={{ uri: user.attributes?.picture }} style={{ width: 200, height: 200, borderRadius: 400 }} />
+        <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes?.name}</Text>
       </View>
       <View style={styles.box2}>
         <CustomButton text="Edytuj profil" btnSize="30" onPress={goEditProfileScreen} />

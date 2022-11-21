@@ -10,5 +10,19 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientID": "string",
             "CreatedSNSRole": "string"
         }
+    },
+    "function": {
+        "S3Trigger11d0d7f4": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
+        }
+    },
+    "storage": {
+        "profilePict": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }

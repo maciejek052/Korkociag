@@ -13,15 +13,16 @@ import { lessons } from '../../../mocks/lessons'
 import { users } from '../../../mocks/users'
 import { useSelector, useDispatch } from 'react-redux'
 
-const HomeScreen = () => {
+import { fetchUser } from '../../redux/userInformation'
 
+const HomeScreen = () => {
   const { user, loading } = useSelector((state) => state.userInformation)
 
   // mock shit only to show progress at uni
   var lessonsAsStudent = [lessons[0], lessons[1]]
   var lessonsAsTeacher = [lessons[2]]
 
-  const { height } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   const navigation = useNavigation()
 
   const [showStudent, setStudent] = useState(true)
@@ -43,6 +44,7 @@ const HomeScreen = () => {
       student: showStudent
     });
   }
+  var img = user.attributes?.picture
 
   const Item = ({ title, time, days, person, avatarUrl, id }) => (
     <TouchableWithoutFeedback onPress={() => {
@@ -71,7 +73,7 @@ const HomeScreen = () => {
     <>
 
       <View style={styles.box1}>
-        <Image source={ProfilePicture} style={[styles.profilePict, { maxHeight: height * 0.2 }]} />
+        <Image source={{ uri: user.attributes?.picture }} style={{ width: 200, height: 200, borderRadius: 400 }} />
         <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes?.name}</Text>
       </View>
       <View style={styles.box2}>

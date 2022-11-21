@@ -8,7 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
 import CustomInput from '../../components/CustomInput'
 import { useSelector, useDispatch } from 'react-redux'
-import { Auth } from 'aws-amplify'
+import { Auth, Storage } from 'aws-amplify'
 import { fetchUser } from '../../redux/userInformation'
 
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
@@ -17,32 +17,75 @@ const PHONE_REGEX = /./
 const EditProfileScreen = () => {
 
     const { user, loading } = useSelector((state) => state.userInformation)
-
-
     const { height } = useWindowDimensions();
     const navigation = useNavigation()
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            username: user.attributes.preferred_username,
-            fullname: user.attributes.name,
-            email: user.attributes.email,
-            phonenumber: user.attributes.phone_number,
-            location: user.attributes.address,
+            username: user.attributes?.preferred_username,
+            fullname: user.attributes?.name,
+            email: user.attributes?.email,
+            phonenumber: user.attributes?.phone_number,
+            location: user.attributes?.address,
         }
     })
-    //const [image, setImage] = useState({ProfilePicture})
+
+    const pfpFilename = 'profilePictures/' + user.username + '_profilePict.png'
+
+    const fetchResourceFromURI = async uri => {
+        const response = await fetch(uri);
+        console.log(response);
+        const blob = await response.blob();
+        return blob;
+    };
+
+    const [uploadStatus, setUploadStatus] = useState('')
+    const [imgFromPicker, setImgFromPicker] = useState(null)
+    const [s3result, setS3result] = useState(null)
     const [image, setImage] = useState(null)
+
+    const isPfpChanged = s3result ? { picture: s3result } : {}
+
     const dispatch = useDispatch();
+
+
+    const uploadImgToS3 = async () => {
+        const img = await fetchResourceFromURI(imgFromPicker.uri);
+        return Storage.put(pfpFilename, img, {
+            level: 'public',
+            contentType: imgFromPicker.type,
+            progressCallback(uploadProgress) {
+                setUploadStatus('Dodawanie obrazka: ' + uploadProgress.loaded + '/' + uploadProgress.total)
+                console.log(
+                    `Progress: ${uploadProgress.loaded}/${uploadProgress.total}`,
+                );
+            },
+        })
+            .then(res => {
+                Storage.get(res.key)
+                    .then(result => {
+                        console.log(result);
+                        setS3result(result)
+                    })
+                    .catch(err => {
+                        Alert.alert("Błąd przy dodawaniu obrazka", err.message)
+                        console.log(err);
+                    });
+            })
+            .catch(err => {
+                Alert.alert("Błąd przy dodawaniu obrazka", err.message)
+            });
+    };
 
     const pressedEdit = async (data) => {
         try {
             const user = await Auth.currentAuthenticatedUser()
             await Auth.updateUserAttributes(user, {
+                ...isPfpChanged,
                 'preferred_username': data.username,
                 'name': data.fullname,
                 'email': data.email,
                 'phone_number': data.phonenumber,
-                'address': data.location
+                'address': data.location,
             })
             // Alert.alert('Sukces', "Edytowano profil użytkownika")
             dispatch(fetchUser());
@@ -60,12 +103,16 @@ const EditProfileScreen = () => {
             quality: 1,
         });
 
-        console.log(result);
+        // console.log(result);
 
         if (!result.cancelled) {
-            setImage(result.uri);
+            setImgFromPicker(result)
+            console.log("img loaded from picker")
         }
     }
+
+
+
 
     return (
         <KeyboardAwareScrollView>
@@ -82,10 +129,13 @@ const EditProfileScreen = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.profilePictBox}>
-                    {image ? <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius: 400 }} /> :
-                        <Image source={ProfilePicture} style={{ width: 200, height: 200, borderRadius: 400 }} />}
+                    {imgFromPicker ? <Image source={{ uri: imgFromPicker.uri }} style={{ width: 200, height: 200, borderRadius: 400 }} /> :
+                        <Image source={{ uri: user.attributes?.picture }} style={{ width: 200, height: 200, borderRadius: 400 }} />}
                     <Text style={styles.changePfpText} onPress={changeProfilePict}>
-                        Zmień zdjęcie profilowe
+                        Wybierz zdjęcie profilowe
+                    </Text>
+                    <Text style={styles.changePfpText} onPress={uploadImgToS3}>
+                        Wrzuć zdjęcie na serwer
                     </Text>
                 </View>
                 <View style={styles.textBoxes}>
@@ -120,8 +170,8 @@ const EditProfileScreen = () => {
                         name="location"
                         control={control}
                     />
-
                 </View>
+                <Text style={{ textAlign: 'center' }}>{uploadStatus}</Text>
             </View>
         </KeyboardAwareScrollView>
     )

@@ -6,6 +6,7 @@ export const fetchUser = createAsyncThunk(
     'user/fetchUser',
     async () => {
         const response = Auth.currentUserInfo()
+        console.log("fetched")
         return response
     }
 )
@@ -14,7 +15,7 @@ export const userInformationSlice = createSlice({
     name: 'userInformation',
     initialState: {
         user: '',
-        loading: false
+        loading: false,
     },
     reducers: {},
     extraReducers: builder => {

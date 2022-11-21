@@ -1,0 +1,16 @@
+{
+  "resourceName": "profilePict",
+  "policyUUID": "860c7fa2",
+  "bucketName": "korkociag007fce575f924ce28228a0d3184f4ae8",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Trigger11d0d7f4",
+  "groupAccess": {}
+}
