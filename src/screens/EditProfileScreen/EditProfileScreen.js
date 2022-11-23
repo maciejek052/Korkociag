@@ -43,37 +43,43 @@ const EditProfileScreen = () => {
     const [s3result, setS3result] = useState(null)
     const [image, setImage] = useState(null)
 
+
+
     const isPfpChanged = s3result ? { picture: s3result } : {}
 
     const dispatch = useDispatch();
 
 
     const uploadImgToS3 = async () => {
-        const img = await fetchResourceFromURI(imgFromPicker.uri);
-        return Storage.put(pfpFilename, img, {
-            level: 'public',
-            contentType: imgFromPicker.type,
-            progressCallback(uploadProgress) {
-                setUploadStatus('Dodawanie obrazka: ' + uploadProgress.loaded + '/' + uploadProgress.total)
-                console.log(
-                    `Progress: ${uploadProgress.loaded}/${uploadProgress.total}`,
-                );
-            },
-        })
-            .then(res => {
-                Storage.get(res.key)
-                    .then(result => {
-                        console.log(result);
-                        setS3result(result)
-                    })
-                    .catch(err => {
-                        Alert.alert("Błąd przy dodawaniu obrazka", err.message)
-                        console.log(err);
-                    });
+        if (imgFromPicker) {
+            const img = await fetchResourceFromURI(imgFromPicker.uri);
+            return Storage.put(pfpFilename, img, {
+                level: 'public',
+                acl: 'public-read',
+                contentType: imgFromPicker.type,
+                progressCallback(uploadProgress) {
+                    setUploadStatus('Dodawanie obrazka: ' + uploadProgress.loaded + '/' + uploadProgress.total)
+                    console.log(
+                        `Progress: ${uploadProgress.loaded}/${uploadProgress.total}`,
+                    );
+                },
             })
-            .catch(err => {
-                Alert.alert("Błąd przy dodawaniu obrazka", err.message)
-            });
+                .then(res => {
+                    Storage.get(res.key)
+                        .then(result => {
+                            console.log(result.substring(0, result.indexOf('?') + 1));
+                            setS3result(result.substring(0, result.indexOf('?') + 1))
+                        })
+                        .catch(err => {
+                            Alert.alert("Błąd przy dodawaniu obrazka", err.message)
+                            console.log(err);
+                        });
+                })
+                .catch(err => {
+                    Alert.alert("Błąd przy dodawaniu obrazka", err.message)
+                    console.log(err)
+                });
+        }
     };
 
     const pressedEdit = async (data) => {
@@ -99,7 +105,7 @@ const EditProfileScreen = () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
         });
 

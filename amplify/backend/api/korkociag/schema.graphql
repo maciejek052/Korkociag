@@ -1,0 +1,10 @@
+type School @model @auth(rules: [{allow: public, operations: [read]}]) {
+  id: ID!
+  name: String
+}
+
+type Subject @model @auth(rules: [{allow: public, operations: [read]}]) {
+  id: ID!
+  name: String
+  School: School @hasOne
+} 
