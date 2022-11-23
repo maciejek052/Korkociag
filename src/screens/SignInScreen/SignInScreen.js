@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView } from 'react-native'
+import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView, Alert } from 'react-native'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import React, { useState } from 'react'
@@ -6,15 +6,31 @@ import Corkscrew from '../../../assets/images/corkscrew.svg'
 import SocialSignInButtons from '../../components/SocialSignInButtons'
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
+import { Auth } from 'aws-amplify'
 
 const SignInScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const onSignInPressed = data => {
-    console.log(data)
-    // validate user
-    navigation.navigate('TabNavigator')
+
+  const [loading, setLoading] = useState(false);
+
+  const onSignInPressed = async (data) => {
+
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+
+    try {
+      await Auth.signIn(data.username, data.password);
+    } catch (e) {
+      Alert.alert('Błąd', e.message)
+    }
+    setLoading(false); 
+    // navigation.navigate('TabNavigator')
   }
+
+
   const onForgotPasswordPressed = () => {
     navigation.navigate('ForgotPassword')
   }
@@ -36,7 +52,7 @@ const SignInScreen = () => {
         <CustomInput
           name="password" placeholder="Hasło"
           control={control} secureTextEntry rules={{ required: 'Hasło jest wymagane' }} />
-        <CustomButton text="Zaloguj się" onPress={handleSubmit(onSignInPressed)} />
+        <CustomButton text={loading ? "Logowanie..." : "Zaloguj się"} onPress={handleSubmit(onSignInPressed)} />
         <CustomButton text="Zapomniałeś hasła?" onPress={onForgotPasswordPressed} type="TERTIARY" />
         <SocialSignInButtons />
         <CustomButton text="Nie masz konta? Załóż je teraz" onPress={onSignUpPressed} type="TERTIARY" />

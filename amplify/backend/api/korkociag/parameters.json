@@ -1,0 +1,12 @@
+{
+  "AppSyncApiName": "korkociag",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-11-23T04:51:05.081Z",
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authkorkociag",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

@@ -1,20 +1,27 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
 import { useForm } from 'react-hook-form'
-
-const PASSWORD_REGEX = /./
+import { Auth } from 'aws-amplify'
+const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
 
 const NewPasswordScreen = () => {
-
-    const { control, handleSubmit, watch } = useForm();
+    const route = useRoute()
+    const { control, handleSubmit, watch } = useForm({ defaultValues: { username: route?.params?.username } });
     const navigation = useNavigation()
     const [code, setCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const onSubmitPressed = () => {
-        navigation.navigate('Home')
+    const onSubmitPressed = async (data) => {
+        try {
+            await Auth.forgotPasswordSubmit(data.username, data.code, data.password)
+            Alert.alert("Sukces", "Hasło zostało zmienione")
+            navigation.navigate('SignIn')
+        } catch (e) {
+            Alert.alert("Błąd", e.message)
+        }
     }
     const onSignInPress = () => {
         navigation.navigate('SignIn')
@@ -24,13 +31,16 @@ const NewPasswordScreen = () => {
             <View style={styles.root}>
                 <Text style={styles.title}>Resetuj swoje hasło</Text>
                 <CustomInput
+                    name="username" placeholder="Wpisz nazwę użytkownika"
+                    control={control} rules={{ required: 'Nazwa jest wymagana' }} />
+                <CustomInput
                     name="code" placeholder="Wpisz kod potwierdzający"
                     control={control} rules={{ required: 'Kod jest wymagany' }} />
                 <CustomInput
                     name="password" placeholder="Hasło"
                     control={control} secureTextEntry rules={{
                         required: 'Hasło jest wymagane',
-                        pattern: { value: PASSWORD_REGEX, message: "Hasło powinno zawierać..." }
+                        pattern: { value: PASSWORD_REGEX, message: "Hasło powinno zawierać 8 znaków w tym małą i wielką literę, cyfrę i symbol" }
                     }} />
                 <CustomButton text="Wyślij" onPress={handleSubmit(onSubmitPressed)} />
                 <CustomButton text="Powrót do logowania" onPress={onSignInPress} type="TERTIARY" />

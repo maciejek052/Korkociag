@@ -1,0 +1,32 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-korkociag-staging-12932-authRole",
+      "UnauthRoleArn": "arn:aws:iam::665168214897:role/amplify-korkociag-staging-12932-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::665168214897:role/amplify-korkociag-staging-12932-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-korkociag-staging-12932-deployment",
+      "UnauthRoleName": "amplify-korkociag-staging-12932-unauthRole",
+      "StackName": "amplify-korkociag-staging-12932",
+      "StackId": "arn:aws:cloudformation:eu-central-1:665168214897:stack/amplify-korkociag-staging-12932/9ea39cd0-67a9-11ed-8a63-02965ba1c156",
+      "AmplifyAppId": "d2b5sycez3i8o9"
+    },
+    "categories": {
+      "auth": {
+        "korkociag": {}
+      },
+      "function": {
+        "S3Trigger11d0d7f4": {
+          "deploymentBucketName": "amplify-korkociag-staging-12932-deployment",
+          "s3Key": "amplify-builds/S3Trigger11d0d7f4-2b784836616c30473833-build.zip"
+        }
+      },
+      "storage": {
+        "profilePict": {}
+      },
+      "api": {
+        "korkociag": {}
+      }
+    }
+  }
+}

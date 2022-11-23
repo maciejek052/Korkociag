@@ -1,7 +1,8 @@
-import { View, Text, useWindowDimensions, StyleSheet } from 'react-native'
+import { View, Text, useWindowDimensions, StyleSheet, Alert } from 'react-native'
 import React from 'react'
+import { DataStore } from 'aws-amplify';
+import { LessonOffer, Subject, School } from '../../models'
 import CustomButton from '../../components/CustomButton';
-
 import SearchImage from '../../../assets/images/undraw_people_search_re_5rre.svg'
 import GraduationImage from '../../../assets/images/undraw_graduation_re_gthn.svg'
 import BlackboardImage from '../../../assets/images/undraw_teaching_f-1-cm.svg'
@@ -10,13 +11,55 @@ import TimeImage from '../../../assets/images/undraw_time_management_re_tk5w.svg
 
 
 const TeachSummaryScreen = ({ route, navigation }) => {
+
     const daysOfWeek = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota', 'niedziela']
     const timeIntervals = ['6:00 - 9:00 🌅', '9:00 - 12:00 ☕', '12:00 - 15:00 ☀️', '15:00 - 18:00 🏠', '18:00 - 21:00 🌇', '21:00 - 24:00 🌙']
+    const timeIntervals2 = ['6:00 - 9:00', '9:00 - 12:00', '12:00 - 15:00', '15:00 - 18:00', '18:00 - 21:00', '21:00 - 24:00']
     const { level, subject, localization, radius, placeStudent, placeTeacher, days, time } = route.params
-    const { height } = useWindowDimensions();
-    const confirmOffer = (level) => {
-        navigation.navigate('TeachOfferConfirmation')
+
+    const placeArray = () => {
+        let ar = []
+        if (placeStudent) ar.push('student')
+        if (placeTeacher) ar.push('teacher')
+        return ar
     }
+    const daysArray = () => {
+        let ar = []
+        for (var i = 0; i < daysOfWeek.length; i++) {
+            if (days[i]) ar.push(daysOfWeek[i])
+        }
+        return ar
+    }
+    const hoursArray = () => {
+        let ar = []
+        for (var i = 0; i < timeIntervals2.length; i++) {
+            if (time[i]) ar.push(timeIntervals2[i])
+        }
+        return ar
+    }
+
+    const offer = new LessonOffer({
+        location: localization,
+        locationRadius: radius,
+        Subject: subject,
+        place: placeArray(),
+        days: daysArray(),
+        hours: hoursArray()
+
+    })
+    console.log(offer)
+    const { height } = useWindowDimensions();
+
+    const confirmOffer = async (level) => {
+        try {
+            await DataStore.save(offer)
+            navigation.navigate('TeachOfferConfirmation')
+        } catch (e) {
+            Alert.alert(e.message)
+        }
+
+    }
+
     const parseDays = () => {
         var daysString = ""
         for (var i = 0; i < days.length; i++) {
@@ -52,7 +95,7 @@ const TeachSummaryScreen = ({ route, navigation }) => {
                 <GraduationImage style={{ maxHeight: height * 0.08 }} />
                 <Text style={styles.caption}>Poziom: <Text style={styles.value}>{level}</Text></Text>
                 <BlackboardImage style={{ maxHeight: height * 0.08 }} />
-                <Text style={styles.caption}>Przedmiot: <Text style={styles.value}>{subject}</Text></Text>
+                <Text style={styles.caption}>Przedmiot: <Text style={styles.value}>{subject.name}</Text></Text>
                 <Text style={styles.caption}>Lokalizacja: <Text style={styles.value}>{localization}</Text></Text>
                 <Text style={styles.caption}>Miejsce: <Text style={styles.value}>{parseLoc()}</Text></Text>
                 <TimeImage style={{ maxHeight: height * 0.08 }} />

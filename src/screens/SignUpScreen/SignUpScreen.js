@@ -1,14 +1,15 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import React, { useState } from 'react'
 import SocialSignInButtons from '../../components/SocialSignInButtons'
 import { useNavigation } from '@react-navigation/native'
 import { useForm } from 'react-hook-form'
+import { Auth } from 'aws-amplify'
 
 // regex
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
-const PASSWORD_REGEX = /./
+const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
 
 
 const SignUpScreen = () => {
@@ -16,14 +17,28 @@ const SignUpScreen = () => {
     const pwd = watch('password')
     const navigation = useNavigation()
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
+    const [phone_number, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
     const onSignInPressed = () => {
         navigation.navigate('SignIn')
     }
-    const onRegisterPressed = () => {
-        navigation.navigate('ConfirmEmail')
+    const onRegisterPressed = async (data) => {
+        try {
+            const { username, password, phone_number, email } = data
+
+            await Auth.signUp({
+                username,
+                password,
+                attributes: {
+                    phone_number, name: "", address: "", picture: null, preferred_username: username, email
+                }
+            })
+            navigation.navigate('ConfirmEmail', {username})
+        } catch (e) {
+            Alert.alert('Błąd', e.message)
+        }
+
     }
     const onTermsOfUsePressed = () => {
         console.warn("Terms of use pressed")
@@ -43,16 +58,22 @@ const SignUpScreen = () => {
                         maxLength: { value: 24, message: 'Nazwa użytkownika powinna mieć maksymalnie 24 znaki' }
                     }} />
                 <CustomInput
-                    name="email" placeholder="Adres e-mail"
+                    name="email" placeholder="E-mail"
                     control={control} rules={{
-                        required: 'Adres e-mail jest wymagany',
-                        pattern: { value: EMAIL_REGEX, message: "Adres e-mail jest nieprawidłowy" }
+                        required: 'E-mail jest wymagany',
+                        pattern: { value: EMAIL_REGEX, message: "E-mail jest nieprawidłowy" }
+                    }} />
+                <CustomInput
+                    name="phone_number" placeholder="Numer telefonu"
+                    control={control} rules={{
+                        required: 'Numer telefonu jest wymagany',
+                        pattern: { /*value: EMAIL_REGEX,*/ message: "Telefon jest nieprawidłowy" } // TODO verify phone number
                     }} />
                 <CustomInput
                     name="password" placeholder="Hasło"
                     control={control} secureTextEntry rules={{
                         required: 'Hasło jest wymagane',
-                        pattern: { value: PASSWORD_REGEX, message: "Hasło powinno zawierać..." }
+                        pattern: { value: PASSWORD_REGEX, message: "Hasło powinno zawierać 8 znaków w tym małą i wielką literę, cyfrę i symbol" }
                     }} />
                 <CustomInput
                     name="repeatPassword" placeholder="Powtórz hasło"

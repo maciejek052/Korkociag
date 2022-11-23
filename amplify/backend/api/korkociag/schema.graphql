@@ -1,0 +1,21 @@
+type LessonOffer @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  Subject: Subject @hasOne
+  location: String
+  locationRadius: Int
+  place: [String]
+  days: [String]
+  hours: [String]
+}
+
+type School @model @auth(rules: [{allow: public, operations: [read], provider: iam}, {allow: private, operations: [read]}, {allow: owner}]) {
+  id: ID!
+  name: String
+}
+
+type Subject @model @auth(rules: [{allow: public, operations: [read], provider: iam}, {allow: private, operations: [read]}, {allow: owner}]) {
+  id: ID!
+  name: String
+  School: School @hasOne
+}
+ 
