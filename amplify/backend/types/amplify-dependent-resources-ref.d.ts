@@ -27,7 +27,6 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "api": {
         "korkociag": {
-            "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }

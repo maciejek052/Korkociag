@@ -6,32 +6,44 @@ import { LazyLoading, LazyLoadingDisabled, AsyncItem } from "@aws-amplify/datast
 
 
 
-type EagerSchool = {
+type EagerLessonOffer = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<School, 'id'>;
+    identifier: ManagedIdentifier<LessonOffer, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly name?: string | null;
+  readonly Subject?: Subject | null;
+  readonly location?: string | null;
+  readonly locationRadius?: number | null;
+  readonly place?: (string | null)[] | null;
+  readonly days?: (string | null)[] | null;
+  readonly hours?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly lessonOfferSubjectId?: string | null;
 }
 
-type LazySchool = {
+type LazyLessonOffer = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<School, 'id'>;
+    identifier: ManagedIdentifier<LessonOffer, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly name?: string | null;
+  readonly Subject: AsyncItem<Subject | undefined>;
+  readonly location?: string | null;
+  readonly locationRadius?: number | null;
+  readonly place?: (string | null)[] | null;
+  readonly days?: (string | null)[] | null;
+  readonly hours?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly lessonOfferSubjectId?: string | null;
 }
 
-export declare type School = LazyLoading extends LazyLoadingDisabled ? EagerSchool : LazySchool
+export declare type LessonOffer = LazyLoading extends LazyLoadingDisabled ? EagerLessonOffer : LazyLessonOffer
 
-export declare const School: (new (init: ModelInit<School>) => School) & {
-  copyOf(source: School, mutator: (draft: MutableModel<School>) => MutableModel<School> | void): School;
+export declare const LessonOffer: (new (init: ModelInit<LessonOffer>) => LessonOffer) & {
+  copyOf(source: LessonOffer, mutator: (draft: MutableModel<LessonOffer>) => MutableModel<LessonOffer> | void): LessonOffer;
 }
 
 type EagerSubject = {
@@ -64,4 +76,32 @@ export declare type Subject = LazyLoading extends LazyLoadingDisabled ? EagerSub
 
 export declare const Subject: (new (init: ModelInit<Subject>) => Subject) & {
   copyOf(source: Subject, mutator: (draft: MutableModel<Subject>) => MutableModel<Subject> | void): Subject;
+}
+
+type EagerSchool = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<School, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazySchool = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<School, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type School = LazyLoading extends LazyLoadingDisabled ? EagerSchool : LazySchool
+
+export declare const School: (new (init: ModelInit<School>) => School) & {
+  copyOf(source: School, mutator: (draft: MutableModel<School>) => MutableModel<School> | void): School;
 }

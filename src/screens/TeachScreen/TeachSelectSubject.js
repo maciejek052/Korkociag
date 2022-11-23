@@ -15,6 +15,8 @@ const TeachSelectSubject = ({ route, navigation }) => {
 
   const getSubjects = async () => {
     try {
+      // the best thing would be to move schools query to the previous screen
+      // but I assume these never will be changed, so for now it can be implemented that way
       const schools = await DataStore.query(School, s => s.name.eq(level))
       const subjects = await DataStore.query(Subject, s => s.subjectSchoolId.eq(schools[0].id))
       setMasterData(subjects)
@@ -22,7 +24,7 @@ const TeachSelectSubject = ({ route, navigation }) => {
       //console.log(response)
     } catch (e) {
       console.log(e)
-      Alert.alert("Błąd przy pobieraniu tematów", e)
+      Alert.alert("Błąd przy pobieraniu tematów", e.message)
     }
   }
 
@@ -54,7 +56,6 @@ const TeachSelectSubject = ({ route, navigation }) => {
       <BlackboardImage style={[styles.logo, { height: height * 0.5 }]} resizeMode="contain" />
       <Text style={styles.heading}>Wybierz przedmiot</Text>
       <Text style={styles.text}>Wpisz w poniższym polu fragment nazwy przedmiotu, którego chcesz nauczać i wybierz przedmiot z propozycji</Text>
-      <Text onPress={() => console.log(subs[1])}>Klikaj mnie kurwiu!!!</Text>
       <BasicInput value={search} setValue={(text) => searchFilter(text)}></BasicInput>
 
       <FlatList showsVerticalScrollIndicator={false} style={styles.list} data={filteredData} keyExtractor={(item) => item.id} renderItem={({ item }) => (

@@ -6,8 +6,10 @@ import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
+import NonePicture from '../../../assets/images/none.png'
+import { Auth, DataStore } from 'aws-amplify'
 
-import { Auth } from 'aws-amplify'
+import { LessonOffer, Subject, School } from '../../models'
 
 import { lessons } from '../../../mocks/lessons'
 import { users } from '../../../mocks/users'
@@ -16,6 +18,29 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchUser } from '../../redux/userInformation'
 
 const HomeScreen = () => {
+
+
+  useEffect(() => {
+    getOffers()
+  }, [])
+
+  const [offersAsStudent, setOffersAsStudent] = useState([])
+  const [offersAsTeacher, setOffersAsTeacher] = useState([])
+  const [sub, setSub] = useState([])
+
+  const getOffers = async () => {
+    try {
+      const subj = await DataStore.query(Subject) // TODO change it because its not optimal
+      setSub(subj)
+      const offers = await DataStore.query(LessonOffer)
+      setOffersAsTeacher(offers)
+    } catch (e) {
+      console.log(e)
+      Alert.alert("Błąd przy pobieraniu ofert", e.message)
+    }
+  }
+
+
   const { user, loading } = useSelector((state) => state.userInformation)
 
   // mock shit only to show progress at uni
@@ -27,15 +52,16 @@ const HomeScreen = () => {
 
   const [showStudent, setStudent] = useState(true)
 
-  const [showList, setList] = useState(lessonsAsStudent);
+  const [showList, setList] = useState([]);
+
 
   const updateList = (which) => {
     if (which == 0) {
       setStudent(true)
-      setList(lessonsAsStudent)
+      setList([])
     } else {
       setStudent(false)
-      setList(lessonsAsTeacher)
+      setList(offersAsTeacher)
     }
   }
   const goToLessonScreen = (id, student) => {
@@ -52,7 +78,7 @@ const HomeScreen = () => {
     }}>
       <View style={styles.item}>
         <View style={styles.boxImg}>
-          <Image source={{ uri: avatarUrl }}
+          <Image source={NonePicture}
             style={styles.profilePictSmall} />
         </View>
         <Text style={styles.title}>{title}</Text>
@@ -63,9 +89,9 @@ const HomeScreen = () => {
     </TouchableWithoutFeedback>
   );
   const renderItem = ({ item }) => (
-    <Item title={item.subject} time={item.time} days={item.days} id={item.id}
-      person={showStudent ? item.teacher.profileInfo.fullName : item.student.profileInfo.fullName}
-      avatarUrl={showStudent ? item.teacher.profileInfo.avatarUrl : item.student.profileInfo.avatarUrl}
+    <Item title={sub.find(x => x.id === showList[0].lessonOfferSubjectId).name} time={item.hours + ''} days={item.days + ''} id={item.id}
+      person={'brak'}
+      avatarUrl={showStudent ? '' : ''}
     />
   );
   return (
@@ -137,14 +163,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   descText: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginRight: 100
   },
   valText: {
     fontWeight: 'normal'
   },
   profilePictSmall: {
-    width: 100,
-    height: 100,
+    width: 80, //100x100
+    height: 80,
     borderRadius: 400
   },
   boxImg: {
