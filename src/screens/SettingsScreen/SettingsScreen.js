@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import CustomButton from '../../components/CustomButton'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
-import { Auth, Hub } from 'aws-amplify'
+import { Auth, DataStore, Hub } from 'aws-amplify'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchUser } from '../../redux/userInformation'
 
@@ -18,7 +18,8 @@ const SettingsScreen = () => {
     navigation.navigate('EditProfileScreen')
   }
 
-  const signOut = () => {
+  const signOut = async () => {
+    await DataStore.clear()
     Auth.signOut()
   }
 

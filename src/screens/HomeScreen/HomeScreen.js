@@ -33,7 +33,9 @@ const HomeScreen = () => {
       const subj = await DataStore.query(Subject) // TODO change it because its not optimal
       setSub(subj)
       const offers = await DataStore.query(LessonOffer)
+      console.log(offers)
       setOffersAsTeacher(offers)
+      console.log("offers fetched")
     } catch (e) {
       console.log(e)
       Alert.alert("Błąd przy pobieraniu ofert", e.message)
@@ -44,8 +46,7 @@ const HomeScreen = () => {
   const { user, loading } = useSelector((state) => state.userInformation)
 
   // mock shit only to show progress at uni
-  var lessonsAsStudent = [lessons[0], lessons[1]]
-  var lessonsAsTeacher = [lessons[2]]
+
 
   const { height, width } = useWindowDimensions();
   const navigation = useNavigation()
@@ -56,6 +57,7 @@ const HomeScreen = () => {
 
 
   const updateList = (which) => {
+    getOffers()
     if (which == 0) {
       setStudent(true)
       setList([])
@@ -72,9 +74,9 @@ const HomeScreen = () => {
   }
   var img = user.attributes?.picture
 
-  const Item = ({ title, time, days, person, avatarUrl, id }) => (
+  const Item = ({ title, time, days, person, avatarUrl, id, item}) => (
     <TouchableWithoutFeedback onPress={() => {
-      goToLessonScreen(id)
+      goToLessonScreen({item, title})
     }}>
       <View style={styles.item}>
         <View style={styles.boxImg}>
@@ -89,15 +91,15 @@ const HomeScreen = () => {
     </TouchableWithoutFeedback>
   );
   const renderItem = ({ item }) => (
-    <Item title={sub.find(x => x.id === showList[0].lessonOfferSubjectId).name} time={item.hours + ''} days={item.days + ''} id={item.id}
-      person={'brak'}
+    <Item title={sub.find(x => x.id === item.lessonOfferSubjectId).name} time={item.hours + ''} days={item.days + ''} id={item.id}
+      person={'brak'} item={item}
       avatarUrl={showStudent ? '' : ''}
     />
   );
   return (
 
     <>
-
+      
       <View style={styles.box1}>
         <Image source={{ uri: user.attributes?.picture }} style={{ width: 200, height: 200, borderRadius: 400 }} />
         <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes?.name}</Text>
@@ -132,6 +134,7 @@ const styles = StyleSheet.create({
   },
   box3: {
     flex: 1,
+    flexGrow: 1, 
     alignItems: 'center'
   },
   profilePict: {

@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, Image, Linking } from 'react-native'
 import React from 'react'
 import CustomButton from '../../components/CustomButton'
-
+import NonePicture from '../../../assets/images/none.png'
 import { lessons } from '../../../mocks/lessons'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 
 const SingleLessonScreen = ({ route, navigation }) => {
-
+  const lessonObj = route.params
+  /*
   const id = route.params.id
   const isStudent = route.params.student
   const lesson = lessons.find(e => e.id === id)
@@ -20,21 +21,21 @@ const SingleLessonScreen = ({ route, navigation }) => {
   const phone = isStudent ?
     lesson.teacher.profileInfo.phoneNumber
     : lesson.student.profileInfo.phoneNumber
-
+*/
   return (
     <View style={styles.root}>
-      <Text style={styles.heading}>{lesson.subject}</Text>
-      <Text style={styles.descText}>Termin korepetycji: <Text style={styles.valText}>{lesson.days}</Text></Text>
-      <Text style={styles.descText}>Godziny korepetycji: <Text style={styles.valText}>{lesson.time}</Text></Text>
-      <Text style={styles.descText}>Lokalizacja: <Text style={styles.valText}>{lesson.location}</Text></Text>
-      <Text style={styles.descText}>Cena: <Text style={styles.valText}>{lesson.price} zł</Text></Text>
+      <Text style={styles.heading}>{lessonObj.id.title}</Text>
+      <Text style={styles.descText}>Termin korepetycji: <Text style={styles.valText}>{lessonObj.id.item.days + ''}</Text></Text>
+      <Text style={styles.descText}>Godziny korepetycji: <Text style={styles.valText}>{lessonObj.id.item.hours + ''}</Text></Text>
+      <Text style={styles.descText}>Lokalizacja: <Text style={styles.valText}>{lessonObj.id.item.location}</Text></Text>
+      <Text style={styles.descText}>Cena: <Text style={styles.valText}>0 zł</Text></Text>
       <View style={styles.personBox}>
-        <Image source={{ uri: avatar }} style={styles.profilePict} />
-        <Text style={styles.descText}>{who}<Text style={styles.valText}>{name}</Text></Text>
+        <Image source={NonePicture} style={styles.profilePict} />
+        <Text style={styles.descText}>{}<Text style={styles.valText}>{}</Text></Text>
         <View style={{ flexDirection: 'row' }}>
           <CustomCircleCheckbox text="Napisz wiadomość" bgColor={'#3b71f3'} fgColor={'#fff'} />
           <CustomCircleCheckbox text="Zadzwoń na telefon" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={() => {
-            Linking.openURL('tel: ' + phone)
+            Linking.openURL('tel: ' + '')
           }} />
         </View>
       </View>
