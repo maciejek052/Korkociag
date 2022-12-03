@@ -1,4 +1,11 @@
-type LessonOffer @model @auth(rules: [{allow: owner}]) {
+type Homework @model @auth(rules: [{allow: private, operations: [create, read]}, {allow: owner}]) {
+  id: ID!
+  date: AWSDateTime
+  description: String
+  lessonofferID: ID! @index(name: "byLessonOffer")
+}
+
+type LessonOffer @model @auth(rules: [{allow: owner}, {allow: private, operations: [create, read]}]) {
   id: ID!
   Subject: Subject @hasOne
   location: String
@@ -6,6 +13,7 @@ type LessonOffer @model @auth(rules: [{allow: owner}]) {
   place: [String]
   days: [String]
   hours: [String]
+  Homework: [Homework] @hasMany(indexName: "byLessonOffer", fields: ["id"])
 }
 
 type School @model @auth(rules: [{allow: public, operations: [read], provider: iam}, {allow: private, operations: [read]}, {allow: owner}]) {

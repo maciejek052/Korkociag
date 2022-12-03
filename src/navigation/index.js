@@ -11,19 +11,22 @@ import HomeScreen from '../screens/HomeScreen';
 import LandingScreen from '../screens/LandingScreen';
 import TabNavigator from './TabNavigator';
 
-import { Auth, Hub } from 'aws-amplify';
+import { Auth, Hub, DataStore } from 'aws-amplify';
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchUser } from '../redux/userInformation'
 
+import { LessonOffer } from '../models';
+
+import { fetchLessonsAsTeacher, setValue } from '../redux/lessonsAsTeacher';
+
 const Stack = createNativeStackNavigator();
-
-
-
 
 
 const Navigation = () => {
 
   const [user, setUser] = useState(undefined)
+  
+  const [dataFetched, setDataFetched] = useState(false)
 
   const checkUser = async () => {
     try {
@@ -57,6 +60,11 @@ const Navigation = () => {
     return () => Hub.remove('auth', listener)
   }, [])
 
+  useEffect(() => {
+    dispatch(fetchLessonsAsTeacher())
+    setDataFetched(true)
+  })
+
   // save user info in store to use in bunch of screens
 
 
@@ -67,6 +75,16 @@ const Navigation = () => {
       </View>
     )
   }
+
+  if (dataFetched === false) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator />
+      </View>
+    )
+  }
+
+
 
   return (
     <NavigationContainer>

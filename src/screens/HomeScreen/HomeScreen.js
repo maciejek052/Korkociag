@@ -15,27 +15,32 @@ import { lessons } from '../../../mocks/lessons'
 import { users } from '../../../mocks/users'
 import { useSelector, useDispatch } from 'react-redux'
 
+import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
 import { fetchUser } from '../../redux/userInformation'
 
 const HomeScreen = () => {
 
+  const dispatch = useDispatch();
+  const lessonsAsTeacher = useSelector((state) => JSON.parse(state.lessonsAsTeacher.lesson))
 
   useEffect(() => {
     getOffers()
   }, [])
 
-  const [offersAsStudent, setOffersAsStudent] = useState([])
-  const [offersAsTeacher, setOffersAsTeacher] = useState([])
+  useEffect(() => {
+    
+  }, [])
+
   const [sub, setSub] = useState([])
 
   const getOffers = async () => {
     try {
       const subj = await DataStore.query(Subject) // TODO change it because its not optimal
       setSub(subj)
-      const offers = await DataStore.query(LessonOffer)
-      console.log(offers)
-      setOffersAsTeacher(offers)
-      console.log("offers fetched")
+      //const offers = await DataStore.query(LessonOffer)
+      //console.log(offers)
+      //setOffersAsTeacher(offers)
+      //console.log("offers fetched")
     } catch (e) {
       console.log(e)
       Alert.alert("Błąd przy pobieraniu ofert", e.message)
@@ -44,6 +49,7 @@ const HomeScreen = () => {
 
 
   const { user, loading } = useSelector((state) => state.userInformation)
+
 
   // mock shit only to show progress at uni
 
@@ -63,7 +69,8 @@ const HomeScreen = () => {
       setList([])
     } else {
       setStudent(false)
-      setList(offersAsTeacher)
+      setList(lessonsAsTeacher)
+      // console.log(JSON.parse(lessonsAsTeacher))
     }
   }
   const goToLessonScreen = (id, student) => {
@@ -74,9 +81,9 @@ const HomeScreen = () => {
   }
   var img = user.attributes?.picture
 
-  const Item = ({ title, time, days, person, avatarUrl, id, item}) => (
+  const Item = ({ title, time, days, person, avatarUrl, id, item }) => (
     <TouchableWithoutFeedback onPress={() => {
-      goToLessonScreen({item, title})
+      goToLessonScreen({ item, title })
     }}>
       <View style={styles.item}>
         <View style={styles.boxImg}>
@@ -99,7 +106,7 @@ const HomeScreen = () => {
   return (
 
     <>
-      
+
       <View style={styles.box1}>
         <Image source={{ uri: user.attributes?.picture }} style={{ width: 200, height: 200, borderRadius: 400 }} />
         <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes?.name}</Text>
@@ -113,6 +120,7 @@ const HomeScreen = () => {
         </View>
         <View styles={styles.box3}>
           <FlatList
+            contentContainerStyle={{ paddingBottom: 100 }}
             data={showList}
             extraData={showStudent}
             renderItem={renderItem}
@@ -134,8 +142,8 @@ const styles = StyleSheet.create({
   },
   box3: {
     flex: 1,
-    flexGrow: 1, 
-    alignItems: 'center'
+    flexGrow: 1,
+    alignItems: 'center',
   },
   profilePict: {
     maxWidth: 200,

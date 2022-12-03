@@ -6,7 +6,7 @@ export const fetchUser = createAsyncThunk(
     'user/fetchUser',
     async () => {
         const response = Auth.currentUserInfo()
-        console.log("fetched")
+        console.log("REDUX: user fetched")
         return response
     }
 )

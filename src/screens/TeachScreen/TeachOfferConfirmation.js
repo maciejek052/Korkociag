@@ -1,14 +1,22 @@
 import { View, Text, StyleSheet, useWindowDimensions } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
 import ConfirmImage from '../../../assets/images/undraw_order_confirmed_re_g0if.svg'
 import CustomButton from '../../components/CustomButton';
-
+import { useDispatch } from 'react-redux';
+import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher';
+import { LessonOffer } from '../../models';
 
 const TeachOfferConfirmation = () => {
     const navigation = useNavigation()
     const { height } = useWindowDimensions();
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchLessonsAsTeacher())
+    }, [])
 
     return (
         <View style={styles.root}>
