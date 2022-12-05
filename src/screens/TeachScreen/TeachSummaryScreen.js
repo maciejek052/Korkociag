@@ -1,6 +1,7 @@
 import { View, Text, useWindowDimensions, StyleSheet, Alert } from 'react-native'
 import React from 'react'
-import { DataStore } from 'aws-amplify';
+import { useSelector, useDispatch } from 'react-redux'
+import { API, graphqlOperation } from 'aws-amplify';
 import { LessonOffer, Subject, School } from '../../models'
 import CustomButton from '../../components/CustomButton';
 import SearchImage from '../../../assets/images/undraw_people_search_re_5rre.svg'
@@ -9,8 +10,11 @@ import BlackboardImage from '../../../assets/images/undraw_teaching_f-1-cm.svg'
 import MapImage from '../../../assets/images/undraw_map_dark_re_36sy.svg'
 import TimeImage from '../../../assets/images/undraw_time_management_re_tk5w.svg'
 
+import { createLessonOffer, createLessonOfferUserInfo } from '../../graphql/mutations';
 
 const TeachSummaryScreen = ({ route, navigation }) => {
+
+    const { user, loading } = useSelector((state) => state.userInformation)
 
     const daysOfWeek = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota', 'niedziela']
     const timeIntervals = ['6:00 - 9:00 🌅', '9:00 - 12:00 ☕', '12:00 - 15:00 ☀️', '15:00 - 18:00 🏠', '18:00 - 21:00 🌇', '21:00 - 24:00 🌙']
@@ -38,24 +42,35 @@ const TeachSummaryScreen = ({ route, navigation }) => {
         return ar
     }
 
-    const offer = new LessonOffer({
+    const offer = {
         location: localization,
         locationRadius: radius,
-        Subject: subject,
         place: placeArray(),
         days: daysArray(),
-        hours: hoursArray()
-
-    })
+        hours: hoursArray(),
+        lessonOfferSubjectId: subject.id,
+        ownerCognitoID: user.attributes.sub,
+    }
     console.log(offer)
     const { height } = useWindowDimensions();
 
-    const confirmOffer = async (level) => {
+    const confirmOffer = async () => {
         try {
-            await DataStore.save(offer)
+            const newOffer = await API.graphql(
+                graphqlOperation(createLessonOffer, { input: offer })
+            )
+            // link table 
+            const offerToUser = await API.graphql(
+                graphqlOperation(createLessonOfferUserInfo, {
+                    input: {
+                        lessonOfferId: newOffer.data.createLessonOffer.id, userInfoId: offer.ownerCognitoID
+                    }
+                })
+            )
             navigation.navigate('TeachOfferConfirmation')
         } catch (e) {
-            Alert.alert(e.message)
+            console.log(e)
+            Alert.alert("Błąd przy tworzeniu oferty", e.message)
         }
 
     }

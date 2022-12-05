@@ -21,11 +21,11 @@ const EditProfileScreen = () => {
     const navigation = useNavigation()
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            username: user.attributes?.preferred_username,
-            fullname: user.attributes?.name,
-            email: user.attributes?.email,
-            phonenumber: user.attributes?.phone_number,
-            location: user.attributes?.address,
+            username: user?.attributes?.preferred_username,
+            fullname: user?.attributes?.name,
+            email: user?.attributes?.email,
+            phonenumber: user?.attributes?.phone_number,
+            location: user?.attributes?.address,
         }
     })
 

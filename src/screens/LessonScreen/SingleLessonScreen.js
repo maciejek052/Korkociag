@@ -1,15 +1,16 @@
 import { View, Text, StyleSheet, Image, Linking, Alert } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CustomButton from '../../components/CustomButton'
 import NonePicture from '../../../assets/images/none.png'
 import { lessons } from '../../../mocks/lessons'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
-import { DataStore } from 'aws-amplify'
+import { DataStore, Predicates } from 'aws-amplify'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
 import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
-
-import { LessonOffer } from '../../models'
+import { LessonOffer, Subject, Homework } from '../../models'
+import { API } from 'aws-amplify'
+import * as mutations from '../../graphql/mutations'
 
 const SingleLessonScreen = ({ route, navigation }) => {
 
@@ -23,7 +24,7 @@ const SingleLessonScreen = ({ route, navigation }) => {
       [
         {
           text: "Anuluj",
-          onPress: () => null, 
+          onPress: () => null,
           style: "cancel"
         },
         { text: "OK", onPress: deleteLesson }
@@ -33,13 +34,12 @@ const SingleLessonScreen = ({ route, navigation }) => {
   const deleteLesson = async () => {
     console.log("wchodzimy")
     // console.log(lessonObj)
-    id = lessonObj.id.item.id
+    const details = {
+      id: lessonObj.id.item.id,
+      _version: lessonObj.id.item._version
+    };
     try {
-      const todelete = await DataStore.query(LessonOffer, id)
-      console.log(todelete)
-      const del = await DataStore.delete(todelete)
-      // dispatch(fetchLessonsAsTeacher())
-      console.log(del)
+      const deleted = await API.graphql({ query: mutations.deleteLessonOffer, variables: { input: details } })
       navigation.goBack()
     } catch (e) {
       console.log(e)

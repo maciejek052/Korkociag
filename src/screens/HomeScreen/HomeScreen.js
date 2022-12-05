@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
 import { fetchUser } from '../../redux/userInformation'
+import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen'
 
 const HomeScreen = () => {
 
@@ -28,7 +29,7 @@ const HomeScreen = () => {
   }, [])
 
   useEffect(() => {
-    
+
   }, [])
 
   const [sub, setSub] = useState([])
@@ -61,6 +62,11 @@ const HomeScreen = () => {
 
   const [showList, setList] = useState([]);
 
+  const reload = async () => {
+    // await DataStore.clear()
+    dispatch(fetchLessonsAsTeacher())
+    console.log(user)
+  }
 
   const updateList = (which) => {
     getOffers()
@@ -79,7 +85,7 @@ const HomeScreen = () => {
       student: showStudent
     });
   }
-  var img = user.attributes?.picture
+  var img = user?.attributes?.picture
 
   const Item = ({ title, time, days, person, avatarUrl, id, item }) => (
     <TouchableWithoutFeedback onPress={() => {
@@ -108,8 +114,8 @@ const HomeScreen = () => {
     <>
 
       <View style={styles.box1}>
-        <Image source={{ uri: user.attributes?.picture }} style={{ width: 200, height: 200, borderRadius: 400 }} />
-        <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes?.name}</Text>
+        <Image source={{ uri: user?.attributes?.picture }} style={{ width: 200, height: 200, borderRadius: 400 }} />
+        <Text style={styles.userNameHeading}>Witaj{'\n'}{user?.attributes?.name}</Text>
       </View>
       <View style={styles.box2}>
         <View style={styles.horizontalBox}>
@@ -117,6 +123,8 @@ const HomeScreen = () => {
             fgColor={showStudent ? "#fff" : "#000"} bgColor={showStudent ? "#3b71f3" : "#fff"} />
           <CustomCircleCheckbox text="Dawane lekcje" onPress={() => { updateList(1) }}
             fgColor={showStudent ? "#000" : "#fff"} bgColor={showStudent ? "#fff" : "#3b71f3"} />
+          <CustomCircleCheckbox text="Reload" onPress={() => { reload() }}
+            fgColor='white' bgColor='green' />
         </View>
         <View styles={styles.box3}>
           <FlatList
