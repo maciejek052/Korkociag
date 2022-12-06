@@ -9,8 +9,10 @@ import GraduationImage from '../../../assets/images/undraw_graduation_re_gthn.sv
 import BlackboardImage from '../../../assets/images/undraw_teaching_f-1-cm.svg'
 import MapImage from '../../../assets/images/undraw_map_dark_re_36sy.svg'
 import TimeImage from '../../../assets/images/undraw_time_management_re_tk5w.svg'
-
-import { createLessonOffer, createLessonOfferUserInfo } from '../../graphql/mutations';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+import { createLessonOffer, createLessonTeacher } from '../../graphql/mutations';
+import TeachOfferConfirmation from './TeachOfferConfirmation';
 
 const TeachSummaryScreen = ({ route, navigation }) => {
 
@@ -19,7 +21,7 @@ const TeachSummaryScreen = ({ route, navigation }) => {
     const daysOfWeek = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota', 'niedziela']
     const timeIntervals = ['6:00 - 9:00 🌅', '9:00 - 12:00 ☕', '12:00 - 15:00 ☀️', '15:00 - 18:00 🏠', '18:00 - 21:00 🌇', '21:00 - 24:00 🌙']
     const timeIntervals2 = ['6:00 - 9:00', '9:00 - 12:00', '12:00 - 15:00', '15:00 - 18:00', '18:00 - 21:00', '21:00 - 24:00']
-    const { level, subject, localization, radius, placeStudent, placeTeacher, days, time } = route.params
+    const { level, subject, city, address, radius, placeStudent, placeTeacher, days, time } = route.params
 
     const placeArray = () => {
         let ar = []
@@ -41,15 +43,20 @@ const TeachSummaryScreen = ({ route, navigation }) => {
         }
         return ar
     }
+    const uuid = uuidv4();
 
     const offer = {
-        location: localization,
-        locationRadius: radius,
-        place: placeArray(),
+        id: uuid,
+        city: city,
+        address: address,
+        locationRadius: placeStudent ? radius : null,
+        place: placeStudent ? 'student' : 'teacher',
         days: daysArray(),
         hours: hoursArray(),
         lessonOfferSubjectId: subject.id,
         ownerCognitoID: user.attributes.sub,
+        lessonOfferLessonStudentId: uuid,
+        lessonOfferLessonTeacherId: uuid
     }
     console.log(offer)
     const { height } = useWindowDimensions();
@@ -59,11 +66,12 @@ const TeachSummaryScreen = ({ route, navigation }) => {
             const newOffer = await API.graphql(
                 graphqlOperation(createLessonOffer, { input: offer })
             )
-            // link table 
-            const offerToUser = await API.graphql(
-                graphqlOperation(createLessonOfferUserInfo, {
+            // linking record
+            const link = await API.graphql(
+                graphqlOperation(createLessonTeacher, {
                     input: {
-                        lessonOfferId: newOffer.data.createLessonOffer.id, userInfoId: offer.ownerCognitoID
+                        id: uuid,
+                        lessonTeacherUserInfoId: user.attributes.sub
                     }
                 })
             )
@@ -111,7 +119,8 @@ const TeachSummaryScreen = ({ route, navigation }) => {
                 <Text style={styles.caption}>Poziom: <Text style={styles.value}>{level}</Text></Text>
                 <BlackboardImage style={{ maxHeight: height * 0.08 }} />
                 <Text style={styles.caption}>Przedmiot: <Text style={styles.value}>{subject.name}</Text></Text>
-                <Text style={styles.caption}>Lokalizacja: <Text style={styles.value}>{localization}</Text></Text>
+                <Text style={styles.caption}>Miasto: <Text style={styles.value}>{city}</Text></Text>
+                <Text style={styles.caption}>Adres: <Text style={styles.value}>{address}</Text></Text>
                 <Text style={styles.caption}>Miejsce: <Text style={styles.value}>{parseLoc()}</Text></Text>
                 <TimeImage style={{ maxHeight: height * 0.08 }} />
                 <Text style={styles.caption}>Dni: <Text style={styles.value}>{parseDays()}</Text></Text>

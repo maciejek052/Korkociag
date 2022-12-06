@@ -17,7 +17,8 @@ const TeachSelectLocalization = ({ route, navigation }) => {
     const { height } = useWindowDimensions()
     const [isPlaceTeacherChecked, setPlaceTeacherChecked] = useState(true)
     const [isPlaceStudentChecked, setPlaceStudentChecked] = useState(false)
-    const [getLocalization, setLocalization] = useState('')
+    const [getCity, setCity] = useState('')
+    const [getAddress, setAddress] = useState('')
     const [distanceValue, setDistanceValue] = useState(5)
     const { level, subject } = route.params
 
@@ -25,7 +26,7 @@ const TeachSelectLocalization = ({ route, navigation }) => {
         // validate if user selected at least one option
         if (isPlaceTeacherChecked || isPlaceStudentChecked) {
             navigation.navigate('TeachSelectSchedule', {
-                level: level, subject: subject, localization: getLocalization, radius: distanceValue,
+                level: level, subject: subject, city: getCity, radius: distanceValue, address: getAddress,
                 placeStudent: isPlaceStudentChecked ? 1 : 0, placeTeacher: isPlaceTeacherChecked ? 1 : 0
             })
         }
@@ -39,15 +40,18 @@ const TeachSelectLocalization = ({ route, navigation }) => {
     return (
         <RootSiblingParent>
             <View style={styles.root}>
-                <MapImage style={[styles.logo, { maxHeight: height * 0.15 }]} />
+                <MapImage style={[styles.logo, { maxHeight: height * 0.1 }]} />
                 <Text style={styles.heading}>Wybierz lokalizację korepetycji</Text>
                 <Text style={styles.text}>Wybierz na mapie w jakim miejscu chcesz nauczać następnie wybierz zakres odległości</Text>
-                <BasicInput placeholder="Wyszukaj lokalizację" setValue={setLocalization} />
+                <BasicInput placeholder="Miasto" setValue={setCity} />
+                <BasicInput placeholder="Ulica" setValue={setAddress} />
                 <MapView style={[styles.map, { height: height * 0.25 }]} provider='google' />
                 <View style={{ flexDirection: 'row' }}>
-                    <Slider style={styles.slider} minimumValue={0} minimumTrackTintColor='#3b71f3' thumbTintColor='#3b71f3'
-                        maximumValue={25} step={1} value={distanceValue} onValueChange={setDistanceValue} />
-                    <Text style={{ marginVertical: 5 }}>Promień: {distanceValue} km</Text>
+                    {isPlaceStudentChecked && (
+                        <><Slider style={styles.slider} minimumValue={0} minimumTrackTintColor='#3b71f3' thumbTintColor='#3b71f3'
+                            maximumValue={25} step={1} value={distanceValue} onValueChange={setDistanceValue} />
+                            <Text style={{ marginVertical: 5 }}>Promień: {distanceValue} km</Text>
+                        </>)}
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>

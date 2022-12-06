@@ -11,11 +11,14 @@ import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
 import { LessonOffer, Subject, Homework } from '../../models'
 import { API } from 'aws-amplify'
 import * as mutations from '../../graphql/mutations'
+import { render } from 'react-dom'
 
 const SingleLessonScreen = ({ route, navigation }) => {
 
   const dispatch = useDispatch()
   const lessonObj = route.params
+
+  const isStudent = lessonObj.id.item.LessonStudent != null
 
   const deleteLessonAlert = () =>
     Alert.alert(
@@ -46,38 +49,27 @@ const SingleLessonScreen = ({ route, navigation }) => {
       Alert.alert("Błąd", e.message)
     }
   }
-
-
-
-  /*
-  const id = route.params.id
-  const isStudent = route.params.student
-  const lesson = lessons.find(e => e.id === id)
-  const avatar = isStudent ?
-    lesson.teacher.profileInfo.avatarUrl
-    : lesson.student.profileInfo.avatarUrl
-  const who = isStudent ? 'Nauczyciel: ' : 'Uczeń: '
-  const name = isStudent ?
-    lesson.teacher.profileInfo.fullName
-    : lesson.student.profileInfo.fullName
-  const phone = isStudent ?
-    lesson.teacher.profileInfo.phoneNumber
-    : lesson.student.profileInfo.phoneNumber
-  */
   return (
     <View style={styles.root}>
-      <Text style={styles.heading}>{lessonObj.id.title}</Text>
+      <Text style={styles.heading}>{lessonObj.id.item.Subject.name}</Text>
       <Text style={styles.descText}>Termin korepetycji: <Text style={styles.valText}>{lessonObj.id.item.days + ''}</Text></Text>
       <Text style={styles.descText}>Godziny korepetycji: <Text style={styles.valText}>{lessonObj.id.item.hours + ''}</Text></Text>
-      <Text style={styles.descText}>Lokalizacja: <Text style={styles.valText}>{lessonObj.id.item.location}</Text></Text>
+      <Text style={styles.descText}>Miasto: <Text style={styles.valText}>{lessonObj.id.item.city}</Text></Text>
+      <Text style={styles.descText}>Adres: <Text style={styles.valText}>{lessonObj.id.item.address}</Text></Text>
       <Text style={styles.descText}>Cena: <Text style={styles.valText}>0 zł</Text></Text>
       <View style={styles.personBox}>
-        <Image source={NonePicture} style={styles.profilePict} />
-        <Text style={styles.descText}>{ }<Text style={styles.valText}>{ }</Text></Text>
+        {!isStudent && (
+          <Image source={NonePicture} style={styles.profilePict} />
+        )}
+        {isStudent && (
+          <Image source={{ uri: lessonObj.id.item.LessonStudent?.UserInfo.picture }} style={styles.profilePict} />
+        )}
+        <Text style={styles.descText}>{ }<Text style={styles.valText}>{isStudent ? "Student: " + lessonObj.id.item.LessonStudent?.UserInfo.name : "Student: brak"}</Text></Text>
         <View style={{ flexDirection: 'row' }}>
           <CustomCircleCheckbox text="Napisz wiadomość" bgColor={'#3b71f3'} fgColor={'#fff'} />
           <CustomCircleCheckbox text="Zadzwoń na telefon" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={() => {
-            Linking.openURL('tel: ' + '')
+            if (isStudent)
+              Linking.openURL('tel: ' + lessonObj.id.item.LessonStudent?.UserInfo.phone_number)
           }} />
         </View>
       </View>

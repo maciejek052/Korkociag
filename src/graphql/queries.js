@@ -1,6 +1,206 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getLessonStudent = /* GraphQL */ `
+  query GetLessonStudent($id: ID!) {
+    getLessonStudent(id: $id) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      lessonStudentUserInfoId
+    }
+  }
+`;
+export const listLessonStudents = /* GraphQL */ `
+  query ListLessonStudents(
+    $filter: ModelLessonStudentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLessonStudents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonStudentUserInfoId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncLessonStudents = /* GraphQL */ `
+  query SyncLessonStudents(
+    $filter: ModelLessonStudentFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncLessonStudents(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonStudentUserInfoId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getLessonTeacher = /* GraphQL */ `
+  query GetLessonTeacher($id: ID!) {
+    getLessonTeacher(id: $id) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      lessonTeacherUserInfoId
+    }
+  }
+`;
+export const listLessonTeachers = /* GraphQL */ `
+  query ListLessonTeachers(
+    $filter: ModelLessonTeacherFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLessonTeachers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonTeacherUserInfoId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncLessonTeachers = /* GraphQL */ `
+  query SyncLessonTeachers(
+    $filter: ModelLessonTeacherFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncLessonTeachers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonTeacherUserInfoId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getUserInfo = /* GraphQL */ `
   query GetUserInfo($id: ID!) {
     getUserInfo(id: $id) {
@@ -10,21 +210,6 @@ export const getUserInfo = /* GraphQL */ `
       picture
       phone_number
       cognitoID
-      lessonoffers {
-        items {
-          id
-          userInfoId
-          lessonOfferId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       createdAt
       updatedAt
       _version
@@ -47,10 +232,6 @@ export const listUserInfos = /* GraphQL */ `
         picture
         phone_number
         cognitoID
-        lessonoffers {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
@@ -82,10 +263,6 @@ export const syncUserInfos = /* GraphQL */ `
         picture
         phone_number
         cognitoID
-        lessonoffers {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
@@ -224,7 +401,7 @@ export const getLessonOffer = /* GraphQL */ `
         subjectSchoolId
         owner
       }
-      location
+      address
       locationRadius
       place
       days
@@ -245,28 +422,60 @@ export const getLessonOffer = /* GraphQL */ `
         nextToken
         startedAt
       }
-      UserInfos {
-        items {
+      ownerCognitoID
+      city
+      LessonStudent {
+        id
+        UserInfo {
           id
-          userInfoId
-          lessonOfferId
+          name
+          address
+          picture
+          phone_number
+          cognitoID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          owner
         }
-        nextToken
-        startedAt
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonStudentUserInfoId
       }
-      ownerCognitoID
+      LessonTeacher {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonTeacherUserInfoId
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       lessonOfferSubjectId
+      lessonOfferLessonStudentId
+      lessonOfferLessonTeacherId
       owner
     }
   }
@@ -291,7 +500,7 @@ export const listLessonOffers = /* GraphQL */ `
           subjectSchoolId
           owner
         }
-        location
+        address
         locationRadius
         place
         days
@@ -300,17 +509,50 @@ export const listLessonOffers = /* GraphQL */ `
           nextToken
           startedAt
         }
-        UserInfos {
-          nextToken
-          startedAt
-        }
         ownerCognitoID
+        city
+        LessonStudent {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          lessonStudentUserInfoId
+          UserInfo {
+            address
+            cognitoID
+            id
+            name
+            phone_number
+            picture
+          }
+        }
+        LessonTeacher {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          lessonTeacherUserInfoId
+          UserInfo {
+            address
+            cognitoID
+            id
+            name
+            phone_number
+            picture
+          }
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
         lessonOfferSubjectId
+        lessonOfferLessonStudentId
+        lessonOfferLessonTeacherId
         owner
       }
       nextToken
@@ -344,7 +586,7 @@ export const syncLessonOffers = /* GraphQL */ `
           subjectSchoolId
           owner
         }
-        location
+        address
         locationRadius
         place
         days
@@ -353,17 +595,34 @@ export const syncLessonOffers = /* GraphQL */ `
           nextToken
           startedAt
         }
-        UserInfos {
-          nextToken
-          startedAt
-        }
         ownerCognitoID
+        city
+        LessonStudent {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          lessonStudentUserInfoId
+        }
+        LessonTeacher {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          lessonTeacherUserInfoId
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
         lessonOfferSubjectId
+        lessonOfferLessonStudentId
+        lessonOfferLessonTeacherId
         owner
       }
       nextToken
@@ -525,307 +784,6 @@ export const syncSubjects = /* GraphQL */ `
         _deleted
         _lastChangedAt
         subjectSchoolId
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getLessonOfferUserInfo = /* GraphQL */ `
-  query GetLessonOfferUserInfo($id: ID!) {
-    getLessonOfferUserInfo(id: $id) {
-      id
-      userInfoId
-      lessonOfferId
-      userInfo {
-        id
-        name
-        address
-        picture
-        phone_number
-        cognitoID
-        lessonoffers {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      lessonOffer {
-        id
-        Subject {
-          id
-          name
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          subjectSchoolId
-          owner
-        }
-        location
-        locationRadius
-        place
-        days
-        hours
-        Homework {
-          nextToken
-          startedAt
-        }
-        UserInfos {
-          nextToken
-          startedAt
-        }
-        ownerCognitoID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        lessonOfferSubjectId
-        owner
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const listLessonOfferUserInfos = /* GraphQL */ `
-  query ListLessonOfferUserInfos(
-    $filter: ModelLessonOfferUserInfoFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listLessonOfferUserInfos(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        userInfoId
-        lessonOfferId
-        userInfo {
-          id
-          name
-          address
-          picture
-          phone_number
-          cognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        lessonOffer {
-          id
-          location
-          locationRadius
-          place
-          days
-          hours
-          ownerCognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          lessonOfferSubjectId
-          owner
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncLessonOfferUserInfos = /* GraphQL */ `
-  query SyncLessonOfferUserInfos(
-    $filter: ModelLessonOfferUserInfoFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLessonOfferUserInfos(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        userInfoId
-        lessonOfferId
-        userInfo {
-          id
-          name
-          address
-          picture
-          phone_number
-          cognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        lessonOffer {
-          id
-          location
-          locationRadius
-          place
-          days
-          hours
-          ownerCognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          lessonOfferSubjectId
-          owner
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const lessonOfferUserInfosByUserInfoId = /* GraphQL */ `
-  query LessonOfferUserInfosByUserInfoId(
-    $userInfoId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelLessonOfferUserInfoFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    lessonOfferUserInfosByUserInfoId(
-      userInfoId: $userInfoId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        userInfoId
-        lessonOfferId
-        userInfo {
-          id
-          name
-          address
-          picture
-          phone_number
-          cognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        lessonOffer {
-          id
-          location
-          locationRadius
-          place
-          days
-          hours
-          ownerCognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          lessonOfferSubjectId
-          owner
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const lessonOfferUserInfosByLessonOfferId = /* GraphQL */ `
-  query LessonOfferUserInfosByLessonOfferId(
-    $lessonOfferId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelLessonOfferUserInfoFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    lessonOfferUserInfosByLessonOfferId(
-      lessonOfferId: $lessonOfferId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        userInfoId
-        lessonOfferId
-        userInfo {
-          id
-          name
-          address
-          picture
-          phone_number
-          cognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        lessonOffer {
-          id
-          location
-          locationRadius
-          place
-          days
-          hours
-          ownerCognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          lessonOfferSubjectId
-          owner
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken

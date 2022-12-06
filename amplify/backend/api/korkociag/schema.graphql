@@ -1,3 +1,13 @@
+type LessonStudent @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  UserInfo: UserInfo @hasOne
+}
+
+type LessonTeacher @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  UserInfo: UserInfo @hasOne
+}
+
 type UserInfo @model @auth(rules: [{allow: private}]) {
   id: ID!
   name: String
@@ -5,7 +15,6 @@ type UserInfo @model @auth(rules: [{allow: private}]) {
   picture: String
   phone_number: String
   cognitoID: String
-  lessonoffers: [LessonOffer] @manyToMany(relationName: "LessonOfferUserInfo")
 }
 
 type Homework @model @auth(rules: [{allow: private, operations: [create, read]}, {allow: owner}]) {
@@ -18,14 +27,16 @@ type Homework @model @auth(rules: [{allow: private, operations: [create, read]},
 type LessonOffer @model @auth(rules: [{allow: owner}, {allow: private, operations: [create, read]}]) {
   id: ID!
   Subject: Subject @hasOne
-  location: String
+  address: String
   locationRadius: Int
-  place: [String]
+  place: String
   days: [String]
   hours: [String]
   Homework: [Homework] @hasMany(indexName: "byLessonOffer", fields: ["id"])
-  UserInfos: [UserInfo] @manyToMany(relationName: "LessonOfferUserInfo")
   ownerCognitoID: String
+  city: String
+  LessonStudent: LessonStudent @hasOne
+  LessonTeacher: LessonTeacher @hasOne
 }
 
 type School @model @auth(rules: [{allow: public, operations: [read], provider: iam}, {allow: private, operations: [read]}, {allow: owner}]) {

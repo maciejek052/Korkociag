@@ -8,7 +8,7 @@ import Toast from 'react-native-root-toast'
 import { BottomTabBarHeightCallbackContext } from '@react-navigation/bottom-tabs';
 
 const TeachSelectSchedule = ({ route, navigation }) => {
-    const { level, subject, localization, radius, placeStudent, placeTeacher } = route.params
+    const { level, subject, city, address, radius, placeStudent, placeTeacher } = route.params
     const { height } = useWindowDimensions()
 
     const [daysState, setDaysState] = useState([true, false, false, false, false, false, false])
@@ -27,8 +27,8 @@ const TeachSelectSchedule = ({ route, navigation }) => {
         // validate if user selected at least one day and one time interval
         if (daysState.some(e => e === true) && timeState.some(e => e === true)) {
             navigation.navigate('TeachSummaryScreen', {
-                level: level, subject: subject, localization: localization, radius: radius,
-                placeStudent: placeStudent, placeTeacher: placeTeacher, days: daysState, time: timeState
+                level: level, subject: subject, city: city, address: address, radius: radius,
+                placeStudent: placeStudent, placeTeacher: placeTeacher, days: daysState, time: timeState, city: city, address: address
             })
 
         }

@@ -91,11 +91,6 @@ const Navigation = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(fetchLessonsAsTeacher())
-    setDataFetched(true)
-  }, [])
-
-  useEffect(() => {
     // syncUserData()
   }, [])
 
@@ -109,15 +104,6 @@ const Navigation = () => {
       </View>
     )
   }
-
-  if (dataFetched === false) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator />
-      </View>
-    )
-  }
-
 
 
   return (

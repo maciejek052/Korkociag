@@ -1,13 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { DataStore } from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify'
 import { LessonOffer } from '../models'
+import * as queries from '../graphql/queries'
 
 export const fetchLessonsAsTeacher = createAsyncThunk(
     'fetchLessonsAsTeacher',
-    async () => {
-        const response = await DataStore.query(LessonOffer)
+    async (userID) => {
+        const lessonQuery = await API.graphql(
+            graphqlOperation(queries.listLessonTeachers, {lessonTeacherUserInfoId: userID})
+        ); 
         console.log("REDUX: lessons as teacher fetched")
-        return (JSON.stringify(response))
+        // console.log(lessonQuery)
+        return lessonQuery; 
     }
 )
 

@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import ProfilePicture from '../../../assets/images/sydney.jpg'
 import NonePicture from '../../../assets/images/none.png'
-import { Auth, DataStore } from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify'
 
 import { LessonOffer, Subject, School } from '../../models'
 
@@ -19,34 +19,21 @@ import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
 import { fetchUser } from '../../redux/userInformation'
 import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen'
 
+import * as queries from '../../graphql/queries'
+
+
 const HomeScreen = () => {
 
   const dispatch = useDispatch();
-  const lessonsAsTeacher = useSelector((state) => JSON.parse(state.lessonsAsTeacher.lesson))
 
-  useEffect(() => {
-    getOffers()
-  }, [])
 
   useEffect(() => {
 
   }, [])
 
-  const [sub, setSub] = useState([])
+  useEffect(() => {
 
-  const getOffers = async () => {
-    try {
-      const subj = await DataStore.query(Subject) // TODO change it because its not optimal
-      setSub(subj)
-      //const offers = await DataStore.query(LessonOffer)
-      //console.log(offers)
-      //setOffersAsTeacher(offers)
-      //console.log("offers fetched")
-    } catch (e) {
-      console.log(e)
-      Alert.alert("Błąd przy pobieraniu ofert", e.message)
-    }
-  }
+  }, [])
 
 
   const { user, loading } = useSelector((state) => state.userInformation)
@@ -62,20 +49,24 @@ const HomeScreen = () => {
 
   const [showList, setList] = useState([]);
 
+
+  const [lessonsAsTeacher, setLessonsAsTeacher] = useState([]);
+
   const reload = async () => {
-    // await DataStore.clear()
-    dispatch(fetchLessonsAsTeacher())
-    console.log(user)
+    const lessonQuery = await API.graphql(
+      graphqlOperation(queries.listLessonOffers, { ownerCognitoId: user.attributes.sub })
+    );
+    setLessonsAsTeacher(lessonQuery)
+    console.log(lessonQuery.data.listLessonOffers.items[1])
   }
 
   const updateList = (which) => {
-    getOffers()
     if (which == 0) {
       setStudent(true)
       setList([])
     } else {
       setStudent(false)
-      setList(lessonsAsTeacher)
+      setList(lessonsAsTeacher.data.listLessonOffers.items)
       // console.log(JSON.parse(lessonsAsTeacher))
     }
   }
@@ -87,25 +78,50 @@ const HomeScreen = () => {
   }
   var img = user?.attributes?.picture
 
-  const Item = ({ title, time, days, person, avatarUrl, id, item }) => (
+  // i know it could be coded much better but it works :p
+  const Item = ({ title, student, item, isStudent, isTeacher }) => (
     <TouchableWithoutFeedback onPress={() => {
       goToLessonScreen({ item, title })
     }}>
       <View style={styles.item}>
         <View style={styles.boxImg}>
-          <Image source={NonePicture}
-            style={styles.profilePictSmall} />
+
+          {!showStudent && (
+            <>
+              <Image source={isStudent ? { uri: student.UserInfo.picture } : NonePicture}
+                style={styles.profilePictSmall} />
+            </>
+          )}
+          {showStudent && (
+            <>
+              <Image source={isTeacher ? { uri: teacher.UserInfo.picture } : NonePicture}
+                style={styles.profilePictSmall} />
+            </>
+          )}
         </View>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.descText}>Godziny: <Text style={styles.valText}>{time}</Text></Text>
-        <Text style={styles.descText}>Dni: <Text style={styles.valText}>{days}</Text></Text>
-        <Text style={styles.descText}>{showStudent ? 'Nauczyciel: ' + person : 'Uczeń: ' + person}</Text>
+        <Text style={styles.title}>{item.Subject.name}</Text>
+        <Text style={styles.descText}>Godziny: <Text style={styles.valText}>{item.hours.toString()}</Text></Text>
+        <Text style={styles.descText}>Dni: <Text style={styles.valText}>{item.days.toString()}</Text></Text>
+
+        {!showStudent && (
+          <>
+            <Text style={styles.descText}>Student: {isStudent ? student.UserInfo.name : 'brak'}</Text>
+          </>
+        )}
+        {showStudent && (
+          <>
+            <Text style={styles.descText}>Nauczyciel: {isTeacher ? teacher.UserInfo.name : 'brak'}</Text>
+          </>
+        )}
+
+
       </View>
     </TouchableWithoutFeedback>
   );
   const renderItem = ({ item }) => (
-    <Item title={sub.find(x => x.id === item.lessonOfferSubjectId).name} time={item.hours + ''} days={item.days + ''} id={item.id}
-      person={'brak'} item={item}
+    <Item
+      student={item.LessonStudent} teacher={item.LessonTeacher} item={item}
+      isStudent={item.LessonStudent != null} isTeacher={item.LessonTeacher != null}
       avatarUrl={showStudent ? '' : ''}
     />
   );

@@ -1,6 +1,180 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createLessonStudent = /* GraphQL */ `
+  mutation CreateLessonStudent(
+    $input: CreateLessonStudentInput!
+    $condition: ModelLessonStudentConditionInput
+  ) {
+    createLessonStudent(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      lessonStudentUserInfoId
+    }
+  }
+`;
+export const updateLessonStudent = /* GraphQL */ `
+  mutation UpdateLessonStudent(
+    $input: UpdateLessonStudentInput!
+    $condition: ModelLessonStudentConditionInput
+  ) {
+    updateLessonStudent(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      lessonStudentUserInfoId
+    }
+  }
+`;
+export const deleteLessonStudent = /* GraphQL */ `
+  mutation DeleteLessonStudent(
+    $input: DeleteLessonStudentInput!
+    $condition: ModelLessonStudentConditionInput
+  ) {
+    deleteLessonStudent(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      lessonStudentUserInfoId
+    }
+  }
+`;
+export const createLessonTeacher = /* GraphQL */ `
+  mutation CreateLessonTeacher(
+    $input: CreateLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    createLessonTeacher(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      lessonTeacherUserInfoId
+    }
+  }
+`;
+export const updateLessonTeacher = /* GraphQL */ `
+  mutation UpdateLessonTeacher(
+    $input: UpdateLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    updateLessonTeacher(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      lessonTeacherUserInfoId
+    }
+  }
+`;
+export const deleteLessonTeacher = /* GraphQL */ `
+  mutation DeleteLessonTeacher(
+    $input: DeleteLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    deleteLessonTeacher(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      lessonTeacherUserInfoId
+    }
+  }
+`;
 export const createUserInfo = /* GraphQL */ `
   mutation CreateUserInfo(
     $input: CreateUserInfoInput!
@@ -13,21 +187,6 @@ export const createUserInfo = /* GraphQL */ `
       picture
       phone_number
       cognitoID
-      lessonoffers {
-        items {
-          id
-          userInfoId
-          lessonOfferId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       createdAt
       updatedAt
       _version
@@ -48,21 +207,6 @@ export const updateUserInfo = /* GraphQL */ `
       picture
       phone_number
       cognitoID
-      lessonoffers {
-        items {
-          id
-          userInfoId
-          lessonOfferId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       createdAt
       updatedAt
       _version
@@ -83,21 +227,6 @@ export const deleteUserInfo = /* GraphQL */ `
       picture
       phone_number
       cognitoID
-      lessonoffers {
-        items {
-          id
-          userInfoId
-          lessonOfferId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       createdAt
       updatedAt
       _version
@@ -191,7 +320,7 @@ export const createLessonOffer = /* GraphQL */ `
         subjectSchoolId
         owner
       }
-      location
+      address
       locationRadius
       place
       days
@@ -212,28 +341,60 @@ export const createLessonOffer = /* GraphQL */ `
         nextToken
         startedAt
       }
-      UserInfos {
-        items {
+      ownerCognitoID
+      city
+      LessonStudent {
+        id
+        UserInfo {
           id
-          userInfoId
-          lessonOfferId
+          name
+          address
+          picture
+          phone_number
+          cognitoID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          owner
         }
-        nextToken
-        startedAt
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonStudentUserInfoId
       }
-      ownerCognitoID
+      LessonTeacher {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonTeacherUserInfoId
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       lessonOfferSubjectId
+      lessonOfferLessonStudentId
+      lessonOfferLessonTeacherId
       owner
     }
   }
@@ -266,7 +427,7 @@ export const updateLessonOffer = /* GraphQL */ `
         subjectSchoolId
         owner
       }
-      location
+      address
       locationRadius
       place
       days
@@ -287,28 +448,60 @@ export const updateLessonOffer = /* GraphQL */ `
         nextToken
         startedAt
       }
-      UserInfos {
-        items {
+      ownerCognitoID
+      city
+      LessonStudent {
+        id
+        UserInfo {
           id
-          userInfoId
-          lessonOfferId
+          name
+          address
+          picture
+          phone_number
+          cognitoID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          owner
         }
-        nextToken
-        startedAt
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonStudentUserInfoId
       }
-      ownerCognitoID
+      LessonTeacher {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonTeacherUserInfoId
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       lessonOfferSubjectId
+      lessonOfferLessonStudentId
+      lessonOfferLessonTeacherId
       owner
     }
   }
@@ -341,7 +534,7 @@ export const deleteLessonOffer = /* GraphQL */ `
         subjectSchoolId
         owner
       }
-      location
+      address
       locationRadius
       place
       days
@@ -362,28 +555,60 @@ export const deleteLessonOffer = /* GraphQL */ `
         nextToken
         startedAt
       }
-      UserInfos {
-        items {
+      ownerCognitoID
+      city
+      LessonStudent {
+        id
+        UserInfo {
           id
-          userInfoId
-          lessonOfferId
+          name
+          address
+          picture
+          phone_number
+          cognitoID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          owner
         }
-        nextToken
-        startedAt
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonStudentUserInfoId
       }
-      ownerCognitoID
+      LessonTeacher {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        lessonTeacherUserInfoId
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       lessonOfferSubjectId
+      lessonOfferLessonStudentId
+      lessonOfferLessonTeacherId
       owner
     }
   }
@@ -519,216 +744,6 @@ export const deleteSubject = /* GraphQL */ `
       _deleted
       _lastChangedAt
       subjectSchoolId
-      owner
-    }
-  }
-`;
-export const createLessonOfferUserInfo = /* GraphQL */ `
-  mutation CreateLessonOfferUserInfo(
-    $input: CreateLessonOfferUserInfoInput!
-    $condition: ModelLessonOfferUserInfoConditionInput
-  ) {
-    createLessonOfferUserInfo(input: $input, condition: $condition) {
-      id
-      userInfoId
-      lessonOfferId
-      userInfo {
-        id
-        name
-        address
-        picture
-        phone_number
-        cognitoID
-        lessonoffers {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      lessonOffer {
-        id
-        Subject {
-          id
-          name
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          subjectSchoolId
-          owner
-        }
-        location
-        locationRadius
-        place
-        days
-        hours
-        Homework {
-          nextToken
-          startedAt
-        }
-        UserInfos {
-          nextToken
-          startedAt
-        }
-        ownerCognitoID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        lessonOfferSubjectId
-        owner
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const updateLessonOfferUserInfo = /* GraphQL */ `
-  mutation UpdateLessonOfferUserInfo(
-    $input: UpdateLessonOfferUserInfoInput!
-    $condition: ModelLessonOfferUserInfoConditionInput
-  ) {
-    updateLessonOfferUserInfo(input: $input, condition: $condition) {
-      id
-      userInfoId
-      lessonOfferId
-      userInfo {
-        id
-        name
-        address
-        picture
-        phone_number
-        cognitoID
-        lessonoffers {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      lessonOffer {
-        id
-        Subject {
-          id
-          name
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          subjectSchoolId
-          owner
-        }
-        location
-        locationRadius
-        place
-        days
-        hours
-        Homework {
-          nextToken
-          startedAt
-        }
-        UserInfos {
-          nextToken
-          startedAt
-        }
-        ownerCognitoID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        lessonOfferSubjectId
-        owner
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const deleteLessonOfferUserInfo = /* GraphQL */ `
-  mutation DeleteLessonOfferUserInfo(
-    $input: DeleteLessonOfferUserInfoInput!
-    $condition: ModelLessonOfferUserInfoConditionInput
-  ) {
-    deleteLessonOfferUserInfo(input: $input, condition: $condition) {
-      id
-      userInfoId
-      lessonOfferId
-      userInfo {
-        id
-        name
-        address
-        picture
-        phone_number
-        cognitoID
-        lessonoffers {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      lessonOffer {
-        id
-        Subject {
-          id
-          name
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          subjectSchoolId
-          owner
-        }
-        location
-        locationRadius
-        place
-        days
-        hours
-        Homework {
-          nextToken
-          startedAt
-        }
-        UserInfos {
-          nextToken
-          startedAt
-        }
-        ownerCognitoID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        lessonOfferSubjectId
-        owner
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
