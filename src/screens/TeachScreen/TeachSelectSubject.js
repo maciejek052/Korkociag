@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, useWindowDimensions, FlatList, Alert } from 'react-native'
-import { DataStore } from 'aws-amplify';
+import { DataStore, API, graphqlOperation } from 'aws-amplify';
 import { Subject, School } from '../../models'
 import React, { useState, useEffect } from 'react'
 import BlackboardImage from '../../../assets/images/undraw_teaching_f-1-cm.svg'
@@ -15,10 +15,11 @@ const TeachSelectSubject = ({ route, navigation }) => {
 
   const getSubjects = async () => {
     try {
-      // the best thing would be to move schools query to the previous screen
-      // but I assume these never will be changed, so for now it can be implemented that way
+      // TODO replace with GraphQL queries
+      // when i figure out how to filter by nested values
       const schools = await DataStore.query(School, s => s.name.eq(level))
       const subjects = await DataStore.query(Subject, s => s.subjectSchoolId.eq(schools[0].id))
+
       setMasterData(subjects)
       setFilteredData(subjects)
       //console.log(response)

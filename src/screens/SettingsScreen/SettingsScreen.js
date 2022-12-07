@@ -19,7 +19,7 @@ const SettingsScreen = () => {
   }
 
   const signOut = async () => {
-    // await DataStore.clear()
+    //await DataStore.clear()
     Auth.signOut()
   }
 

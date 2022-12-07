@@ -387,6 +387,7 @@ export const createLessonOffer = /* GraphQL */ `
         _lastChangedAt
         lessonTeacherUserInfoId
       }
+      price
       createdAt
       updatedAt
       _version
@@ -494,6 +495,7 @@ export const updateLessonOffer = /* GraphQL */ `
         _lastChangedAt
         lessonTeacherUserInfoId
       }
+      price
       createdAt
       updatedAt
       _version
@@ -601,6 +603,7 @@ export const deleteLessonOffer = /* GraphQL */ `
         _lastChangedAt
         lessonTeacherUserInfoId
       }
+      price
       createdAt
       updatedAt
       _version

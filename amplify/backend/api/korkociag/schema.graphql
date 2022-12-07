@@ -37,6 +37,7 @@ type LessonOffer @model @auth(rules: [{allow: owner}, {allow: private, operation
   city: String
   LessonStudent: LessonStudent @hasOne
   LessonTeacher: LessonTeacher @hasOne
+  price: Int
 }
 
 type School @model @auth(rules: [{allow: public, operations: [read], provider: iam}, {allow: private, operations: [read]}, {allow: owner}]) {

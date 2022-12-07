@@ -11,13 +11,12 @@ import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
 import { LessonOffer, Subject, Homework } from '../../models'
 import { API } from 'aws-amplify'
 import * as mutations from '../../graphql/mutations'
-import { render } from 'react-dom'
+
 
 const SingleLessonScreen = ({ route, navigation }) => {
 
   const dispatch = useDispatch()
   const lessonObj = route.params
-
   const isStudent = lessonObj.id.item.LessonStudent != null
 
   const deleteLessonAlert = () =>
@@ -49,6 +48,13 @@ const SingleLessonScreen = ({ route, navigation }) => {
       Alert.alert("Błąd", e.message)
     }
   }
+
+  const goToHomeworkScreen = () => {
+    navigation.navigate('HomeworkScreen', {
+      lessonObj: lessonObj.id.item, isStudent: isStudent
+    });
+  }
+
   return (
     <View style={styles.root}>
       <Text style={styles.heading}>{lessonObj.id.item.Subject.name}</Text>
@@ -74,7 +80,7 @@ const SingleLessonScreen = ({ route, navigation }) => {
         </View>
       </View>
       <View style={{ paddingVertical: 20 }}>
-        <CustomButton text="Prace domowe" bgColor={'green'} fgColor={'#fff'} />
+        <CustomButton text="Prace domowe" bgColor={'green'} fgColor={'#fff'} onPress={goToHomeworkScreen} />
         <CustomButton text="Zmień szczegóły korepetycji" bgColor={'#ffb600'} fgColor={'#000'} />
         <CustomButton text="Usuń lekcję" bgColor={'red'} fgColor={'#fff'} onPress={deleteLessonAlert} />
       </View>

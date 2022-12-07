@@ -464,6 +464,13 @@ export const schema = {
                         ]
                     }
                 },
+                "price": {
+                    "name": "price",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -716,5 +723,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "b3f1e53d427aabf3a3245b43aac7aa8a"
+    "version": "65b10f29c90e4e5712228905e6cc00da"
 };

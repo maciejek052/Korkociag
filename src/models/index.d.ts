@@ -151,6 +151,7 @@ type EagerLessonOffer = {
   readonly city?: string | null;
   readonly LessonStudent?: LessonStudent | null;
   readonly LessonTeacher?: LessonTeacher | null;
+  readonly price?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly lessonOfferSubjectId?: string | null;
@@ -175,6 +176,7 @@ type LazyLessonOffer = {
   readonly city?: string | null;
   readonly LessonStudent: AsyncItem<LessonStudent | undefined>;
   readonly LessonTeacher: AsyncItem<LessonTeacher | undefined>;
+  readonly price?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly lessonOfferSubjectId?: string | null;

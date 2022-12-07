@@ -5,42 +5,24 @@ import {
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
-import ProfilePicture from '../../../assets/images/sydney.jpg'
 import NonePicture from '../../../assets/images/none.png'
 import { API, graphqlOperation } from 'aws-amplify'
 
-import { LessonOffer, Subject, School } from '../../models'
-
-import { lessons } from '../../../mocks/lessons'
-import { users } from '../../../mocks/users'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
-import { fetchUser } from '../../redux/userInformation'
-import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen'
 
 import * as queries from '../../graphql/queries'
 
 
 const HomeScreen = () => {
-
+  
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-
+    
   }, [])
-
-  useEffect(() => {
-
-  }, [])
-
 
   const { user, loading } = useSelector((state) => state.userInformation)
-
-
-  // mock shit only to show progress at uni
-
 
   const { height, width } = useWindowDimensions();
   const navigation = useNavigation()
@@ -51,23 +33,39 @@ const HomeScreen = () => {
 
 
   const [lessonsAsTeacher, setLessonsAsTeacher] = useState([]);
+  const [lessonsAsStudent, setLessonsAsStudent] = useState([]);
 
   const reload = async () => {
-    const lessonQuery = await API.graphql(
-      graphqlOperation(queries.listLessonOffers, { ownerCognitoId: user.attributes.sub })
+    const lessonAsTeacherQuery = await API.graphql(
+      graphqlOperation(queries.listLessonOffers, { filter: { _deleted: { ne: true }, ownerCognitoID: { eq: user.attributes.sub } } })
     );
-    setLessonsAsTeacher(lessonQuery)
-    console.log(lessonQuery.data.listLessonOffers.items[1])
+    setLessonsAsTeacher(lessonAsTeacherQuery)
+    console.log("Lessons as teacher fetched")
+    // TODO replace that abomination with a proper GraphQL query
+    // i did this in this way because filtering by nested obj value is a big pain in a butt in aws appsync
+    var offersArray = []
+    const query = await API.graphql(
+      graphqlOperation(queries.listLessonStudents, { filter: { _deleted: { ne: true }, lessonStudentUserInfoId: { eq: user.attributes.sub } } })
+    );
+
+    for (const e of query.data.listLessonStudents.items) {
+      const query2 = await API.graphql(
+        graphqlOperation(queries.getLessonOffer, { id: e.id, filter: { _deleted: { ne: true } } })
+      );
+      offersArray.push(query2.data.getLessonOffer)
+    }
+    setLessonsAsStudent(offersArray)
+    console.log("Lessons as student fetched")
   }
+
 
   const updateList = (which) => {
     if (which == 0) {
       setStudent(true)
-      setList([])
+      setList(lessonsAsStudent)
     } else {
       setStudent(false)
       setList(lessonsAsTeacher.data.listLessonOffers.items)
-      // console.log(JSON.parse(lessonsAsTeacher))
     }
   }
   const goToLessonScreen = (id, student) => {
@@ -79,7 +77,7 @@ const HomeScreen = () => {
   var img = user?.attributes?.picture
 
   // i know it could be coded much better but it works :p
-  const Item = ({ title, student, item, isStudent, isTeacher }) => (
+  const Item = ({ title, student, item, isStudent, isTeacher, teacher }) => (
     <TouchableWithoutFeedback onPress={() => {
       goToLessonScreen({ item, title })
     }}>
@@ -110,7 +108,7 @@ const HomeScreen = () => {
         )}
         {showStudent && (
           <>
-            <Text style={styles.descText}>Nauczyciel: {isTeacher ? teacher.UserInfo.name : 'brak'}</Text>
+            <Text style={styles.descText}>Nauczyciel: {isTeacher ? teacher?.UserInfo.name : 'brak'}</Text>
           </>
         )}
 

@@ -5,11 +5,13 @@ import { useNavigation } from '@react-navigation/native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons'
-import ProfilePicture from '../../../assets/images/sydney.jpg'
 import CustomInput from '../../components/CustomInput'
 import { useSelector, useDispatch } from 'react-redux'
-import { Auth, Storage } from 'aws-amplify'
+import { Auth, Storage, API, graphqlOperation } from 'aws-amplify'
 import { fetchUser } from '../../redux/userInformation'
+
+import * as mutations from '../../graphql/mutations'
+import * as queries from '../../graphql/queries'
 
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 const PHONE_REGEX = /./
@@ -19,6 +21,17 @@ const EditProfileScreen = () => {
     const { user, loading } = useSelector((state) => state.userInformation)
     const { height } = useWindowDimensions();
     const navigation = useNavigation()
+
+    const [version, setVersion] = useState(0)
+
+    useEffect(() => {
+        const fun = async () => {
+            const quer = await API.graphql(graphqlOperation(queries.getUserInfo, { id: user.attributes.sub }))
+            setVersion(quer.data.getUserInfo._version)
+        }
+        fun()
+    }, [])
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             username: user?.attributes?.preferred_username,
@@ -85,6 +98,7 @@ const EditProfileScreen = () => {
     const pressedEdit = async (data) => {
         try {
             const user = await Auth.currentAuthenticatedUser()
+
             await Auth.updateUserAttributes(user, {
                 ...isPfpChanged,
                 'preferred_username': data.username,
@@ -93,11 +107,30 @@ const EditProfileScreen = () => {
                 'phone_number': data.phonenumber,
                 'address': data.location,
             })
+
+
+            const editObj = {
+                id: user.attributes.sub,
+                name: data.fullname,
+                phone_number: data.phonenumber,
+                address: data.location,
+                ...isPfpChanged,
+                _version: version
+            }
+
+            const editDbUserInfo = await API.graphql({
+                query: mutations.updateUserInfo, variables: {
+                    input: editObj
+                }
+            })
+            console.log(editObj)
             // Alert.alert('Sukces', "Edytowano profil użytkownika")
             dispatch(fetchUser());
             navigation.goBack()
+
         } catch (e) {
             Alert.alert('Błąd', e.message)
+            console.log(e)
         }
     }
 

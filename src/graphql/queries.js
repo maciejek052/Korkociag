@@ -468,6 +468,7 @@ export const getLessonOffer = /* GraphQL */ `
         _lastChangedAt
         lessonTeacherUserInfoId
       }
+      price
       createdAt
       updatedAt
       _version
@@ -545,6 +546,7 @@ export const listLessonOffers = /* GraphQL */ `
             picture
           }
         }
+        price
         createdAt
         updatedAt
         _version
@@ -615,6 +617,7 @@ export const syncLessonOffers = /* GraphQL */ `
           _lastChangedAt
           lessonTeacherUserInfoId
         }
+        price
         createdAt
         updatedAt
         _version
