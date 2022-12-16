@@ -7,7 +7,6 @@ import CustomButton from '../../components/CustomButton'
 const SearchLandingScreen = () => {
   const { height } = useWindowDimensions()
   const onLevelPressed = (level) => {
-    console.warn(level + " pressed")
     navigation.navigate('SearchSelectSubject', { level: level })
   }
   const navigation = useNavigation()

@@ -49,7 +49,6 @@ const TeachSelectSubject = ({ route, navigation }) => {
   }
 
   const onSubjectPressed = (subject) => {
-    console.warn(subject + " pressed")
     navigation.navigate('TeachSelectLocation', { level: level, subject: subject })
   }
   return (

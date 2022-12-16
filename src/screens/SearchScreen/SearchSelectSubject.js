@@ -1,7 +1,10 @@
-import { View, Text, StyleSheet, useWindowDimensions, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, StyleSheet, useWindowDimensions, FlatList, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Subject, School } from '../../models'
+import { DataStore, API, graphqlOperation } from 'aws-amplify';
 import BlackboardImage from '../../../assets/images/undraw_teaching_f-1-cm.svg'
 import BasicInput from '../../components/BasicInput'
+
 
 const data = ['język angielski', 'język polski', 'matematyka', 'fizyka', 'geografia', 'chemia', 'informatyka', 'przyroda',
   'biologia', 'język hiszpański', 'język niemiecki', 'język rosyjski', 'plastyka', 'muzyka']
@@ -9,27 +12,51 @@ const data = ['język angielski', 'język polski', 'matematyka', 'fizyka', 'geog
 const SearchSelectSubject = ({ route, navigation }) => {
   const { height } = useWindowDimensions()
   const { level } = route.params
-  const [dataFromState, setData] = useState(data)
-  // fix needed, its bugged because it doesn't update when user delete characters
-  const searchName = (input) => {
-    if (input) {
-      let data = dataFromState
-      let searchData = data.filter(
-        function (item) {
-          const itemData = item
-            ? item.toUpperCase()
-            : ''.toUpperCase();
-          const textData = input.toUpperCase()
-          return itemData.indexOf(textData) > -1
-        }
-      )
-      setData(searchData)
+
+
+  const [masterData, setMasterData] = useState([])
+  const [filteredData, setFilteredData] = useState([])
+  const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    getSubjects()
+  }, [])
+
+
+  const searchFilter = (text) => {
+    if (text) {
+      const newData = masterData.filter((item) => {
+        const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase()
+        const textData = text.toUpperCase()
+        return itemData.indexOf(textData) > -1
+      });
+      setFilteredData(newData)
+      setSearch(text)
     } else {
-      setData(data)
+      setFilteredData(masterData)
+      setSearch(text)
     }
   }
+
+  const getSubjects = async () => {
+    try {
+      // TODO replace with GraphQL queries
+      // when i figure out how to filter by nested values
+      const schools = await DataStore.query(School, s => s.name.eq(level))
+      const subjects = await DataStore.query(Subject, s => s.subjectSchoolId.eq(schools[0].id))
+
+      setMasterData(subjects)
+      setFilteredData(subjects)
+      //console.log(response)
+    } catch (e) {
+      console.log(e)
+      Alert.alert("Błąd przy pobieraniu tematów", e.message)
+    }
+  }
+
+
+
   const onSubjectPressed = (subject) => {
-    console.warn(subject + " pressed")
     navigation.navigate('SearchSelectLocation', { level: level, subject: subject })
   }
   return (
@@ -37,10 +64,10 @@ const SearchSelectSubject = ({ route, navigation }) => {
       <BlackboardImage style={[styles.logo, { height: height * 0.5 }]} resizeMode="contain" />
       <Text style={styles.heading}>Wybierz przedmiot</Text>
       <Text style={styles.text}>Wpisz w poniższym polu fragment nazwy przedmiotu, którego chcesz się nauczyć i wybierz przedmiot z propozycji</Text>
-      <BasicInput setValue={(text) => searchName(text)}></BasicInput>
+      <BasicInput value={search} setValue={(text) => searchFilter(text)}></BasicInput>
 
-      <FlatList showsVerticalScrollIndicator={false} style={styles.list} data={dataFromState} renderItem={({ item }) => (
-        <Text onPress={() => onSubjectPressed(item)} style={styles.item}>{item}</Text>
+      <FlatList showsVerticalScrollIndicator={false} style={styles.list} data={filteredData} keyExtractor={(item) => item.id} renderItem={({ item }) => (
+        <Text onPress={() => onSubjectPressed(item)} style={styles.item}>{item.name}</Text>
       )} />
     </View>
   )

@@ -1,6 +1,3 @@
-// https://mdmoin07.medium.com/react-native-maps-with-autocomplete-e9c71e493974
-// consider implementing autocomplete
-
 import { View, Text, StyleSheet, useWindowDimensions, TextInput } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
 import MapView, { Marker, Circle } from 'react-native-maps'

@@ -12,8 +12,9 @@ import TimeImage from '../../../assets/images/undraw_time_management_re_tk5w.svg
 const SearchSummaryScreen = ({ route, navigation }) => {
     const daysOfWeek = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota', 'niedziela']
     const timeIntervals = ['6:00 - 9:00 🌅', '9:00 - 12:00 ☕', '12:00 - 15:00 ☀️', '15:00 - 18:00 🏠', '18:00 - 21:00 🌇', '21:00 - 24:00 🌙']
-    const { level, subject, localization, radius, placeStudent, placeTeacher, days, time } = route.params
+    const { level, subject, city, radius, address, placeStudent, placeTeacher, days, time } = route.params
     const { height } = useWindowDimensions();
+
 
     const parseDays = () => {
         var daysString = ""
@@ -39,7 +40,12 @@ const SearchSummaryScreen = ({ route, navigation }) => {
         if (placeTeacher) locStr += "u nauczyciela, "
         return locStr.slice(0, -2)
     }
-
+    const goToSearchScreen = () => {
+        navigation.navigate('SearchResultScreen', {
+            level: level, subject: subject, city: city, radius: radius, address: address, 
+            placeStudent: placeStudent, placeTeacher: placeTeacher, days: days, time: time
+        })
+    }
 
     return (
         <View style={styles.root}>
@@ -50,15 +56,18 @@ const SearchSummaryScreen = ({ route, navigation }) => {
                 <GraduationImage style={{ maxHeight: height * 0.08 }} />
                 <Text style={styles.caption}>Poziom: <Text style={styles.value}>{level}</Text></Text>
                 <BlackboardImage style={{ maxHeight: height * 0.08 }} />
-                <Text style={styles.caption}>Przedmiot: <Text style={styles.value}>{subject}</Text></Text>
-                <Text style={styles.caption}>Lokalizacja: <Text style={styles.value}>{localization}</Text></Text>
+                <Text style={styles.caption}>Przedmiot: <Text style={styles.value}>{subject.name}</Text></Text>
+                <Text style={styles.caption}>Lokalizacja: <Text style={styles.value}>{address}</Text></Text>
                 <Text style={styles.caption}>Miejsce: <Text style={styles.value}>{parseLoc()}</Text></Text>
+                {placeStudent === 1 && 
+                <Text style={styles.caption}>Promień: <Text style={styles.value}>{radius} km</Text></Text>
+                }
                 <TimeImage style={{ maxHeight: height * 0.08 }} />
                 <Text style={styles.caption}>Dni: <Text style={styles.value}>{parseDays()}</Text></Text>
                 <Text style={styles.caption}>Godziny: <Text style={styles.value}>{parseTime()}</Text></Text>
                 <Text></Text>
             </>
-            <CustomButton text="Szukaj" />
+            <CustomButton text="Szukaj" onPress={goToSearchScreen} />
         </View>
     )
 }
