@@ -23,6 +23,7 @@ const SignInScreen = () => {
 
     try {
       await Auth.signIn(data.username, data.password);
+      
     } catch (e) {
       Alert.alert('Błąd', e.message)
     }

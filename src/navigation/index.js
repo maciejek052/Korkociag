@@ -36,6 +36,7 @@ const Navigation = () => {
       const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true })
       syncUserData(authUser)
       setUser(authUser)
+      dispatch(fetchUser());
     } catch (e) {
       setUser(null)
     }
@@ -73,11 +74,6 @@ const Navigation = () => {
 
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchUser());
-    console.log("user fetched")
-  }, []);
 
 
   useEffect(() => {

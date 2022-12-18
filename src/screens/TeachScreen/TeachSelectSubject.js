@@ -5,6 +5,13 @@ import React, { useState, useEffect } from 'react'
 import BlackboardImage from '../../../assets/images/undraw_teaching_f-1-cm.svg'
 import BasicInput from '../../components/BasicInput'
 
+import * as queries from '../../graphql/queries'
+
+const primarySchoolID = 'd7b39472-2ba2-4ca5-9e79-f92fb3de4981'
+const highSchoolID = 'fa562cc0-b374-4cf3-a6df-401f505d4462'
+const collegeID = 'f2954893-80ee-4230-b439-bb1418bb4ec2'
+const afterschoolID = '45a4b791-f7a4-41df-8bf4-a00c3db83885'
+
 const TeachSelectSubject = ({ route, navigation }) => {
   const { height } = useWindowDimensions()
   const { level } = route.params
@@ -13,15 +20,31 @@ const TeachSelectSubject = ({ route, navigation }) => {
     getSubjects()
   }, [])
 
+  const pickedSchoolID = () => {
+    switch (level) {
+      case 'Szkoła podstawowa':
+        return primarySchoolID;
+        break;
+      case 'Szkoła średnia':
+        return highSchoolID;
+        break;
+      case 'Studia':
+        return collegeID;
+        break;
+      case 'Aktywności pozaszkolne':
+        return afterschoolID;
+        break;
+    }
+  }
+
   const getSubjects = async () => {
     try {
-      // TODO replace with GraphQL queries
-      // when i figure out how to filter by nested values
-      const schools = await DataStore.query(School, s => s.name.eq(level))
-      const subjects = await DataStore.query(Subject, s => s.subjectSchoolId.eq(schools[0].id))
-
-      setMasterData(subjects)
-      setFilteredData(subjects)
+      const subjects = await API.graphql(
+        graphqlOperation(queries.listSubjects, { filter: { _deleted: { ne: true }, subjectSchoolId: { eq: pickedSchoolID() } } })
+      );
+      // const subjects = await DataStore.query(Subject, s => s.subjectSchoolId.eq(pickedSchoolID()))
+      setMasterData(subjects.data.listSubjects.items)
+      setFilteredData(subjects.data.listSubjects.items)
       //console.log(response)
     } catch (e) {
       console.log(e)

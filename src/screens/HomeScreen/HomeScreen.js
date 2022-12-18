@@ -1,13 +1,14 @@
 import {
   View, Text, StyleSheet, Image, useWindowDimensions,
-  FlatList, TouchableWithoutFeedback, Alert, ActivityIndicator
+  FlatList, TouchableWithoutFeedback, Alert, ActivityIndicator,
+
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import NonePicture from '../../../assets/images/none.png'
 import { API, graphqlOperation } from 'aws-amplify'
-
+import { fetchUser } from '../../redux/userInformation'
 import { useSelector, useDispatch } from 'react-redux'
 
 
@@ -15,14 +16,12 @@ import * as queries from '../../graphql/queries'
 
 
 const HomeScreen = () => {
-  
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    
-  }, [])
 
-  const { user, loading } = useSelector((state) => state.userInformation)
+  const { user } = useSelector((state) => state.userInformation)
+
 
   const { height, width } = useWindowDimensions();
   const navigation = useNavigation()
@@ -31,11 +30,23 @@ const HomeScreen = () => {
 
   const [showList, setList] = useState([]);
 
-
+  const [loading, setLoading] = useState(false)
   const [lessonsAsTeacher, setLessonsAsTeacher] = useState([]);
   const [lessonsAsStudent, setLessonsAsStudent] = useState([]);
 
+
+  useEffect(() => {
+    setLoading(true)
+    if (user?.attributes !== undefined) {
+      reload()
+
+    }
+  }, [user])
+
+
+
   const reload = async () => {
+    setLoading(true)
     const lessonAsTeacherQuery = await API.graphql(
       graphqlOperation(queries.listLessonOffers, { filter: { _deleted: { ne: true }, ownerCognitoID: { eq: user.attributes.sub } } })
     );
@@ -56,16 +67,21 @@ const HomeScreen = () => {
     }
     setLessonsAsStudent(offersArray)
     console.log("Lessons as student fetched")
+    setLoading(false)
+    // setStudent(true)
+    showStudent ? setList(offersArray) : setList(lessonAsTeacherQuery.data.listLessonOffers.items)
   }
 
 
   const updateList = (which) => {
-    if (which == 0) {
-      setStudent(true)
-      setList(lessonsAsStudent)
-    } else {
-      setStudent(false)
-      setList(lessonsAsTeacher.data.listLessonOffers.items)
+    if (!loading) {
+      if (which == 0) {
+        setStudent(true)
+        setList(lessonsAsStudent)
+      } else {
+        setStudent(false)
+        setList(lessonsAsTeacher.data.listLessonOffers.items)
+      }
     }
   }
   const goToLessonScreen = (id, student) => {
@@ -137,17 +153,21 @@ const HomeScreen = () => {
             fgColor={showStudent ? "#fff" : "#000"} bgColor={showStudent ? "#3b71f3" : "#fff"} />
           <CustomCircleCheckbox text="Dawane lekcje" onPress={() => { updateList(1) }}
             fgColor={showStudent ? "#000" : "#fff"} bgColor={showStudent ? "#fff" : "#3b71f3"} />
-          <CustomCircleCheckbox text="Reload" onPress={() => { reload() }}
-            fgColor='white' bgColor='green' />
         </View>
         <View styles={styles.box3}>
-          <FlatList
-            contentContainerStyle={{ paddingBottom: 100 }}
-            data={showList}
-            extraData={showStudent}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-          />
+          {!loading ?
+            <FlatList
+              contentContainerStyle={{ paddingBottom: 100 }}
+              data={showList}
+              extraData={loading}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+              onRefresh={reload}
+              refreshing={loading}
+            /> :
+            <ActivityIndicator size='large' />
+          }
+
         </View>
       </View>
     </>

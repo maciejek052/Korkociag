@@ -14,7 +14,7 @@ import * as mutations from '../../graphql/mutations'
 import * as queries from '../../graphql/queries'
 
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
-const PHONE_REGEX = /./
+const PHONE_REGEX = /^\+.*$/
 
 const EditProfileScreen = () => {
 
@@ -46,7 +46,7 @@ const EditProfileScreen = () => {
 
     const fetchResourceFromURI = async uri => {
         const response = await fetch(uri);
-        console.log(response);
+        //console.log(response);
         const blob = await response.blob();
         return blob;
     };
@@ -65,39 +65,15 @@ const EditProfileScreen = () => {
 
     const uploadImgToS3 = async () => {
         if (imgFromPicker) {
-            const img = await fetchResourceFromURI(imgFromPicker.uri);
-            return Storage.put(pfpFilename, img, {
-                level: 'public',
-                acl: 'public-read',
-                contentType: imgFromPicker.type,
-                progressCallback(uploadProgress) {
-                    setUploadStatus('Dodawanie obrazka: ' + uploadProgress.loaded + '/' + uploadProgress.total)
-                    console.log(
-                        `Progress: ${uploadProgress.loaded}/${uploadProgress.total}`,
-                    );
-                },
-            })
-                .then(res => {
-                    Storage.get(res.key)
-                        .then(result => {
-                            console.log(result.substring(0, result.indexOf('?') + 1));
-                            setS3result(result.substring(0, result.indexOf('?') + 1))
-                        })
-                        .catch(err => {
-                            Alert.alert("Błąd przy dodawaniu obrazka", err.message)
-                            console.log(err);
-                        });
-                })
-                .catch(err => {
-                    Alert.alert("Błąd przy dodawaniu obrazka", err.message)
-                    console.log(err)
-                });
+
         }
     };
 
     const pressedEdit = async (data) => {
         try {
             const user = await Auth.currentAuthenticatedUser()
+
+            console.log(isPfpChanged)
 
             await Auth.updateUserAttributes(user, {
                 ...isPfpChanged,
@@ -139,14 +115,36 @@ const EditProfileScreen = () => {
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1, 1],
-            quality: 1,
+            quality: 0.7,
+            maxHeight: 500,
         });
 
         // console.log(result);
 
         if (!result.cancelled) {
             setImgFromPicker(result)
-            console.log("img loaded from picker")
+            try {
+                console.log('uploading picture to s3 server')
+                //console.log(result)
+                const img = await fetchResourceFromURI(result.uri);
+                
+                const res = await Storage.put(pfpFilename, img, {
+                    level: 'public',
+                    acl: 'public-read',
+                    contentType: result.type,
+                    progressCallback(uploadProgress) {
+                        setUploadStatus('Dodawanie obrazka: ' + uploadProgress.loaded + '/' + uploadProgress.total)
+                        console.log(
+                            `Progress: ${uploadProgress.loaded}/${uploadProgress.total}`,
+                        );
+                    },
+                })
+                const url = await Storage.get(res.key)
+                setS3result(url.substring(0, url.indexOf('?') + 1))
+                
+            } catch (e) {
+                Alert.alert("Błąd przy dodawaniu zdjęcia", e.message)
+            }
         }
     }
 
@@ -200,7 +198,7 @@ const EditProfileScreen = () => {
                         name="phonenumber"
                         control={control} rules={{
                             required: 'Numer telefonu jest wymagany',
-                            pattern: { value: PHONE_REGEX, message: "Numer telefonu jest nieprawidłowy" }
+                            pattern: { value: PHONE_REGEX, message: "Numer telefonu musi mieć kod kraju, np +48" }
                         }}
                     />
 

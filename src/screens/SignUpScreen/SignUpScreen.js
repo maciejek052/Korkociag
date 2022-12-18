@@ -10,7 +10,7 @@ import { Auth } from 'aws-amplify'
 // regex
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-
+const PHONE_REGEX = /^\+.*$/
 
 const SignUpScreen = () => {
     const { control, handleSubmit, watch } = useForm();
@@ -25,16 +25,16 @@ const SignUpScreen = () => {
     }
     const onRegisterPressed = async (data) => {
         try {
-            const { username, password, phone_number, email } = data
+            const { username, name, password, phone_number, email } = data
 
             await Auth.signUp({
                 username,
                 password,
                 attributes: {
-                    phone_number, name: "", address: "", picture: null, preferred_username: username, email
+                    phone_number, name: name, address: "", picture: null, preferred_username: username, email
                 }
             })
-            navigation.navigate('ConfirmEmail', {username})
+            navigation.navigate('ConfirmEmail', { username })
         } catch (e) {
             Alert.alert('Błąd', e.message)
         }
@@ -58,6 +58,12 @@ const SignUpScreen = () => {
                         maxLength: { value: 24, message: 'Nazwa użytkownika powinna mieć maksymalnie 24 znaki' }
                     }} />
                 <CustomInput
+                    name="name" placeholder="Imię i nazwisko"
+                    control={control} rules={{
+                        required: 'Imię i nazwisko jest wymagana',
+                        minLength: { value: 5, message: 'Imię i nazwisko powinno mieć przynajmniej 5 znaków' }
+                    }} />
+                <CustomInput
                     name="email" placeholder="E-mail"
                     control={control} rules={{
                         required: 'E-mail jest wymagany',
@@ -67,7 +73,7 @@ const SignUpScreen = () => {
                     name="phone_number" placeholder="Numer telefonu"
                     control={control} rules={{
                         required: 'Numer telefonu jest wymagany',
-                        pattern: { /*value: EMAIL_REGEX,*/ message: "Telefon jest nieprawidłowy" } // TODO verify phone number
+                        pattern: { value: PHONE_REGEX, message: "Podaj numer telefonu z kodem kraju, np +48xxxxxxxxx" } // TODO verify phone number
                     }} />
                 <CustomInput
                     name="password" placeholder="Hasło"
