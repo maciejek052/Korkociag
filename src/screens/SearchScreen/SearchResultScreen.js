@@ -82,7 +82,7 @@ const SearchResultScreen = ({ route, navigation }) => {
   const Item = ({ item, picture }) => (
     <TouchableWithoutFeedback onPress={() => {
       navigation.navigate('SearchLessonOfferScreen', {
-        item: item, radius: radius
+        item: item, radius: radius, address: address
       });
     }}>
 

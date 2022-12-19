@@ -18,7 +18,7 @@ const SearchLessonOfferScreen = ({ route, navigation }) => {
 
   const { height } = useWindowDimensions()
   const { user } = useSelector((state) => state.userInformation)
-  const { item, radius } = route.params
+  const { item, radius, address } = route.params
   const mapRef = useRef(null)
   const [getLat, setLat] = useState(52.9)
   const [getLng, setLng] = useState(23.2)
@@ -53,14 +53,12 @@ const SearchLessonOfferScreen = ({ route, navigation }) => {
   }, [])
 
   useEffect(() => {
-    if (user.attributes.address != "-") {
-      Geocoder.from(user.attributes.address)
+      Geocoder.from(address)
         .then(json => {
           var location = json.results[0].geometry.location;
           setLatUser(location.lat)
           setLngUser(location.lng)
         })
-    }
   }, [])
 
 
