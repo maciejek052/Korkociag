@@ -5,15 +5,18 @@ import {
 import React, { useEffect, useState } from 'react'
 import SearchImage from '../../../assets/images/undraw_web_search_re_efla.svg'
 import { API, graphqlOperation } from 'aws-amplify'
+import { useSelector } from 'react-redux'
 import * as queries from '../../graphql/queries'
 
 const SearchResultScreen = ({ route, navigation }) => {
   const { height } = useWindowDimensions()
+  const { user } = useSelector((state) => state.userInformation)
   const { level, subject, city, radius, address, placeStudent, placeTeacher, days, time } = route.params
   const daysOfWeek = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota', 'niedziela']
   const timeIntervals2 = ['6:00 - 9:00', '9:00 - 12:00', '12:00 - 15:00', '15:00 - 18:00', '18:00 - 21:00', '21:00 - 24:00']
-
   const [queryResult, setQueryResult] = useState([])
+
+  const userID = user.attributes.sub
 
   const filterDaysArray = () => {
     let ar = []
@@ -53,6 +56,7 @@ const SearchResultScreen = ({ route, navigation }) => {
         graphqlOperation(queries.listLessonOffers, {
           filter: {
             _deleted: { ne: true },
+            ownerCognitoID: { ne: userID }, // rejects own offers
             or: filterDaysArray(),
             and: {
               or: filterTimeArray(),
@@ -67,8 +71,9 @@ const SearchResultScreen = ({ route, navigation }) => {
       //console.log(query.data.listLessonOffers.items)
       var ar = query.data.listLessonOffers.items
       // uncomment line below to filter lessons which already are assigned to student
-      // ar = query.data.listLessonOffers.items.filter((o) => { return !o.LessonStudent })
+      ar = query.data.listLessonOffers.items.filter(e => !e.LessonStudent || e.LessonStudent?.lessonStudentUserInfoId === null)
       setQueryResult(ar)
+      console.log(ar)
     } catch (e) {
       Alert.alert("Błąd podczas pobierania ofert", e.message)
     }
@@ -77,9 +82,10 @@ const SearchResultScreen = ({ route, navigation }) => {
   const Item = ({ item, picture }) => (
     <TouchableWithoutFeedback onPress={() => {
       navigation.navigate('SearchLessonOfferScreen', {
-        item: item
+        item: item, radius: radius
       });
     }}>
+
       <View style={styles.item}>
         <View style={styles.boxImg}>
           <Image source={{ uri: picture }}
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal'
   },
   profilePictSmall: {
-    width: 100, 
+    width: 100,
     height: 100,
     borderRadius: 400
   },

@@ -58,7 +58,6 @@ const HomeScreen = () => {
     const query = await API.graphql(
       graphqlOperation(queries.listLessonStudents, { filter: { _deleted: { ne: true }, lessonStudentUserInfoId: { eq: user.attributes.sub } } })
     );
-
     for (const e of query.data.listLessonStudents.items) {
       const query2 = await API.graphql(
         graphqlOperation(queries.getLessonOffer, { id: e.id, filter: { _deleted: { ne: true } } })
@@ -93,22 +92,23 @@ const HomeScreen = () => {
   var img = user?.attributes?.picture
 
   // i know it could be coded much better but it works :p
-  const Item = ({ title, student, item, isStudent, isTeacher, teacher }) => (
+  const Item = ({ title, student, item, isStudent, isTeacher, teacher, isStudent2}) => (
     <TouchableWithoutFeedback onPress={() => {
-      goToLessonScreen({ item, title })
+
+      goToLessonScreen({ item, title, isTeacher })
     }}>
       <View style={styles.item}>
         <View style={styles.boxImg}>
 
           {!showStudent && (
             <>
-              <Image source={isStudent ? { uri: student.UserInfo.picture } : NonePicture}
+              <Image source={(isStudent && isStudent2) ? { uri: student.UserInfo?.picture } : NonePicture}
                 style={styles.profilePictSmall} />
             </>
           )}
           {showStudent && (
             <>
-              <Image source={isTeacher ? { uri: teacher.UserInfo.picture } : NonePicture}
+              <Image source={isTeacher ? { uri: teacher.UserInfo?.picture } : NonePicture}
                 style={styles.profilePictSmall} />
             </>
           )}
@@ -119,7 +119,7 @@ const HomeScreen = () => {
 
         {!showStudent && (
           <>
-            <Text style={styles.descText}>Student: {isStudent ? student.UserInfo.name : 'brak'}</Text>
+            <Text style={styles.descText}>Student: {(isStudent && isStudent2) ? student.UserInfo?.name : 'brak'}</Text>
           </>
         )}
         {showStudent && (
@@ -136,7 +136,7 @@ const HomeScreen = () => {
     <Item
       student={item.LessonStudent} teacher={item.LessonTeacher} item={item}
       isStudent={item.LessonStudent != null} isTeacher={item.LessonTeacher != null}
-      avatarUrl={showStudent ? '' : ''}
+      avatarUrl={showStudent ? '' : ''} isStudent2={item.LessonStudent?.lessonStudentUserInfoId !== null}
     />
   );
   return (

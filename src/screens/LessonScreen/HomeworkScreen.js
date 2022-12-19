@@ -1,7 +1,9 @@
 import {
   View, Text, StyleSheet, FlatList, TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native'
+import Dialog from "react-native-dialog";
 import React, { useEffect, useState } from 'react'
 import { API, graphqlOperation } from 'aws-amplify'
 import Ionicons from '@expo/vector-icons/Ionicons'
@@ -10,25 +12,78 @@ import * as queries from '../../graphql/queries'
 import * as mutations from '../../graphql/mutations'
 
 const HomeworkScreen = ({ route, navigation }) => {
-  const homeworks = route.params
+  const { lessonObj, isUserStudent, offerHasStudent } = route.params
   const [listHw, setListHw] = useState([])
+  const [listChanged, setListChanged] = useState(false)
+  const [dialogVisible, setDialogVisible] = useState(false)
+  const [hwText, setHwText] = useState("")
   useEffect(() => {
-    const offerId = homeworks.lessonObj.id
+    const offerId = lessonObj.id
 
     const fetchHomeworks = async () => {
       const query = await API.graphql(
-        graphqlOperation(queries.listHomework, { filter: { lessonofferID: { eq: offerId } } })
+        graphqlOperation(queries.listHomework, { filter: { _deleted: { ne: true }, lessonofferID: { eq: offerId } } })
       );
       setListHw(query.data.listHomework.items)
     }
-    console.log(listHw)
     fetchHomeworks()
-  }, [])
+  }, [listChanged])
 
+  const homeworkDialog = () => {
+    if (!isUserStudent && offerHasStudent) {
+      setDialogVisible(true)
+    }
+  }
+  const deleteAlert = (item, description) => {
+    if (!isUserStudent && offerHasStudent) {
+      Alert.alert(
+        "Usuwanie pracy domowej",
+        "Czy na pewno chcesz usunąć pracę domową o treści: \n\n" + description,
+        [
+          {
+            text: "Anuluj",
+            onPress: () => null,
+            style: "cancel"
+          },
+          { text: "OK", onPress: () => { deleteHomework(item) } }
+        ]
+      );
+    }
+  }
+  const addHomework = async () => {
+    if (!hwText.trim().length) {
+      Alert.alert("Błąd", "Treść pracy domowej nie może być pusta")
+    } else {
+      try {
+        const offer = await API.graphql(graphqlOperation(mutations.createHomework, {
+          input: {
+            lessonofferID: lessonObj.id,
+            description: hwText,
+            date: new Date().toISOString()
+          }
+        }))
+        setListChanged(!listChanged)
+        setDialogVisible(false)
+      } catch (e) {
+        console.log(e.message)
+        Alert.alert("Błąd", e)
+      }
+    }
+  }
 
-  const Item = ({ description, date }) => (
+  const deleteHomework = async (item) => {
+    try {
+      const deleted = await API.graphql({ query: mutations.deleteHomework, variables: { input: { id: item.id, _version: item._version } } })
+      setListChanged(!listChanged)
+    } catch (e) {
+      console.log(e.message)
+      Alert.alert("Błąd", e)
+    }
+  }
+
+  const Item = ({ description, date, item }) => (
     <TouchableWithoutFeedback onPress={() => {
-
+      deleteAlert(item, description)
     }}>
       <View style={styles.item}>
 
@@ -41,7 +96,7 @@ const HomeworkScreen = ({ route, navigation }) => {
 
   const renderItem = ({ item }) => (
     <Item
-      description={item.description} date={new Date(item.date)}
+      description={item.description} date={new Date(item.date)} item={item}
     />
   );
   return (
@@ -54,7 +109,7 @@ const HomeworkScreen = ({ route, navigation }) => {
         </TouchableOpacity>
         <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Prace domowe</Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => homeworkDialog()}>
           <Ionicons name="add-outline" style={{ fontSize: 35, color: '#3493D9' }} />
         </TouchableOpacity>
 
@@ -68,6 +123,17 @@ const HomeworkScreen = ({ route, navigation }) => {
           keyExtractor={item => item.id}
         />
       </View>
+
+      <Dialog.Container visible={dialogVisible}>
+        <Dialog.Title>Dodaj pracę domową</Dialog.Title>
+
+        <Dialog.Input label="Wpisz treść pracy domowej" wrapperStyle="" onChangeText={(text) => setHwText(text)}>
+
+        </Dialog.Input>
+        <Dialog.Button label="Anuluj" onPress={() => { setDialogVisible(false) }} />
+        <Dialog.Button label="Dodaj" onPress={addHomework} />
+      </Dialog.Container>
+
     </View>
   )
 }
@@ -86,8 +152,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   descText: {
-    marginTop: 10,
-    marginRight: 100
+    marginTop: 5,
+    fontSize: 15
   },
   valText: {
     fontWeight: 'normal'

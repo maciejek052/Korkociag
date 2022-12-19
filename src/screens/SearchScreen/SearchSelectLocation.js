@@ -40,8 +40,8 @@ const SearchSelectLocation = ({ route, navigation }) => {
         const camera = await mapRef.current?.getCamera()
         if (camera) {
             camera.center = { latitude: lat, longitude: lng }
-            mapRef.current?.animateCamera(camera, { duration: 1000 })
 
+            mapRef.current?.animateCamera(camera, { duration: 1000 })
         }
     }
 
@@ -126,7 +126,7 @@ const SearchSelectLocation = ({ route, navigation }) => {
                         latitude: getLat, longitude: getLng
                     }} />
 
-                    {isPlaceStudentChecked &&
+                    {isPlaceTeacherChecked &&
                         <Circle center={{ latitude: getLat, longitude: getLng }}
                             radius={distanceValue * 1000} strokeWidth={2} strokeColor={'#1f29d1'} fillColor={"rgba(59,133,243,0.25)"}
                         />
@@ -134,7 +134,7 @@ const SearchSelectLocation = ({ route, navigation }) => {
 
                 </MapView>
                 <View style={{ flexDirection: 'row' }}>
-                    {isPlaceStudentChecked && (
+                    {isPlaceTeacherChecked && (
                         <><Slider style={styles.slider} minimumValue={0} minimumTrackTintColor='#3b71f3' thumbTintColor='#3b71f3'
                             maximumValue={25} step={1} value={distanceValue} onValueChange={setDistanceValue} />
                             <Text style={{ marginVertical: 5 }}>Promień: {distanceValue} km</Text>
