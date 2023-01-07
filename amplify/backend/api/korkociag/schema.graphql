@@ -1,3 +1,9 @@
+type LessonCandidate @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  UserInfo: UserInfo @hasOne
+  lessonofferID: ID! @index(name: "byLessonOffer")
+}
+
 type LessonStudent @model @auth(rules: [{allow: private}]) {
   id: ID!
   UserInfo: UserInfo @hasOne
@@ -38,6 +44,7 @@ type LessonOffer @model @auth(rules: [{allow: owner}, {allow: private, operation
   LessonStudent: LessonStudent @hasOne
   LessonTeacher: LessonTeacher @hasOne
   price: Int
+  LessonCandidates: [LessonCandidate] @hasMany(indexName: "byLessonOffer", fields: ["id"])
 }
 
 type School @model @auth(rules: [{allow: public, operations: [read], provider: iam}, {allow: private, operations: [read]}, {allow: owner}]) {

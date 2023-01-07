@@ -6,34 +6,36 @@ import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@a
 
 
 
-type EagerLessonStudent = {
+type EagerLessonCandidate = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<LessonStudent, 'id'>;
+    identifier: ManagedIdentifier<LessonCandidate, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly UserInfo?: UserInfo | null;
+  readonly lessonofferID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly lessonStudentUserInfoId?: string | null;
+  readonly lessonCandidateUserInfoId?: string | null;
 }
 
-type LazyLessonStudent = {
+type LazyLessonCandidate = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<LessonStudent, 'id'>;
+    identifier: ManagedIdentifier<LessonCandidate, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly UserInfo: AsyncItem<UserInfo | undefined>;
+  readonly lessonofferID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly lessonStudentUserInfoId?: string | null;
+  readonly lessonCandidateUserInfoId?: string | null;
 }
 
-export declare type LessonStudent = LazyLoading extends LazyLoadingDisabled ? EagerLessonStudent : LazyLessonStudent
+export declare type LessonCandidate = LazyLoading extends LazyLoadingDisabled ? EagerLessonCandidate : LazyLessonCandidate
 
-export declare const LessonStudent: (new (init: ModelInit<LessonStudent>) => LessonStudent) & {
-  copyOf(source: LessonStudent, mutator: (draft: MutableModel<LessonStudent>) => MutableModel<LessonStudent> | void): LessonStudent;
+export declare const LessonCandidate: (new (init: ModelInit<LessonCandidate>) => LessonCandidate) & {
+  copyOf(source: LessonCandidate, mutator: (draft: MutableModel<LessonCandidate>) => MutableModel<LessonCandidate> | void): LessonCandidate;
 }
 
 type EagerUserInfo = {
@@ -70,6 +72,36 @@ export declare type UserInfo = LazyLoading extends LazyLoadingDisabled ? EagerUs
 
 export declare const UserInfo: (new (init: ModelInit<UserInfo>) => UserInfo) & {
   copyOf(source: UserInfo, mutator: (draft: MutableModel<UserInfo>) => MutableModel<UserInfo> | void): UserInfo;
+}
+
+type EagerLessonStudent = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<LessonStudent, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly UserInfo?: UserInfo | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly lessonStudentUserInfoId?: string | null;
+}
+
+type LazyLessonStudent = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<LessonStudent, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly UserInfo: AsyncItem<UserInfo | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly lessonStudentUserInfoId?: string | null;
+}
+
+export declare type LessonStudent = LazyLoading extends LazyLoadingDisabled ? EagerLessonStudent : LazyLessonStudent
+
+export declare const LessonStudent: (new (init: ModelInit<LessonStudent>) => LessonStudent) & {
+  copyOf(source: LessonStudent, mutator: (draft: MutableModel<LessonStudent>) => MutableModel<LessonStudent> | void): LessonStudent;
 }
 
 type EagerLessonTeacher = {
@@ -152,6 +184,7 @@ type EagerLessonOffer = {
   readonly LessonStudent?: LessonStudent | null;
   readonly LessonTeacher?: LessonTeacher | null;
   readonly price?: number | null;
+  readonly LessonCandidates?: (LessonCandidate | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly lessonOfferSubjectId?: string | null;
@@ -177,6 +210,7 @@ type LazyLessonOffer = {
   readonly LessonStudent: AsyncItem<LessonStudent | undefined>;
   readonly LessonTeacher: AsyncItem<LessonTeacher | undefined>;
   readonly price?: number | null;
+  readonly LessonCandidates: AsyncCollection<LessonCandidate>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly lessonOfferSubjectId?: string | null;

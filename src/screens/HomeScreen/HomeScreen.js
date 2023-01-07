@@ -48,26 +48,48 @@ const HomeScreen = () => {
   const reload = async () => {
     setLoading(true)
     const lessonAsTeacherQuery = await API.graphql(
-      graphqlOperation(queries.listLessonOffers, { filter: { _deleted: { ne: true }, ownerCognitoID: { eq: user.attributes.sub } } })
+      graphqlOperation(queries.listLessonOffers, { filter: { ownerCognitoID: { eq: user.attributes.sub } } })
     );
-    setLessonsAsTeacher(lessonAsTeacherQuery)
+    //setLessonsAsTeacher(lessonAsTeacherQuery)
+    // sort to show pending lessons at the first places
+    var result = lessonAsTeacherQuery.data.listLessonOffers.items.sort((a,b) => b.LessonCandidates.items.length - a.LessonCandidates.items.length)
+    setLessonsAsTeacher(result)
+    console.log(lessonAsTeacherQuery)
     console.log("Lessons as teacher fetched")
     // TODO replace that abomination with a proper GraphQL query
     // i did this in this way because filtering by nested obj value is a big pain in a butt in aws appsync
     var offersArray = []
-    const query = await API.graphql(
-      graphqlOperation(queries.listLessonStudents, { filter: { _deleted: { ne: true }, lessonStudentUserInfoId: { eq: user.attributes.sub } } })
+
+    const waitingForAccept = await API.graphql(
+      graphqlOperation(queries.listLessonCandidates, { filter: { lessonCandidateUserInfoId: { eq: user.attributes.sub } } })
     );
+
+    for (const e of waitingForAccept.data.listLessonCandidates.items) {
+      const query = await API.graphql(
+        graphqlOperation(queries.getLessonOffer, { id: e.lessonofferID })
+      );
+      query.data.getLessonOffer.isPending = true
+      offersArray.push(query.data.getLessonOffer)
+    }
+    const query = await API.graphql(
+      graphqlOperation(queries.listLessonStudents, { filter: { lessonStudentUserInfoId: { eq: user.attributes.sub } } })
+    );
+    //console.log(query)
     for (const e of query.data.listLessonStudents.items) {
       const query2 = await API.graphql(
-        graphqlOperation(queries.getLessonOffer, { id: e.id, filter: { _deleted: { ne: true } } })
+        graphqlOperation(queries.getLessonOffer, { id: e.id })
       );
+      //console.log(query2)
       offersArray.push(query2.data.getLessonOffer)
     }
-    setLessonsAsStudent(offersArray)
+    var ar = offersArray.sort((a,b) => a.LessonCandidates.items.length - b.LessonCandidates.items.length)
+    setLessonsAsStudent(ar)
     console.log("Lessons as student fetched")
     setLoading(false)
     // setStudent(true)
+    //console.log(user)
+    //console.log(lessonsAsStudent)
+    //console.log(lessonsAsTeacher)
     showStudent ? setList(offersArray) : setList(lessonAsTeacherQuery.data.listLessonOffers.items)
   }
 
@@ -79,7 +101,7 @@ const HomeScreen = () => {
         setList(lessonsAsStudent)
       } else {
         setStudent(false)
-        setList(lessonsAsTeacher.data.listLessonOffers.items)
+        setList(lessonsAsTeacher)
       }
     }
   }
@@ -92,12 +114,12 @@ const HomeScreen = () => {
   var img = user?.attributes?.picture
 
   // i know it could be coded much better but it works :p
-  const Item = ({ title, student, item, isStudent, isTeacher, teacher, isStudent2}) => (
+  const Item = ({ title, student, item, isStudent, isTeacher, teacher, isStudent2, isPending }) => (
     <TouchableWithoutFeedback onPress={() => {
 
       goToLessonScreen({ item, title, isTeacher })
     }}>
-      <View style={styles.item}>
+      <View style={[styles.item, { backgroundColor: isPending ? '#fff900' : '#c4c4c4' }]}>
         <View style={styles.boxImg}>
 
           {!showStudent && (
@@ -113,6 +135,7 @@ const HomeScreen = () => {
             </>
           )}
         </View>
+        {isPending && <Text style={styles.descText}>OFERTA OCZEKUJĄCA</Text>}
         <Text style={styles.title}>{item.Subject.name}</Text>
         <Text style={styles.descText}>Godziny: <Text style={styles.valText}>{item.hours.toString()}</Text></Text>
         <Text style={styles.descText}>Dni: <Text style={styles.valText}>{item.days.toString()}</Text></Text>
@@ -137,6 +160,7 @@ const HomeScreen = () => {
       student={item.LessonStudent} teacher={item.LessonTeacher} item={item}
       isStudent={item.LessonStudent != null} isTeacher={item.LessonTeacher != null}
       avatarUrl={showStudent ? '' : ''} isStudent2={item.LessonStudent?.lessonStudentUserInfoId !== null}
+      isPending={item.isPending || item.LessonCandidates.items.length != 0}
     />
   );
   return (
@@ -206,7 +230,7 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   item: {
-    backgroundColor: '#c4c4c4',
+    //backgroundColor: '#c4c4c4',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

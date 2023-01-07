@@ -1,6 +1,78 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createLessonCandidate = /* GraphQL */ `
+  mutation CreateLessonCandidate(
+    $input: CreateLessonCandidateInput!
+    $condition: ModelLessonCandidateConditionInput
+  ) {
+    createLessonCandidate(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      createdAt
+      updatedAt
+      lessonCandidateUserInfoId
+    }
+  }
+`;
+export const updateLessonCandidate = /* GraphQL */ `
+  mutation UpdateLessonCandidate(
+    $input: UpdateLessonCandidateInput!
+    $condition: ModelLessonCandidateConditionInput
+  ) {
+    updateLessonCandidate(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      createdAt
+      updatedAt
+      lessonCandidateUserInfoId
+    }
+  }
+`;
+export const deleteLessonCandidate = /* GraphQL */ `
+  mutation DeleteLessonCandidate(
+    $input: DeleteLessonCandidateInput!
+    $condition: ModelLessonCandidateConditionInput
+  ) {
+    deleteLessonCandidate(input: $input, condition: $condition) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      createdAt
+      updatedAt
+      lessonCandidateUserInfoId
+    }
+  }
+`;
 export const createLessonStudent = /* GraphQL */ `
   mutation CreateLessonStudent(
     $input: CreateLessonStudentInput!
@@ -17,15 +89,9 @@ export const createLessonStudent = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonStudentUserInfoId
     }
   }
@@ -46,15 +112,9 @@ export const updateLessonStudent = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonStudentUserInfoId
     }
   }
@@ -75,15 +135,9 @@ export const deleteLessonStudent = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonStudentUserInfoId
     }
   }
@@ -104,15 +158,9 @@ export const createLessonTeacher = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonTeacherUserInfoId
     }
   }
@@ -133,15 +181,9 @@ export const updateLessonTeacher = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonTeacherUserInfoId
     }
   }
@@ -162,15 +204,9 @@ export const deleteLessonTeacher = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonTeacherUserInfoId
     }
   }
@@ -189,9 +225,6 @@ export const createUserInfo = /* GraphQL */ `
       cognitoID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -209,9 +242,6 @@ export const updateUserInfo = /* GraphQL */ `
       cognitoID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -229,9 +259,6 @@ export const deleteUserInfo = /* GraphQL */ `
       cognitoID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -247,9 +274,6 @@ export const createHomework = /* GraphQL */ `
       lessonofferID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -266,9 +290,6 @@ export const updateHomework = /* GraphQL */ `
       lessonofferID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -285,9 +306,6 @@ export const deleteHomework = /* GraphQL */ `
       lessonofferID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -307,16 +325,10 @@ export const createLessonOffer = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         subjectSchoolId
         owner
       }
@@ -333,13 +345,9 @@ export const createLessonOffer = /* GraphQL */ `
           lessonofferID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       ownerCognitoID
       city
@@ -354,15 +362,9 @@ export const createLessonOffer = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonStudentUserInfoId
       }
       LessonTeacher {
@@ -376,23 +378,34 @@ export const createLessonOffer = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonTeacherUserInfoId
       }
       price
+      LessonCandidates {
+        items {
+          id
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          createdAt
+          updatedAt
+          lessonCandidateUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonOfferSubjectId
       lessonOfferLessonStudentId
       lessonOfferLessonTeacherId
@@ -415,16 +428,10 @@ export const updateLessonOffer = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         subjectSchoolId
         owner
       }
@@ -441,13 +448,9 @@ export const updateLessonOffer = /* GraphQL */ `
           lessonofferID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       ownerCognitoID
       city
@@ -462,15 +465,9 @@ export const updateLessonOffer = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonStudentUserInfoId
       }
       LessonTeacher {
@@ -484,23 +481,34 @@ export const updateLessonOffer = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonTeacherUserInfoId
       }
       price
+      LessonCandidates {
+        items {
+          id
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          createdAt
+          updatedAt
+          lessonCandidateUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonOfferSubjectId
       lessonOfferLessonStudentId
       lessonOfferLessonTeacherId
@@ -523,16 +531,10 @@ export const deleteLessonOffer = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         subjectSchoolId
         owner
       }
@@ -549,13 +551,9 @@ export const deleteLessonOffer = /* GraphQL */ `
           lessonofferID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       ownerCognitoID
       city
@@ -570,15 +568,9 @@ export const deleteLessonOffer = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonStudentUserInfoId
       }
       LessonTeacher {
@@ -592,23 +584,34 @@ export const deleteLessonOffer = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonTeacherUserInfoId
       }
       price
+      LessonCandidates {
+        items {
+          id
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          createdAt
+          updatedAt
+          lessonCandidateUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonOfferSubjectId
       lessonOfferLessonStudentId
       lessonOfferLessonTeacherId
@@ -626,9 +629,6 @@ export const createSchool = /* GraphQL */ `
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -643,9 +643,6 @@ export const updateSchool = /* GraphQL */ `
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -660,9 +657,6 @@ export const deleteSchool = /* GraphQL */ `
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -680,16 +674,10 @@ export const createSubject = /* GraphQL */ `
         name
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       subjectSchoolId
       owner
     }
@@ -708,16 +696,10 @@ export const updateSubject = /* GraphQL */ `
         name
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       subjectSchoolId
       owner
     }
@@ -736,16 +718,10 @@ export const deleteSubject = /* GraphQL */ `
         name
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       subjectSchoolId
       owner
     }

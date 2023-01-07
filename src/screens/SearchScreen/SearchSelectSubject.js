@@ -59,7 +59,7 @@ const SearchSelectSubject = ({ route, navigation }) => {
   const getSubjects = async () => {
     try {
       const subjects = await API.graphql(
-        graphqlOperation(queries.listSubjects, { filter: { _deleted: { ne: true }, subjectSchoolId: { eq: pickedSchoolID() } } })
+        graphqlOperation(queries.listSubjects, { filter: { subjectSchoolId: { eq: pickedSchoolID() } } })
       );
       // const subjects = await DataStore.query(Subject, s => s.subjectSchoolId.eq(pickedSchoolID()))
       setMasterData(subjects.data.listSubjects.items)

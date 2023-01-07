@@ -17,8 +17,8 @@ const SingleLessonScreen = ({ route, navigation }) => {
 
   const dispatch = useDispatch()
   const lessonObj = route.params
-  const isStudent = lessonObj.id.item.LessonStudent != null
-
+  const isStudent = lessonObj.id.item.LessonStudent?.UserInfo != null 
+  console.log(lessonObj)
   const isUserStudent = lessonObj.student
 
   const deleteLessonAlert = () => {
@@ -41,7 +41,6 @@ const SingleLessonScreen = ({ route, navigation }) => {
     // console.log(lessonObj)
     const details = {
       id: lessonObj.id.item.id,
-      _version: lessonObj.id.item._version
     };
     try {
       const deleted = await API.graphql({ query: mutations.deleteLessonOffer, variables: { input: details } })
@@ -82,7 +81,6 @@ const SingleLessonScreen = ({ route, navigation }) => {
           input: {
             id: lessonObj.id.item.LessonStudent.id,
             lessonStudentUserInfoId: null, 
-            _version: lessonObj.id.item.LessonStudent._version
           }
         }
       })
@@ -108,7 +106,7 @@ const SingleLessonScreen = ({ route, navigation }) => {
               <Image source={NonePicture} style={styles.profilePict} />
             )}
             {isStudent && (
-              <Image source={{ uri: lessonObj.id.item.LessonStudent?.UserInfo.picture }} style={styles.profilePict} />
+              <Image source={{ uri: lessonObj.id.item.LessonStudent?.UserInfo?.picture }} style={styles.profilePict} />
             )}
             <Text style={styles.descText}>{ }<Text style={styles.valText}>{isStudent ? "Student: " + lessonObj.id.item.LessonStudent?.UserInfo.name : "Student: brak"}</Text></Text>
             <View style={{ flexDirection: 'row' }}>

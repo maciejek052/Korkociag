@@ -22,7 +22,7 @@ const HomeworkScreen = ({ route, navigation }) => {
 
     const fetchHomeworks = async () => {
       const query = await API.graphql(
-        graphqlOperation(queries.listHomework, { filter: { _deleted: { ne: true }, lessonofferID: { eq: offerId } } })
+        graphqlOperation(queries.listHomework, { filter: { lessonofferID: { eq: offerId } } })
       );
       setListHw(query.data.listHomework.items)
     }
@@ -73,7 +73,7 @@ const HomeworkScreen = ({ route, navigation }) => {
 
   const deleteHomework = async (item) => {
     try {
-      const deleted = await API.graphql({ query: mutations.deleteHomework, variables: { input: { id: item.id, _version: item._version } } })
+      const deleted = await API.graphql({ query: mutations.deleteHomework, variables: { input: { id: item.id} } })
       setListChanged(!listChanged)
     } catch (e) {
       console.log(e.message)

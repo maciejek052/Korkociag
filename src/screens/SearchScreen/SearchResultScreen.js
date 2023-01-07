@@ -55,7 +55,6 @@ const SearchResultScreen = ({ route, navigation }) => {
       const query = await API.graphql(
         graphqlOperation(queries.listLessonOffers, {
           filter: {
-            _deleted: { ne: true },
             ownerCognitoID: { ne: userID }, // rejects own offers
             or: filterDaysArray(),
             and: {

@@ -3,13 +3,18 @@ import {
   useWindowDimensions
 } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react'
-import { API, graphqlOperation } from 'aws-amplify'
+import { API, graphqlOperation, DataStore } from 'aws-amplify'
 import { useSelector } from 'react-redux'
 import MapView, { Marker, Circle } from 'react-native-maps'
 import Geocoder from 'react-native-geocoding';
+import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../../components/CustomButton'
 
 import * as mutations from '../../graphql/mutations'
+import * as queries from '../../graphql/queries'
+
+import { LessonOffer, LessonCandidate } from '../../models'
+
 import { GOOGLE_API_KEY } from '../../../api_keys'
 
 const SearchLessonOfferScreen = ({ route, navigation }) => {
@@ -26,9 +31,11 @@ const SearchLessonOfferScreen = ({ route, navigation }) => {
   const [getLngUser, setLngUser] = useState(0)
   const userID = user.attributes.sub
 
+  const userAlreadyAsked = item.LessonCandidates.items.some(e => e.lessonCandidateUserInfoId === userID)
+
   const INITIAL_POSITION = {
-    latitude: 52.143291,
-    longitude: 21.164089,
+    latitude: 53.143291,
+    longitude: 23.164089,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   }
@@ -53,18 +60,22 @@ const SearchLessonOfferScreen = ({ route, navigation }) => {
   }, [])
 
   useEffect(() => {
-      Geocoder.from(address)
-        .then(json => {
-          var location = json.results[0].geometry.location;
-          setLatUser(location.lat)
-          setLngUser(location.lng)
-        })
+    Geocoder.from(address)
+      .then(json => {
+        var location = json.results[0].geometry.location;
+        setLatUser(location.lat)
+        setLngUser(location.lng)
+      })
   }, [])
 
 
   console.log(item)
 
-  const assingAllert = () => {
+  const userAlreadyAskedAlert = () => {
+    Alert.alert("Błąd", "Już poprosiłeś o dołączenie do tej oferty. Poczekaj aż nauczyciel podejmie decyzję o akceptacji")
+  }
+
+  const assignAlert = () => {
     Alert.alert(
       "Powiązanie",
       "Czy na pewno chcesz zapisać się do tej lekcji?",
@@ -79,27 +90,56 @@ const SearchLessonOfferScreen = ({ route, navigation }) => {
     );
   }
 
+  const removeDataStore = async () => {
+    /*
+    console.log('removing')
+    try {
+      const res = await DataStore.delete(LessonCandidate, (e) => e.lessonofferID.eq(item.id))
+      console.log(res)
+    } catch (e) {
+      console.log(e)
+    }
+    */
+    const list = await API.graphql(
+      graphqlOperation(queries.listLessonCandidates, { filter: { /*_deleted: { ne: true },*/ lessonofferID: { eq: item.id } } })
+    );
+    const toremove = list.data.listLessonCandidates.items
+    const txnMutation = toremove.map((txn, i) => {
+      return `mutation${i}: deleteLessonCandidate(input: {id: "${txn.id}"}) { id }`;
+    });
+
+    const rem = await API.graphql(
+      graphqlOperation(`
+      mutation batchMutation {
+        ${txnMutation}
+      }
+    `)
+    );
+    console.log(rem)
+
+
+
+  }
+
+
   const assignToOffer = async () => {
     try {
-      if (item.LessonStudent?.lessonStudentUserInfoId === null) {
-        const operation = await API.graphql({
-          query: mutations.updateLessonStudent, variables: {
-            input: {
-              id: item.id,
-              lessonStudentUserInfoId: userID,
-              _version: item.LessonStudent._version
-            }
-          }
-        })
-      } else {
-        const operation = await API.graphql(graphqlOperation(mutations.createLessonStudent, {
+
+      const operation = await API.graphql({
+        query: mutations.createLessonCandidate, variables: {
           input: {
-            id: item.id,
-            lessonStudentUserInfoId: userID
+            lessonofferID: item.id,
+            lessonCandidateUserInfoId: userID
           }
-        }))
-      }
-      Alert.alert("Sukces", "Pomyślnie zapisano użytkownika jako ucznia do oferty")
+        }
+
+      })
+
+
+      Alert.alert("Sukces",
+        "Wysłano prośbę o dodanie do oferty. Musisz teraz poczekać, aż nauczyciel ją rozpatrzy i jeśli się zgodzi, to lekcja pojawi się w widoku twoich lekcji")
+
+
     } catch (e) {
       console.log(e)
       Alert.alert("Błąd przy zapisywaniu do oferty", e.message)
@@ -144,7 +184,19 @@ const SearchLessonOfferScreen = ({ route, navigation }) => {
         <Text style={styles.descText}>Promień dojazdu przez nauczyciela: <Text style={styles.valText}>{item.locationRadius} km</Text></Text>
       }
       <Text style={styles.descText}>Upewnij się, że znaczniki znajdują się w promieniu ustalonego zasięgu</Text>
-      <CustomButton text={"Zapisz się do lekcji"} onPress={assignToOffer} />
+      <CustomButton text={'test'} onPress={removeDataStore} />
+      {!userAlreadyAsked &&
+        <CustomButton text={"Zapisz się do lekcji"} onPress={assignAlert} />
+      }
+      {userAlreadyAsked &&
+        <>
+          <CustomButton text={"Zapisz się do lekcji"} onPress={userAlreadyAskedAlert} bgColor="gray" />
+          <Text style={{ padding: 5 }}>Już poprosiłeś o dołączenie do tej oferty. Poczekaj aż nauczyciel podejmie decyzję o akceptacji.
+            Jeżeli zostaniesz przyjęty, to oferta pojawi się na głównym ekranie w zakładce pobieranych lekcji.
+          </Text>
+        </>
+      }
+
     </View>
   )
 }

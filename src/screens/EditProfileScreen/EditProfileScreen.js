@@ -27,7 +27,7 @@ const EditProfileScreen = () => {
     useEffect(() => {
         const fun = async () => {
             const quer = await API.graphql(graphqlOperation(queries.getUserInfo, { id: user.attributes.sub }))
-            setVersion(quer.data.getUserInfo._version)
+            //setVersion(quer.data.getUserInfo._version)
         }
         fun()
     }, [])
@@ -91,7 +91,6 @@ const EditProfileScreen = () => {
                 phone_number: data.phonenumber,
                 address: data.location,
                 ...isPfpChanged,
-                _version: version
             }
 
             const editDbUserInfo = await API.graphql({

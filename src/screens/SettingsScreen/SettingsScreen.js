@@ -14,8 +14,12 @@ const SettingsScreen = () => {
   const { height } = useWindowDimensions();
   const [showStudent, setStudent] = useState(true)
   const [notificationsBtn, setNotificationsBtn] = useState(true)
+
   const goEditProfileScreen = () => {
     navigation.navigate('EditProfileScreen')
+  }
+  const goChangePasswordScreen = () => {
+    navigation.navigate('ChangePasswordScreen')
   }
 
   const signOut = async () => {
@@ -33,7 +37,7 @@ const SettingsScreen = () => {
       </View>
       <View style={styles.box2}>
         <CustomButton text="Edytuj profil" btnSize="30" onPress={goEditProfileScreen} />
-        <CustomButton text="Zmień hasło" btnSize="30" />
+        <CustomButton text="Zmień hasło" btnSize="30" onPress={goChangePasswordScreen} />
         <CustomButton text={notificationsBtn ? "Powiadomienia: włączone" : "Powiadomienia: wyłączone"} btnSize="30"
           bgColor={notificationsBtn ? "green" : "red"} onPress={() => { setNotificationsBtn(!notificationsBtn) }} />
         <CustomButton text="Wyloguj się" btnSize="30" bgColor="#b5b3b9" fgColor="#555" onPress={signOut} />

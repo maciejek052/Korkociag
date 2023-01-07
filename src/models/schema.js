@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "LessonStudent": {
-            "name": "LessonStudent",
+        "LessonCandidate": {
+            "name": "LessonCandidate",
             "fields": {
                 "id": {
                     "name": "id",
@@ -24,9 +24,16 @@ export const schema = {
                             "id"
                         ],
                         "targetNames": [
-                            "lessonStudentUserInfoId"
+                            "lessonCandidateUserInfoId"
                         ]
                     }
+                },
+                "lessonofferID": {
+                    "name": "lessonofferID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -44,8 +51,8 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
-                "lessonStudentUserInfoId": {
-                    "name": "lessonStudentUserInfoId",
+                "lessonCandidateUserInfoId": {
+                    "name": "lessonCandidateUserInfoId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -53,11 +60,20 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "LessonStudents",
+            "pluralName": "LessonCandidates",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byLessonOffer",
+                        "fields": [
+                            "lessonofferID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -141,6 +157,83 @@ export const schema = {
             },
             "syncable": true,
             "pluralName": "UserInfos",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "LessonStudent": {
+            "name": "LessonStudent",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "UserInfo": {
+                    "name": "UserInfo",
+                    "isArray": false,
+                    "type": {
+                        "model": "UserInfo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "lessonStudentUserInfoId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "lessonStudentUserInfoId": {
+                    "name": "lessonStudentUserInfoId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "LessonStudents",
             "attributes": [
                 {
                     "type": "model",
@@ -471,6 +564,22 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "LessonCandidates": {
+                    "name": "LessonCandidates",
+                    "isArray": true,
+                    "type": {
+                        "model": "LessonCandidate"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "lessonofferID"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -723,5 +832,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "65b10f29c90e4e5712228905e6cc00da"
+    "version": "c875af38b2641b15f11733e5869aff67"
 };

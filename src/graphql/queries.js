@@ -1,6 +1,95 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getLessonCandidate = /* GraphQL */ `
+  query GetLessonCandidate($id: ID!) {
+    getLessonCandidate(id: $id) {
+      id
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      createdAt
+      updatedAt
+      lessonCandidateUserInfoId
+    }
+  }
+`;
+export const listLessonCandidates = /* GraphQL */ `
+  query ListLessonCandidates(
+    $filter: ModelLessonCandidateFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLessonCandidates(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+        }
+        lessonofferID
+        createdAt
+        updatedAt
+        lessonCandidateUserInfoId
+      }
+      nextToken
+    }
+  }
+`;
+export const lessonCandidatesByLessonofferID = /* GraphQL */ `
+  query LessonCandidatesByLessonofferID(
+    $lessonofferID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelLessonCandidateFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    lessonCandidatesByLessonofferID(
+      lessonofferID: $lessonofferID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+        }
+        lessonofferID
+        createdAt
+        updatedAt
+        lessonCandidateUserInfoId
+      }
+      nextToken
+    }
+  }
+`;
 export const getLessonStudent = /* GraphQL */ `
   query GetLessonStudent($id: ID!) {
     getLessonStudent(id: $id) {
@@ -14,15 +103,9 @@ export const getLessonStudent = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonStudentUserInfoId
     }
   }
@@ -45,59 +128,12 @@ export const listLessonStudents = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonStudentUserInfoId
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncLessonStudents = /* GraphQL */ `
-  query SyncLessonStudents(
-    $filter: ModelLessonStudentFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLessonStudents(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        UserInfo {
-          id
-          name
-          address
-          picture
-          phone_number
-          cognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        lessonStudentUserInfoId
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -114,15 +150,9 @@ export const getLessonTeacher = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonTeacherUserInfoId
     }
   }
@@ -145,59 +175,12 @@ export const listLessonTeachers = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonTeacherUserInfoId
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncLessonTeachers = /* GraphQL */ `
-  query SyncLessonTeachers(
-    $filter: ModelLessonTeacherFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLessonTeachers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        UserInfo {
-          id
-          name
-          address
-          picture
-          phone_number
-          cognitoID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        lessonTeacherUserInfoId
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -212,9 +195,6 @@ export const getUserInfo = /* GraphQL */ `
       cognitoID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -234,43 +214,8 @@ export const listUserInfos = /* GraphQL */ `
         cognitoID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncUserInfos = /* GraphQL */ `
-  query SyncUserInfos(
-    $filter: ModelUserInfoFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUserInfos(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        address
-        picture
-        phone_number
-        cognitoID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -283,9 +228,6 @@ export const getHomework = /* GraphQL */ `
       lessonofferID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -304,43 +246,9 @@ export const listHomework = /* GraphQL */ `
         lessonofferID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncHomework = /* GraphQL */ `
-  query SyncHomework(
-    $filter: ModelHomeworkFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncHomework(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        date
-        description
-        lessonofferID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -366,13 +274,9 @@ export const homeworkByLessonofferID = /* GraphQL */ `
         lessonofferID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -388,16 +292,10 @@ export const getLessonOffer = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         subjectSchoolId
         owner
       }
@@ -414,13 +312,9 @@ export const getLessonOffer = /* GraphQL */ `
           lessonofferID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       ownerCognitoID
       city
@@ -435,15 +329,9 @@ export const getLessonOffer = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonStudentUserInfoId
       }
       LessonTeacher {
@@ -457,23 +345,34 @@ export const getLessonOffer = /* GraphQL */ `
           cognitoID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonTeacherUserInfoId
       }
       price
+      LessonCandidates {
+        items {
+          id
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          createdAt
+          updatedAt
+          lessonCandidateUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       lessonOfferSubjectId
       lessonOfferLessonStudentId
       lessonOfferLessonTeacherId
@@ -493,11 +392,15 @@ export const listLessonOffers = /* GraphQL */ `
         Subject {
           id
           name
+          School {
+            id
+            name
+            createdAt
+            updatedAt
+            owner
+          }
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           subjectSchoolId
           owner
         }
@@ -507,129 +410,80 @@ export const listLessonOffers = /* GraphQL */ `
         days
         hours
         Homework {
+          items {
+            id
+            date
+            description
+            lessonofferID
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
-          startedAt
         }
         ownerCognitoID
         city
         LessonStudent {
           id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          lessonStudentUserInfoId
           UserInfo {
-            address
-            cognitoID
             id
             name
-            phone_number
+            address
             picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
           }
+          createdAt
+          updatedAt
+          lessonStudentUserInfoId
         }
         LessonTeacher {
           id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          lessonTeacherUserInfoId
           UserInfo {
-            address
-            cognitoID
             id
             name
-            phone_number
+            address
             picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
           }
+          createdAt
+          updatedAt
+          lessonTeacherUserInfoId
         }
         price
+        LessonCandidates {
+          items {
+            id
+            UserInfo {
+              id
+              name
+              address
+              picture
+              phone_number
+              cognitoID
+              createdAt
+              updatedAt
+            }
+            lessonofferID
+            createdAt
+            updatedAt
+            lessonCandidateUserInfoId
+          }
+          nextToken
+        }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         lessonOfferSubjectId
         lessonOfferLessonStudentId
         lessonOfferLessonTeacherId
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncLessonOffers = /* GraphQL */ `
-  query SyncLessonOffers(
-    $filter: ModelLessonOfferFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLessonOffers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        Subject {
-          id
-          name
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          subjectSchoolId
-          owner
-        }
-        address
-        locationRadius
-        place
-        days
-        hours
-        Homework {
-          nextToken
-          startedAt
-        }
-        ownerCognitoID
-        city
-        LessonStudent {
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          lessonStudentUserInfoId
-        }
-        LessonTeacher {
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          lessonTeacherUserInfoId
-        }
-        price
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        lessonOfferSubjectId
-        lessonOfferLessonStudentId
-        lessonOfferLessonTeacherId
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -640,9 +494,6 @@ export const getSchool = /* GraphQL */ `
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -659,41 +510,9 @@ export const listSchools = /* GraphQL */ `
         name
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncSchools = /* GraphQL */ `
-  query SyncSchools(
-    $filter: ModelSchoolFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncSchools(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -707,16 +526,10 @@ export const getSubject = /* GraphQL */ `
         name
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       subjectSchoolId
       owner
     }
@@ -737,60 +550,14 @@ export const listSubjects = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         subjectSchoolId
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncSubjects = /* GraphQL */ `
-  query SyncSubjects(
-    $filter: ModelSubjectFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncSubjects(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        School {
-          id
-          name
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        subjectSchoolId
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
