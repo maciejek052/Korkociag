@@ -87,7 +87,7 @@ const HomeworkScreen = ({ route, navigation }) => {
     }}>
       <View style={styles.item}>
 
-        <Text style={styles.title}>{date.toLocaleDateString('pl-PL')}</Text>
+        <Text style={styles.title}>{date.toLocaleString()}</Text>
         <Text style={styles.descText}>{description}</Text>
 
       </View>

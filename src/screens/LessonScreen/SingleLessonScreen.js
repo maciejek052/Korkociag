@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Linking, Alert } from 'react-native'
+import { View, Text, StyleSheet, Image, Linking, Alert, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
 import CustomButton from '../../components/CustomButton'
 import NonePicture from '../../../assets/images/none.png'
@@ -17,9 +17,10 @@ const SingleLessonScreen = ({ route, navigation }) => {
 
   const dispatch = useDispatch()
   const lessonObj = route.params
-  const isStudent = lessonObj.id.item.LessonStudent?.UserInfo != null 
+  const isStudent = lessonObj.id.item.LessonStudent?.UserInfo != null
   console.log(lessonObj)
   const isUserStudent = lessonObj.student
+  const location = lessonObj.id.item.place === "teacher" ? "U nauczyciela" : "U ucznia"
 
   const deleteLessonAlert = () => {
     Alert.alert(
@@ -43,7 +44,9 @@ const SingleLessonScreen = ({ route, navigation }) => {
       id: lessonObj.id.item.id,
     };
     try {
+      const delStudent = await API.graphql({ query: mutations.deleteLessonStudent, variables: { input: { id: lessonObj.id.item.id } } })
       const deleted = await API.graphql({ query: mutations.deleteLessonOffer, variables: { input: details } })
+      Alert.alert("Sukces", "Usunięto ofertę")
       navigation.goBack()
     } catch (e) {
       console.log(e)
@@ -77,28 +80,40 @@ const SingleLessonScreen = ({ route, navigation }) => {
   const studentResignQuery = async () => {
     try {
       const deleted = await API.graphql({
-        query: mutations.updateLessonStudent, variables: {
+        query: mutations.deleteLessonStudent, variables: {
           input: {
-            id: lessonObj.id.item.LessonStudent.id,
-            lessonStudentUserInfoId: null, 
+            id: lessonObj.id.item.LessonStudent.id
           }
         }
       })
+      Alert.alert("Suckes", "Zrezygnowano z oferty")
       navigation.goBack()
     } catch (e) {
       console.log(e)
       Alert.alert("Błąd", e.message)
     }
   }
+  const goToCandidatesScreen = () => {
+    navigation.navigate('StudentAcceptanceScreen', {
+      lessonObj: lessonObj.id.item
+    });
+  }
 
   // <Text style={styles.descText}>Cena: <Text style={styles.valText}>0 zł</Text></Text>
   return (
-    <View style={styles.root}>
+    <ScrollView style={styles.root}>
       <Text style={styles.heading}>{lessonObj.id.item.Subject.name}</Text>
       <Text style={styles.descText}>Termin korepetycji: <Text style={styles.valText}>{lessonObj.id.item.days + ''}</Text></Text>
       <Text style={styles.descText}>Godziny korepetycji: <Text style={styles.valText}>{lessonObj.id.item.hours + ''}</Text></Text>
       <Text style={styles.descText}>Miasto: <Text style={styles.valText}>{lessonObj.id.item.city}</Text></Text>
-      <Text style={styles.descText}>Adres: <Text style={styles.valText}>{lessonObj.id.item.address}</Text></Text>
+      <Text style={styles.descText}>Adres nauczyciela: <Text style={styles.valText}>{lessonObj.id.item.address}</Text></Text>
+      <Text style={styles.descText}>Miejsce korepetycji: <Text style={styles.valText}>{location}</Text></Text>
+      {
+        lessonObj.id.item.LessonCandidates?.items?.length > 0 &&
+        <CustomButton bgColor={'#fff900'} fgColor={'black'}
+          text="Pokaż uczniów proszących o dodanie do lekcji" onPress={goToCandidatesScreen} />
+      }
+
       {
         !isUserStudent ?
           <View style={styles.personBox}>
@@ -148,7 +163,7 @@ const SingleLessonScreen = ({ route, navigation }) => {
             </>
         }
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -174,8 +189,8 @@ const styles = StyleSheet.create({
     fontWeight: 'normal'
   },
   profilePict: {
-    width: 200,
-    height: 200,
+    width: 175,
+    height: 175,
     borderRadius: 400
   },
   personBox: {

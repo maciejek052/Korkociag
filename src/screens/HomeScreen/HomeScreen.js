@@ -52,7 +52,7 @@ const HomeScreen = () => {
     );
     //setLessonsAsTeacher(lessonAsTeacherQuery)
     // sort to show pending lessons at the first places
-    var result = lessonAsTeacherQuery.data.listLessonOffers.items.sort((a,b) => b.LessonCandidates.items.length - a.LessonCandidates.items.length)
+    var result = lessonAsTeacherQuery.data.listLessonOffers.items.sort((a, b) => b.LessonCandidates.items.length - a.LessonCandidates.items.length)
     setLessonsAsTeacher(result)
     console.log(lessonAsTeacherQuery)
     console.log("Lessons as teacher fetched")
@@ -69,6 +69,7 @@ const HomeScreen = () => {
         graphqlOperation(queries.getLessonOffer, { id: e.lessonofferID })
       );
       query.data.getLessonOffer.isPending = true
+      query.data.getLessonOffer.candidacyID = e.id
       offersArray.push(query.data.getLessonOffer)
     }
     const query = await API.graphql(
@@ -82,7 +83,7 @@ const HomeScreen = () => {
       //console.log(query2)
       offersArray.push(query2.data.getLessonOffer)
     }
-    var ar = offersArray.sort((a,b) => a.LessonCandidates.items.length - b.LessonCandidates.items.length)
+    var ar = offersArray.sort((a, b) => a.LessonCandidates.items.length - b.LessonCandidates.items.length)
     setLessonsAsStudent(ar)
     console.log("Lessons as student fetched")
     setLoading(false)
@@ -111,13 +112,26 @@ const HomeScreen = () => {
       student: showStudent
     });
   }
+  const goToPendingScreen = (id, student) => {
+    navigation.navigate('PendingLessonScreen', {
+      id: id,
+      student: showStudent
+    });
+  }
+
+
   var img = user?.attributes?.picture
 
   // i know it could be coded much better but it works :p
   const Item = ({ title, student, item, isStudent, isTeacher, teacher, isStudent2, isPending }) => (
     <TouchableWithoutFeedback onPress={() => {
-
-      goToLessonScreen({ item, title, isTeacher })
+      if (isPending && item.LessonTeacher.UserInfo.id !== user.attributes.sub) {
+        console.log(item)
+        console.log(user.attributes.sub)
+        goToPendingScreen({ item, title })
+      } else {
+        goToLessonScreen({ item, title, isTeacher })
+      }
     }}>
       <View style={[styles.item, { backgroundColor: isPending ? '#fff900' : '#c4c4c4' }]}>
         <View style={styles.boxImg}>
@@ -157,8 +171,8 @@ const HomeScreen = () => {
   );
   const renderItem = ({ item }) => (
     <Item
-      student={item.LessonStudent} teacher={item.LessonTeacher} item={item}
-      isStudent={item.LessonStudent != null} isTeacher={item.LessonTeacher != null}
+      student={item?.LessonStudent} teacher={item.LessonTeacher} item={item}
+      isStudent={item?.LessonStudent != null} isTeacher={item.LessonTeacher != null}
       avatarUrl={showStudent ? '' : ''} isStudent2={item.LessonStudent?.lessonStudentUserInfoId !== null}
       isPending={item.isPending || item.LessonCandidates.items.length != 0}
     />

@@ -16,6 +16,7 @@ export const getLessonCandidate = /* GraphQL */ `
         updatedAt
       }
       lessonofferID
+      studentAddress
       createdAt
       updatedAt
       lessonCandidateUserInfoId
@@ -46,6 +47,7 @@ export const listLessonCandidates = /* GraphQL */ `
           updatedAt
         }
         lessonofferID
+        studentAddress
         createdAt
         updatedAt
         lessonCandidateUserInfoId
@@ -82,6 +84,7 @@ export const lessonCandidatesByLessonofferID = /* GraphQL */ `
           updatedAt
         }
         lessonofferID
+        studentAddress
         createdAt
         updatedAt
         lessonCandidateUserInfoId
@@ -365,12 +368,14 @@ export const getLessonOffer = /* GraphQL */ `
             updatedAt
           }
           lessonofferID
+          studentAddress
           createdAt
           updatedAt
           lessonCandidateUserInfoId
         }
         nextToken
       }
+      studentAddress
       createdAt
       updatedAt
       lessonOfferSubjectId
@@ -470,12 +475,14 @@ export const listLessonOffers = /* GraphQL */ `
               updatedAt
             }
             lessonofferID
+            studentAddress
             createdAt
             updatedAt
             lessonCandidateUserInfoId
           }
           nextToken
         }
+        studentAddress
         createdAt
         updatedAt
         lessonOfferSubjectId

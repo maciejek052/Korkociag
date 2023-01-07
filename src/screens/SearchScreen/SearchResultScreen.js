@@ -113,7 +113,7 @@ const SearchResultScreen = ({ route, navigation }) => {
       <Text style={styles.smalltxt}>Liczba znalezionych ofert: <Text style={styles.valText}>{queryResult.length}</Text></Text>
       <View styles={styles.box3}>
         <FlatList
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{ paddingBottom: 300 }} // 100
           data={queryResult}
           renderItem={renderItem}
           keyExtractor={item => item.id}

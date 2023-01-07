@@ -1,7 +1,7 @@
 // https://mdmoin07.medium.com/react-native-maps-with-autocomplete-e9c71e493974
 // consider implementing autocomplete
 
-import { View, Text, StyleSheet, useWindowDimensions, TextInput } from 'react-native'
+import { View, Text, StyleSheet, useWindowDimensions, ScrollView } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
 import MapView, { Marker, Circle } from 'react-native-maps'
 import { RootSiblingParent } from 'react-native-root-siblings';
@@ -99,7 +99,7 @@ const SearchSelectLocation = ({ route, navigation }) => {
     return (
         <RootSiblingParent>
             <View style={styles.root}>
-                <MapImage style={[styles.logo, { maxHeight: height * 0.15 }]} />
+                <MapImage style={[styles.logo, { maxHeight: height * 0.1 }]} />
                 <Text style={styles.heading}>Wybierz lokalizację korepetycji</Text>
                 <Text style={styles.text}>Wybierz na mapie w jakim miejscu chcesz znaleźć nauczycieli, następnie wybierz zakres odległości</Text>
                 <GooglePlacesAutocomplete

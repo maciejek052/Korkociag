@@ -19,6 +19,7 @@ export const createLessonCandidate = /* GraphQL */ `
         updatedAt
       }
       lessonofferID
+      studentAddress
       createdAt
       updatedAt
       lessonCandidateUserInfoId
@@ -43,6 +44,7 @@ export const updateLessonCandidate = /* GraphQL */ `
         updatedAt
       }
       lessonofferID
+      studentAddress
       createdAt
       updatedAt
       lessonCandidateUserInfoId
@@ -67,6 +69,7 @@ export const deleteLessonCandidate = /* GraphQL */ `
         updatedAt
       }
       lessonofferID
+      studentAddress
       createdAt
       updatedAt
       lessonCandidateUserInfoId
@@ -398,12 +401,14 @@ export const createLessonOffer = /* GraphQL */ `
             updatedAt
           }
           lessonofferID
+          studentAddress
           createdAt
           updatedAt
           lessonCandidateUserInfoId
         }
         nextToken
       }
+      studentAddress
       createdAt
       updatedAt
       lessonOfferSubjectId
@@ -501,12 +506,14 @@ export const updateLessonOffer = /* GraphQL */ `
             updatedAt
           }
           lessonofferID
+          studentAddress
           createdAt
           updatedAt
           lessonCandidateUserInfoId
         }
         nextToken
       }
+      studentAddress
       createdAt
       updatedAt
       lessonOfferSubjectId
@@ -604,12 +611,14 @@ export const deleteLessonOffer = /* GraphQL */ `
             updatedAt
           }
           lessonofferID
+          studentAddress
           createdAt
           updatedAt
           lessonCandidateUserInfoId
         }
         nextToken
       }
+      studentAddress
       createdAt
       updatedAt
       lessonOfferSubjectId
