@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image, Linking, Alert, ScrollView } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text, StyleSheet, Image, Linking, Alert, ScrollView, Platform } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import NonePicture from '../../../assets/images/none.png'
 import { lessons } from '../../../mocks/lessons'
@@ -11,16 +11,123 @@ import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
 import { LessonOffer, Subject, Homework } from '../../models'
 import { API } from 'aws-amplify'
 import * as mutations from '../../graphql/mutations'
-
+import * as Calendar from "expo-calendar"
 
 const SingleLessonScreen = ({ route, navigation }) => {
 
   const dispatch = useDispatch()
   const lessonObj = route.params
   const isStudent = lessonObj.id.item.LessonStudent?.UserInfo != null
-  console.log(lessonObj)
   const isUserStudent = lessonObj.student
   const location = lessonObj.id.item.place === "teacher" ? "U nauczyciela" : "U ucznia"
+
+  const [granted, setGranted] = useState(false)
+  const [eventIdInCalendar, setEventIdInCalendar] = useState("")
+  const [nearestLesson, setNearestLesson] = useState(new Date())
+  const [endOfLesson, setEndOfLesson] = useState(new Date())
+
+  async function getDefaultCalendarSource() {
+    const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+    return defaultCalendar.source;
+  }
+
+  useEffect(() => {
+    findNearestLesson()
+    obtainCalendarPermission()
+  }, [])
+
+  function addHours(date, hours) {
+    date.setHours(date.getHours() + hours);
+
+    return date;
+  }
+
+  const findNearestLesson = () => {
+    const days = daysOfWeekArray()
+    const today = new Date()
+    const todaysDayOfWeek = today.getDay()
+    const { timeStart, timeStop } = parseTime()
+    // find the nearest day
+    var nearestDay = 99
+    for (var i = 0; i < days.length; i++) {
+      var a = (days[i] - todaysDayOfWeek) % 7
+      nearestDay = Math.min(a, nearestDay)
+    }
+    var dateOfNearestLesson = new Date()
+    dateOfNearestLesson.setDate(today.getDate() + nearestDay)
+    dateOfNearestLesson.setHours(timeStart, 0, 0)
+    setNearestLesson(dateOfNearestLesson)
+  }
+
+  const obtainCalendarPermission = async () => {
+    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    if (status === 'granted') {
+      const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+      //console.log(calendars)
+      const foundCal = calendars.find(e => e.title === 'Korepetycje')
+      if (foundCal) {
+        setEventIdInCalendar(foundCal.id)
+      } else {
+        const defaultCalendarSource =
+          Platform.OS === 'ios'
+            ? await getDefaultCalendarSource()
+            : { isLocalAccount: true, name: 'Korkociąg' };
+        const newCalendarID = await Calendar.createCalendarAsync({
+          title: 'Korepetycje',
+          color: '#ffb600',
+          entityType: Calendar.EntityTypes.EVENT,
+          sourceId: defaultCalendarSource.id,
+          source: defaultCalendarSource,
+          name: 'internalCalendarName',
+          ownerAccount: 'personal',
+          accessLevel: Calendar.CalendarAccessLevel.OWNER,
+        });
+        console.log(`Your new calendar ID is: ${newCalendarID}`);
+        setEventIdInCalendar(newCalendarID)
+      }
+    }
+  }
+  const addReservationToCalendar = async () => {
+    try {
+      await Calendar.createEventAsync(eventIdInCalendar, {
+        title: "Korepetycje z przemiotu " + lessonObj.id.item.Subject.name,
+        startDate: nearestLesson,
+        endDate: new Date(nearestLesson.getTime() + 180 * 60000),
+        location: lessonObj.id.item.address, // TODO change to student location,
+        notes: "Nauczyciel: " + lessonObj.id.item.LessonTeacher.UserInfo.name + '\nUczeń: ' +
+          lessonObj.id.item.LessonStudent?.UserInfo?.name,
+        timeZone: 'Europe/Warsaw',
+      })
+      Alert.alert("Sukces", "Pomyślnie dodano najbliższą lekcję do terminarza urządzenia")
+    } catch (e) {
+      Alert.alert("Błąd przy dodawaniu do terminarza", e.message)
+      console.log(e)
+    }
+
+  }
+  const daysOfWeekArray = () => {
+    const strings = lessonObj.id.item.days
+    var ints = []
+    if (strings.find(e => e === "niedziela")) ints.push(0)
+    if (strings.find(e => e === "poniedziałek")) ints.push(1)
+    if (strings.find(e => e === "wtorek")) ints.push(2)
+    if (strings.find(e => e === "środa")) ints.push(3)
+    if (strings.find(e => e === "czwartek")) ints.push(4)
+    if (strings.find(e => e === "piątek")) ints.push(5)
+    if (strings.find(e => e === "sobota")) ints.push(6)
+    return ints
+  }
+  const parseTime = () => {
+    var timeStart = '', timeStop = ''
+    const hours = lessonObj.id.item.hours
+    if (hours[0] === '6:00 - 9:00') { timeStart = "6"; timeStop = "9" }
+    if (hours[0] === '9:00 - 12:00') { timeStart = "9"; timeStop = "12" }
+    if (hours[0] === '12:00 - 15:00') { timeStart = "12"; timeStop = "15" }
+    if (hours[0] === '15:00 - 18:00') { timeStart = "15"; timeStop = "18" }
+    if (hours[0] === '18:00 - 21:00') { timeStart = "18"; timeStop = "21" }
+    if (hours[0] === '21:00 - 24:00') { timeStart = "21"; timeStop = "23" }
+    return { timeStart, timeStop }
+  }
 
   const deleteLessonAlert = () => {
     Alert.alert(
@@ -98,6 +205,9 @@ const SingleLessonScreen = ({ route, navigation }) => {
       lessonObj: lessonObj.id.item
     });
   }
+  const addToCalendar = async () => {
+    addReservationToCalendar()
+  }
 
   // <Text style={styles.descText}>Cena: <Text style={styles.valText}>0 zł</Text></Text>
   return (
@@ -149,8 +259,15 @@ const SingleLessonScreen = ({ route, navigation }) => {
             </View>
           </View>
       }
-      <View style={{ paddingVertical: 20 }}>
+      <Text style={styles.descText}>Najbliższa lekcja: { }
+        <Text style={styles.valText}>{nearestLesson.toLocaleString('pl-PL', {
+          weekday: 'long',
+          year: 'numeric', month: 'long', day: 'numeric'
+        })}{ }</Text>
+      </Text>
+      <View style={{ paddingVertical: 0 }}>
         <CustomButton text="Prace domowe" bgColor={'green'} fgColor={'#fff'} onPress={goToHomeworkScreen} />
+        <CustomButton text="Dodaj najbliższą lekcję do terminarza" bgColor={'violet'} fgColor={'#fff'} onPress={addToCalendar} />
         <CustomButton text="Wyświetl mapę" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={() => null} />
         {
           !isUserStudent ?
