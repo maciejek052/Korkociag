@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import * as Calendar from "expo-calendar"
 import { API } from 'aws-amplify'
+import moment from "moment"
+import 'moment/locale/pl'
 import CustomButton from '../../components/CustomButton'
 import NonePicture from '../../../assets/images/none.png'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
@@ -10,7 +12,6 @@ import * as mutations from '../../graphql/mutations'
 
 
 const SingleLessonScreen = ({ route, navigation }) => {
-
   const dispatch = useDispatch()
   const lessonObj = route.params
   const isStudent = lessonObj.id.item.LessonStudent?.UserInfo != null
@@ -262,10 +263,9 @@ const SingleLessonScreen = ({ route, navigation }) => {
           </View>
       }
       <Text style={styles.descText}>Najbliższa lekcja: { }
-        <Text style={styles.valText}>{nearestLesson.toLocaleString('pl-PL', {
-          weekday: 'long',
-          year: 'numeric', month: 'long', day: 'numeric'
-        })}{ }</Text>
+        <Text style={styles.valText}>{
+          moment(nearestLesson).format('LLLL')
+        }</Text>
       </Text>
       <View style={{ paddingBottom: 50 }}>
         <CustomButton text="Prace domowe" bgColor={'green'} fgColor={'#fff'} onPress={goToHomeworkScreen} />
