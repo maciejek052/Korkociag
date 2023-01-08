@@ -202,8 +202,13 @@ const SingleLessonScreen = ({ route, navigation }) => {
       lessonObj: lessonObj.id.item
     });
   }
+  const goToEditScreen = () => {
+    navigation.navigate('EditLessonScreen', {
+      lessonObj: lessonObj.id.item
+    });
+  }
 
-  // <Text style={styles.descText}>Cena: <Text style={styles.valText}>0 zł</Text></Text>
+
   return (
     <ScrollView style={styles.root}>
       <Text style={styles.heading}>{lessonObj.id.item.Subject.name}</Text>
@@ -211,9 +216,10 @@ const SingleLessonScreen = ({ route, navigation }) => {
       <Text style={styles.descText}>Godziny korepetycji: <Text style={styles.valText}>{lessonObj.id.item.hours + ''}</Text></Text>
       <Text style={styles.descText}>Miasto: <Text style={styles.valText}>{lessonObj.id.item.city}</Text></Text>
       <Text style={styles.descText}>Adres: <Text style={styles.valText}>
-        {lessonObj.id.item.place === "teacher" ? lessonObj.id.item.address : lessonObj.id.item.LessonStudent?.studentAddress }
+        {lessonObj.id.item.place === "teacher" ? lessonObj.id.item.address : lessonObj.id.item.LessonStudent?.studentAddress}
       </Text></Text>
       <Text style={styles.descText}>Miejsce korepetycji: <Text style={styles.valText}>{location}</Text></Text>
+      <Text style={styles.descText}>Cena za lekcję: <Text style={styles.valText}>{lessonObj.id.item.price} zł</Text></Text>
       {
         lessonObj.id.item.LessonCandidates?.items?.length > 0 &&
         <CustomButton bgColor={'#fff900'} fgColor={'black'}
@@ -268,7 +274,7 @@ const SingleLessonScreen = ({ route, navigation }) => {
         {
           !isUserStudent ?
             <>
-              <CustomButton text="Zmień szczegóły korepetycji" bgColor={'#ffb600'} fgColor={'#000'} />
+              <CustomButton text="Zmień szczegóły korepetycji" bgColor={'#ffb600'} fgColor={'#000'} onPress={goToEditScreen} />
               <CustomButton text="Usuń lekcję" bgColor={'red'} fgColor={'#fff'} onPress={deleteLessonAlert} />
             </> :
             <>

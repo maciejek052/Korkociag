@@ -6,6 +6,7 @@ import HomeworkScreen from '../screens/LessonScreen/HomeworkScreen'
 import PendingLessonScreen from '../screens/LessonScreen/PendingLessonScreen';
 import StudentAcceptanceScreen from '../screens/LessonScreen/StudentAcceptanceScreen';
 import MapScreen from '../screens/LessonScreen/MapScreen'
+import EditLessonScreen from '../screens/LessonScreen/EditLessonScreen';
 
 const Stack = createNativeStackNavigator()
 const HomeNavigation = () => {
@@ -16,6 +17,7 @@ const HomeNavigation = () => {
         <Stack.Screen name="PendingLessonScreen" component={PendingLessonScreen} options={{headerShown: false}} />
         <Stack.Screen name="StudentAcceptanceScreen" component={StudentAcceptanceScreen} options={{headerShown: false}} />
         <Stack.Screen name="MapScreen" component={MapScreen} options={{headerShown: false}} />
+        <Stack.Screen name="EditLessonScreen" component={EditLessonScreen} options={{headerShown: false}} />
     </Stack.Navigator>
 
 }
