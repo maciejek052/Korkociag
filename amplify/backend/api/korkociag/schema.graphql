@@ -8,6 +8,7 @@ type LessonCandidate @model @auth(rules: [{allow: private}]) {
 type LessonStudent @model @auth(rules: [{allow: private}]) {
   id: ID!
   UserInfo: UserInfo @hasOne
+  studentAddress: String
 }
 
 type LessonTeacher @model @auth(rules: [{allow: private}]) {

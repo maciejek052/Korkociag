@@ -89,6 +89,7 @@ export const onCreateLessonStudent = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      studentAddress
       createdAt
       updatedAt
       lessonStudentUserInfoId
@@ -111,6 +112,7 @@ export const onUpdateLessonStudent = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      studentAddress
       createdAt
       updatedAt
       lessonStudentUserInfoId
@@ -133,6 +135,7 @@ export const onDeleteLessonStudent = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      studentAddress
       createdAt
       updatedAt
       lessonStudentUserInfoId
@@ -348,6 +351,7 @@ export const onCreateLessonOffer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        studentAddress
         createdAt
         updatedAt
         lessonStudentUserInfoId
@@ -453,6 +457,7 @@ export const onUpdateLessonOffer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        studentAddress
         createdAt
         updatedAt
         lessonStudentUserInfoId
@@ -558,6 +563,7 @@ export const onDeleteLessonOffer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        studentAddress
         createdAt
         updatedAt
         lessonStudentUserInfoId

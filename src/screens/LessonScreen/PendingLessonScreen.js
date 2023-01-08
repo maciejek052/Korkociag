@@ -35,7 +35,11 @@ const PendingLessonScreen = ({ route, navigation }) => {
             console.log(e)
         }
     }
-
+    const goToMapScreen = () => {
+        navigation.navigate('MapScreen', {
+            lessonObj: lessonObj.id.item
+        });
+    }
     return (
         <View style={styles.root}>
             <Text style={styles.heading}>{lessonObj.id.item.Subject.name}</Text>
@@ -49,7 +53,7 @@ const PendingLessonScreen = ({ route, navigation }) => {
                 <Text style={styles.valText}>{"Nauczyciel: " + lessonObj.id.item.LessonTeacher?.UserInfo.name}</Text>
             </View>
             <Text style={styles.centerText}>Oferta oczekuje na zaakceptowanie przez nauczyciela</Text>
-            <CustomButton text="Wyświetl mapę" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={() => null} />
+            <CustomButton text="Wyświetl mapę" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={goToMapScreen} />
             <CustomButton text="Zrezygnuj z korepetycji" bgColor={'red'} fgColor={'#fff'} onPress={studentResignAlert} />
         </View>
     )

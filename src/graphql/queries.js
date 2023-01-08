@@ -107,6 +107,7 @@ export const getLessonStudent = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      studentAddress
       createdAt
       updatedAt
       lessonStudentUserInfoId
@@ -132,6 +133,7 @@ export const listLessonStudents = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        studentAddress
         createdAt
         updatedAt
         lessonStudentUserInfoId
@@ -333,6 +335,7 @@ export const getLessonOffer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        studentAddress
         createdAt
         updatedAt
         lessonStudentUserInfoId
@@ -440,6 +443,7 @@ export const listLessonOffers = /* GraphQL */ `
             createdAt
             updatedAt
           }
+          studentAddress
           createdAt
           updatedAt
           lessonStudentUserInfoId

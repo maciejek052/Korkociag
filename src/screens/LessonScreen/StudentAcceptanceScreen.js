@@ -9,7 +9,6 @@ const StudentAcceptanceScreen = ({ route, navigation }) => {
   const candidatesArray = lessonObj.LessonCandidates.items
   const [listArray, setListArray] = useState(candidatesArray)
   const [loading, setLoading] = useState(false)
-
   const acceptAlert = (item, user) => {
     Alert.alert(
       "Przypisanie ucznia do oferty",
@@ -64,17 +63,10 @@ const StudentAcceptanceScreen = ({ route, navigation }) => {
     `)
       );
       // create connection between student and lesson
-      /*
-      const updatedLesson = {
-        id: item.lessonofferID,
-        studentAddress: item.studentAddress,
-        lessonOfferLessonStudentId: item.lessonCandidateUserInfoId
-      }
-      const query = await API.graphql({ query: mutations.updateLessonOffer, variables: { input: updatedLesson } });
-      */
       const obj = {
         id: item.lessonofferID,
-        lessonStudentUserInfoId: item.lessonCandidateUserInfoId
+        lessonStudentUserInfoId: item.lessonCandidateUserInfoId, 
+        studentAddress: item.studentAddress
       }
       const newStudentQuery = await API.graphql({ query: mutations.createLessonStudent, variables: { input: obj } })
       Alert.alert("Sukces", "Połączono ucznia " + user.name + " z ofertą")
@@ -114,7 +106,7 @@ const StudentAcceptanceScreen = ({ route, navigation }) => {
         <View style={styles.horizontalBox}>
           <CustomCircleCheckbox text="Akceptuj ucznia" bgColor={'#00ff00'} onPress={() => acceptAlert(item, user)} />
           <CustomCircleCheckbox text="Odrzuć ucznia" bgColor={'#ff2100'} onPress={() => rejectAlert(item, user)} />
-          <CustomCircleCheckbox text="Pokaż mapę" bgColor={'#ffb600'} onPress={() => goToMap(item)} />
+          <CustomCircleCheckbox text="Pokaż mapę" bgColor={'#ffb600'} onPress={() => goToMapScreen(item)} />
         </View>
       </View>
     </>
@@ -127,6 +119,12 @@ const StudentAcceptanceScreen = ({ route, navigation }) => {
     />
   );
 
+  const goToMapScreen = (item) => {
+    navigation.navigate('MapScreen', {
+      lessonObj: lessonObj,
+      candidate: item
+    });
+  }
   return (
     <View style={styles.root}>
 

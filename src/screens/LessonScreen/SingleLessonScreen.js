@@ -1,17 +1,13 @@
 import { View, Text, StyleSheet, Image, Linking, Alert, ScrollView, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import * as Calendar from "expo-calendar"
+import { API } from 'aws-amplify'
 import CustomButton from '../../components/CustomButton'
 import NonePicture from '../../../assets/images/none.png'
-import { lessons } from '../../../mocks/lessons'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
-import { DataStore, Predicates } from 'aws-amplify'
-import { useNavigation } from '@react-navigation/native'
-import { useDispatch } from 'react-redux'
-import { fetchLessonsAsTeacher } from '../../redux/lessonsAsTeacher'
-import { LessonOffer, Subject, Homework } from '../../models'
-import { API } from 'aws-amplify'
 import * as mutations from '../../graphql/mutations'
-import * as Calendar from "expo-calendar"
+
 
 const SingleLessonScreen = ({ route, navigation }) => {
 
@@ -24,7 +20,6 @@ const SingleLessonScreen = ({ route, navigation }) => {
   const [granted, setGranted] = useState(false)
   const [eventIdInCalendar, setEventIdInCalendar] = useState("")
   const [nearestLesson, setNearestLesson] = useState(new Date())
-  const [endOfLesson, setEndOfLesson] = useState(new Date())
 
   async function getDefaultCalendarSource() {
     const defaultCalendar = await Calendar.getDefaultCalendarAsync();
@@ -35,12 +30,6 @@ const SingleLessonScreen = ({ route, navigation }) => {
     findNearestLesson()
     obtainCalendarPermission()
   }, [])
-
-  function addHours(date, hours) {
-    date.setHours(date.getHours() + hours);
-
-    return date;
-  }
 
   const findNearestLesson = () => {
     const days = daysOfWeekArray()
@@ -208,6 +197,11 @@ const SingleLessonScreen = ({ route, navigation }) => {
   const addToCalendar = async () => {
     addReservationToCalendar()
   }
+  const goToMapScreen = () => {
+    navigation.navigate('MapScreen', {
+      lessonObj: lessonObj.id.item
+    });
+  }
 
   // <Text style={styles.descText}>Cena: <Text style={styles.valText}>0 zł</Text></Text>
   return (
@@ -216,7 +210,9 @@ const SingleLessonScreen = ({ route, navigation }) => {
       <Text style={styles.descText}>Termin korepetycji: <Text style={styles.valText}>{lessonObj.id.item.days + ''}</Text></Text>
       <Text style={styles.descText}>Godziny korepetycji: <Text style={styles.valText}>{lessonObj.id.item.hours + ''}</Text></Text>
       <Text style={styles.descText}>Miasto: <Text style={styles.valText}>{lessonObj.id.item.city}</Text></Text>
-      <Text style={styles.descText}>Adres nauczyciela: <Text style={styles.valText}>{lessonObj.id.item.address}</Text></Text>
+      <Text style={styles.descText}>Adres: <Text style={styles.valText}>
+        {lessonObj.id.item.place === "teacher" ? lessonObj.id.item.address : lessonObj.id.item.LessonStudent?.studentAddress }
+      </Text></Text>
       <Text style={styles.descText}>Miejsce korepetycji: <Text style={styles.valText}>{location}</Text></Text>
       {
         lessonObj.id.item.LessonCandidates?.items?.length > 0 &&
@@ -265,10 +261,10 @@ const SingleLessonScreen = ({ route, navigation }) => {
           year: 'numeric', month: 'long', day: 'numeric'
         })}{ }</Text>
       </Text>
-      <View style={{ paddingVertical: 0 }}>
+      <View style={{ paddingBottom: 50 }}>
         <CustomButton text="Prace domowe" bgColor={'green'} fgColor={'#fff'} onPress={goToHomeworkScreen} />
         <CustomButton text="Dodaj najbliższą lekcję do terminarza" bgColor={'violet'} fgColor={'#fff'} onPress={addToCalendar} />
-        <CustomButton text="Wyświetl mapę" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={() => null} />
+        <CustomButton text="Wyświetl mapę" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={goToMapScreen} />
         {
           !isUserStudent ?
             <>

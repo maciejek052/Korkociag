@@ -70,6 +70,8 @@ const HomeScreen = () => {
       );
       query.data.getLessonOffer.isPending = true
       query.data.getLessonOffer.candidacyID = e.id
+      query.data.getLessonOffer.LessonStudent = {}
+      query.data.getLessonOffer.LessonStudent.studentAddress = e.studentAddress
       offersArray.push(query.data.getLessonOffer)
     }
     const query = await API.graphql(
