@@ -12,7 +12,7 @@ import Feather from '@expo/vector-icons/Feather'
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
     return (
-        <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: '#3b71f3' }} >
+        <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: '#3b71f3', tabBarHideOnKeyboard: 'true'}} >
             <Tab.Screen name="Home" component={HomeNavigation} options={{
                 tabBarIcon: ({ color, size }) => (
                     <Ionicons name="home" size={size} color={color} />

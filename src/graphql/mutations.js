@@ -1,6 +1,81 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createChatMessage = /* GraphQL */ `
+  mutation CreateChatMessage(
+    $input: CreateChatMessageInput!
+    $condition: ModelChatMessageConditionInput
+  ) {
+    createChatMessage(input: $input, condition: $condition) {
+      id
+      createdAt
+      message
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      updatedAt
+      chatMessageUserInfoId
+    }
+  }
+`;
+export const updateChatMessage = /* GraphQL */ `
+  mutation UpdateChatMessage(
+    $input: UpdateChatMessageInput!
+    $condition: ModelChatMessageConditionInput
+  ) {
+    updateChatMessage(input: $input, condition: $condition) {
+      id
+      createdAt
+      message
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      updatedAt
+      chatMessageUserInfoId
+    }
+  }
+`;
+export const deleteChatMessage = /* GraphQL */ `
+  mutation DeleteChatMessage(
+    $input: DeleteChatMessageInput!
+    $condition: ModelChatMessageConditionInput
+  ) {
+    deleteChatMessage(input: $input, condition: $condition) {
+      id
+      createdAt
+      message
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      updatedAt
+      chatMessageUserInfoId
+    }
+  }
+`;
 export const createLessonCandidate = /* GraphQL */ `
   mutation CreateLessonCandidate(
     $input: CreateLessonCandidateInput!
@@ -413,6 +488,27 @@ export const createLessonOffer = /* GraphQL */ `
         nextToken
       }
       studentAddress
+      ChatMessages {
+        items {
+          id
+          createdAt
+          message
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          updatedAt
+          chatMessageUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
       lessonOfferSubjectId
@@ -519,6 +615,27 @@ export const updateLessonOffer = /* GraphQL */ `
         nextToken
       }
       studentAddress
+      ChatMessages {
+        items {
+          id
+          createdAt
+          message
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          updatedAt
+          chatMessageUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
       lessonOfferSubjectId
@@ -625,6 +742,27 @@ export const deleteLessonOffer = /* GraphQL */ `
         nextToken
       }
       studentAddress
+      ChatMessages {
+        items {
+          id
+          createdAt
+          message
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          updatedAt
+          chatMessageUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
       lessonOfferSubjectId

@@ -1,6 +1,78 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateChatMessage = /* GraphQL */ `
+  subscription OnCreateChatMessage(
+    $filter: ModelSubscriptionChatMessageFilterInput
+  ) {
+    onCreateChatMessage(filter: $filter) {
+      id
+      createdAt
+      message
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      updatedAt
+      chatMessageUserInfoId
+    }
+  }
+`;
+export const onUpdateChatMessage = /* GraphQL */ `
+  subscription OnUpdateChatMessage(
+    $filter: ModelSubscriptionChatMessageFilterInput
+  ) {
+    onUpdateChatMessage(filter: $filter) {
+      id
+      createdAt
+      message
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      updatedAt
+      chatMessageUserInfoId
+    }
+  }
+`;
+export const onDeleteChatMessage = /* GraphQL */ `
+  subscription OnDeleteChatMessage(
+    $filter: ModelSubscriptionChatMessageFilterInput
+  ) {
+    onDeleteChatMessage(filter: $filter) {
+      id
+      createdAt
+      message
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      updatedAt
+      chatMessageUserInfoId
+    }
+  }
+`;
 export const onCreateLessonCandidate = /* GraphQL */ `
   subscription OnCreateLessonCandidate(
     $filter: ModelSubscriptionLessonCandidateFilterInput
@@ -395,6 +467,27 @@ export const onCreateLessonOffer = /* GraphQL */ `
         nextToken
       }
       studentAddress
+      ChatMessages {
+        items {
+          id
+          createdAt
+          message
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          updatedAt
+          chatMessageUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
       lessonOfferSubjectId
@@ -501,6 +594,27 @@ export const onUpdateLessonOffer = /* GraphQL */ `
         nextToken
       }
       studentAddress
+      ChatMessages {
+        items {
+          id
+          createdAt
+          message
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          updatedAt
+          chatMessageUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
       lessonOfferSubjectId
@@ -607,6 +721,27 @@ export const onDeleteLessonOffer = /* GraphQL */ `
         nextToken
       }
       studentAddress
+      ChatMessages {
+        items {
+          id
+          createdAt
+          message
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          updatedAt
+          chatMessageUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
       lessonOfferSubjectId

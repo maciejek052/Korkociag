@@ -1,8 +1,7 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React, { useRef, useState, useEffect } from 'react'
 import MapView, { Marker, Circle } from 'react-native-maps'
 import Geocoder from 'react-native-geocoding';
-import Ionicons from '@expo/vector-icons/Ionicons'
 import { GOOGLE_API_KEY } from '../../../api_keys'
 
 const MapScreen = ({ route, navigation }) => {
@@ -14,8 +13,8 @@ const MapScreen = ({ route, navigation }) => {
   const studentAddress = !candidate ?
     lessonObj.LessonStudent?.studentAddress : candidate.studentAddress
   const mapRef = useRef(null)
-  const [teacherCoords, setTeacherCoords] = useState({lat: 0, lng: 0})
-  const [studentCoords, setStudentCoords] = useState({lat: 0, lng: 0})
+  const [teacherCoords, setTeacherCoords] = useState({ lat: 0, lng: 0 })
+  const [studentCoords, setStudentCoords] = useState({ lat: 0, lng: 0 })
 
   useEffect(() => {
     Geocoder.from(teacherAddress)
@@ -51,12 +50,6 @@ const MapScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.root}>
-      <View
-        style={styles.topButtons}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back-outline" style={{ fontSize: 35 }} />
-        </TouchableOpacity>
-      </View>
       <MapView style={styles.map}
         provider='google' initialRegion={INITIAL_POSITION} ref={mapRef}>
         <Marker title={"Nauczyciel"} coordinate={{
@@ -88,12 +81,5 @@ const styles = StyleSheet.create({
   map: {
     height: '100%',
     width: '100%',
-  },
-  topButtons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 10,
-    paddingVertical: 20
   }
 })

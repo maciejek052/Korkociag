@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Image, Linking, Alert, ScrollView, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import * as Calendar from "expo-calendar"
 import { API } from 'aws-amplify'
-import moment from "moment"
+import moment from 'moment'
 import 'moment/locale/pl'
 import CustomButton from '../../components/CustomButton'
 import NonePicture from '../../../assets/images/none.png'
@@ -12,7 +12,9 @@ import * as mutations from '../../graphql/mutations'
 
 
 const SingleLessonScreen = ({ route, navigation }) => {
-  const dispatch = useDispatch()
+
+  const { user } = useSelector((state) => state.userInformation)
+
   const lessonObj = route.params
   const isStudent = lessonObj.id.item.LessonStudent?.UserInfo != null
   const isUserStudent = lessonObj.student
@@ -208,7 +210,16 @@ const SingleLessonScreen = ({ route, navigation }) => {
       lessonObj: lessonObj.id.item
     });
   }
-
+  const goToChatScreen = () => {
+    if (isStudent) {
+      navigation.navigate('ChatScreen', {
+        lessonObj: lessonObj.id.item,
+        user: user
+      })
+    } else {
+      Alert.alert("Błąd", "Nie możesz przejść do czatu, kiedy z ofertą nie jest powiązany żaden uczeń")
+    }
+  }
 
   return (
     <ScrollView style={styles.root}>
@@ -238,7 +249,7 @@ const SingleLessonScreen = ({ route, navigation }) => {
             )}
             <Text style={styles.descText}>{ }<Text style={styles.valText}>{isStudent ? "Student: " + lessonObj.id.item.LessonStudent?.UserInfo.name : "Student: brak"}</Text></Text>
             <View style={{ flexDirection: 'row' }}>
-              <CustomCircleCheckbox text="Napisz wiadomość" bgColor={'#3b71f3'} fgColor={'#fff'} />
+              <CustomCircleCheckbox text="Napisz wiadomość" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={goToChatScreen} />
               <CustomCircleCheckbox text="Zadzwoń na telefon" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={() => {
                 if (isStudent)
                   Linking.openURL('tel: ' + lessonObj.id.item.LessonStudent?.UserInfo.phone_number)
@@ -254,7 +265,7 @@ const SingleLessonScreen = ({ route, navigation }) => {
             )}
             <Text style={styles.descText}>{ }<Text style={styles.valText}>{isStudent ? "Nauczyciel: " + lessonObj.id.item.LessonTeacher?.UserInfo.name : "Nauczyciel: brak"}</Text></Text>
             <View style={{ flexDirection: 'row' }}>
-              <CustomCircleCheckbox text="Napisz wiadomość" bgColor={'#3b71f3'} fgColor={'#fff'} />
+              <CustomCircleCheckbox text="Napisz wiadomość" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={goToChatScreen} />
               <CustomCircleCheckbox text="Zadzwoń na telefon" bgColor={'#3b71f3'} fgColor={'#fff'} onPress={() => {
                 if (isStudent)
                   Linking.openURL('tel: ' + lessonObj.id.item.LessonTeacher?.UserInfo.phone_number)

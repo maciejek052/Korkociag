@@ -1,6 +1,96 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getChatMessage = /* GraphQL */ `
+  query GetChatMessage($id: ID!) {
+    getChatMessage(id: $id) {
+      id
+      createdAt
+      message
+      UserInfo {
+        id
+        name
+        address
+        picture
+        phone_number
+        cognitoID
+        createdAt
+        updatedAt
+      }
+      lessonofferID
+      updatedAt
+      chatMessageUserInfoId
+    }
+  }
+`;
+export const listChatMessages = /* GraphQL */ `
+  query ListChatMessages(
+    $filter: ModelChatMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listChatMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAt
+        message
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+        }
+        lessonofferID
+        updatedAt
+        chatMessageUserInfoId
+      }
+      nextToken
+    }
+  }
+`;
+export const listMessagesByLesson = /* GraphQL */ `
+  query ListMessagesByLesson(
+    $lessonofferID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelChatMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMessagesByLesson(
+      lessonofferID: $lessonofferID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        message
+        UserInfo {
+          id
+          name
+          address
+          picture
+          phone_number
+          cognitoID
+          createdAt
+          updatedAt
+        }
+        lessonofferID
+        updatedAt
+        chatMessageUserInfoId
+      }
+      nextToken
+    }
+  }
+`;
 export const getLessonCandidate = /* GraphQL */ `
   query GetLessonCandidate($id: ID!) {
     getLessonCandidate(id: $id) {
@@ -379,6 +469,27 @@ export const getLessonOffer = /* GraphQL */ `
         nextToken
       }
       studentAddress
+      ChatMessages {
+        items {
+          id
+          createdAt
+          message
+          UserInfo {
+            id
+            name
+            address
+            picture
+            phone_number
+            cognitoID
+            createdAt
+            updatedAt
+          }
+          lessonofferID
+          updatedAt
+          chatMessageUserInfoId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
       lessonOfferSubjectId
