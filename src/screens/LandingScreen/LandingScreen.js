@@ -1,4 +1,4 @@
-import { View, Image, Text, StyleSheet, useWindowDimensions } from 'react-native'
+import { View, Image, Text, StyleSheet, useWindowDimensions, ScrollView } from 'react-native'
 import { SvgUri } from 'react-native-svg'
 import React from 'react'
 import CustomButton from '../../components/CustomButton'
@@ -14,7 +14,7 @@ const LandingScreen = () => {
     const { height } = useWindowDimensions()
     const navigation = useNavigation()
     return (
-        <View style={styles.root}>
+        <ScrollView style={styles.root}>
             <LogoImg style={[styles.logo, { height: height * 0.5 }]} resizeMode="contain" />
             <Text style={styles.heading}>Znalezienie korepetycji nigdy nie było prostsze!</Text>
             <Text style={styles.smallText}>
@@ -24,15 +24,19 @@ const LandingScreen = () => {
                 Nasi wykształceni korepetytorzy nauczą cię każdego przedmiotu
                 szkolnego na wybranym przez ciebie poziome edukacji.
             </Text>
+            <Text style={styles.smallText}>
+                Aplikacja powstała w ramach pracy inżynierskiej realizowanej na Wydziale
+                Informatyki Politechniki Białostockiej
+            </Text>
             <Text style={styles.biggerPhrase}>Na co czekasz? Dołącz już teraz!</Text>
-            <CustomButton text="Dołącz do nas!" onPress={onJoinUsPressed} type="LANDING"/>
-        </View>
+            <CustomButton text="Dołącz do nas!" onPress={onJoinUsPressed} type="LANDING" />
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     root: {
-        alignItems: 'center',
+        //alignItems: 'center',
         padding: 20
     },
     logo: {

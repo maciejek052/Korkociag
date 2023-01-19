@@ -95,7 +95,6 @@ const SignUpScreen = () => {
                     <Text style={styles.link} onPress={onPrivacyPolicyPressed}>
                         politykę prywatności</Text>
                 </Text>
-                <SocialSignInButtons />
                 <CustomButton text="Masz już konto? Zaloguj się" onPress={onSignInPressed} type="TERTIARY" />
             </View>
         </ScrollView>

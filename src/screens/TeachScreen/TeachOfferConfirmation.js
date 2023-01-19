@@ -24,7 +24,7 @@ const TeachOfferConfirmation = () => {
             <Text style={styles.heading}>Dodano ofertę!</Text>
             <Text style={styles.text}>
                 Twoja oferta została pomyślnie dodana i wyświetla sie w wyszukiwaniach dla uczniów.
-                Kiedy uczeń będzie nią zainteresowany dostaniesz powiadomienie i będziesz mógł zapoznać się ze szczegółami.
+                Kiedy uczeń będzie nią zainteresowany zobaczysz jego prośbę i będziesz mógł zapoznać się ze szczegółami.
             </Text>
             <Text style={styles.text}>
                 Możesz teraz dodać kolejną ofertę. Pamiętaj że z pojedynczą ofertą może być powiązany tylko jeden uczeń.

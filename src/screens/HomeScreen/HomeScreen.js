@@ -46,54 +46,59 @@ const HomeScreen = () => {
 
 
   const reload = async () => {
-    setLoading(true)
-    const lessonAsTeacherQuery = await API.graphql(
-      graphqlOperation(queries.listLessonOffers, { filter: { ownerCognitoID: { eq: user.attributes.sub } } })
-    );
-    //setLessonsAsTeacher(lessonAsTeacherQuery)
-    // sort to show pending lessons at the first places
-    var result = lessonAsTeacherQuery.data.listLessonOffers.items.sort((a, b) => b.LessonCandidates.items.length - a.LessonCandidates.items.length)
-    setLessonsAsTeacher(result)
-    console.log(lessonAsTeacherQuery)
-    console.log("Lessons as teacher fetched")
-    // TODO replace that abomination with a proper GraphQL query
-    // i did this in this way because filtering by nested obj value is a big pain in a butt in aws appsync
-    var offersArray = []
+    try {
+      setLoading(true)
+      const lessonAsTeacherQuery = await API.graphql(
+        graphqlOperation(queries.listLessonOffers, { filter: { ownerCognitoID: { eq: user.attributes.sub } } })
+      );
+      //setLessonsAsTeacher(lessonAsTeacherQuery)
+      // sort to show pending lessons at the first places
+      var result = lessonAsTeacherQuery.data.listLessonOffers.items.sort((a, b) => b.LessonCandidates.items.length - a.LessonCandidates.items.length)
+      setLessonsAsTeacher(result)
+      console.log(lessonAsTeacherQuery)
+      console.log("Lessons as teacher fetched")
+      // TODO replace that abomination with a proper GraphQL query
+      // i did this in this way because filtering by nested obj value is a big pain in a butt in aws appsync
+      var offersArray = []
 
-    const waitingForAccept = await API.graphql(
-      graphqlOperation(queries.listLessonCandidates, { filter: { lessonCandidateUserInfoId: { eq: user.attributes.sub } } })
-    );
+      const waitingForAccept = await API.graphql(
+        graphqlOperation(queries.listLessonCandidates, { filter: { lessonCandidateUserInfoId: { eq: user.attributes.sub } } })
+      );
 
-    for (const e of waitingForAccept.data.listLessonCandidates.items) {
+      for (const e of waitingForAccept.data.listLessonCandidates.items) {
+        const query = await API.graphql(
+          graphqlOperation(queries.getLessonOffer, { id: e.lessonofferID })
+        );
+        query.data.getLessonOffer.isPending = true
+        query.data.getLessonOffer.candidacyID = e.id
+        query.data.getLessonOffer.LessonStudent = {}
+        query.data.getLessonOffer.LessonStudent.studentAddress = e.studentAddress
+        offersArray.push(query.data.getLessonOffer)
+      }
       const query = await API.graphql(
-        graphqlOperation(queries.getLessonOffer, { id: e.lessonofferID })
+        graphqlOperation(queries.listLessonStudents, { filter: { lessonStudentUserInfoId: { eq: user.attributes.sub } } })
       );
-      query.data.getLessonOffer.isPending = true
-      query.data.getLessonOffer.candidacyID = e.id
-      query.data.getLessonOffer.LessonStudent = {}
-      query.data.getLessonOffer.LessonStudent.studentAddress = e.studentAddress
-      offersArray.push(query.data.getLessonOffer)
+      //console.log(query)
+      for (const e of query.data.listLessonStudents.items) {
+        const query2 = await API.graphql(
+          graphqlOperation(queries.getLessonOffer, { id: e.id })
+        );
+        //console.log(query2)
+        offersArray.push(query2.data.getLessonOffer)
+      }
+      var ar = offersArray.sort((a, b) => a.LessonCandidates.items.length - b.LessonCandidates.items.length)
+      setLessonsAsStudent(ar)
+      console.log("Lessons as student fetched")
+      setLoading(false)
+      // setStudent(true)
+      //console.log(user)
+      //console.log(lessonsAsStudent)
+      //console.log(lessonsAsTeacher)
+      showStudent ? setList(offersArray) : setList(lessonAsTeacherQuery.data.listLessonOffers.items)
+    } catch (e) {
+      Alert.alert("Błąd przy pobieraniu listy ofert", e.message)
+      console.log(e)
     }
-    const query = await API.graphql(
-      graphqlOperation(queries.listLessonStudents, { filter: { lessonStudentUserInfoId: { eq: user.attributes.sub } } })
-    );
-    //console.log(query)
-    for (const e of query.data.listLessonStudents.items) {
-      const query2 = await API.graphql(
-        graphqlOperation(queries.getLessonOffer, { id: e.id })
-      );
-      //console.log(query2)
-      offersArray.push(query2.data.getLessonOffer)
-    }
-    var ar = offersArray.sort((a, b) => a.LessonCandidates.items.length - b.LessonCandidates.items.length)
-    setLessonsAsStudent(ar)
-    console.log("Lessons as student fetched")
-    setLoading(false)
-    // setStudent(true)
-    //console.log(user)
-    //console.log(lessonsAsStudent)
-    //console.log(lessonsAsTeacher)
-    showStudent ? setList(offersArray) : setList(lessonAsTeacherQuery.data.listLessonOffers.items)
   }
 
 

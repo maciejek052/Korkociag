@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions, StyleSheet, Alert } from 'react-native'
+import { View, Text, useWindowDimensions, StyleSheet, Keyboard, Alert, TouchableWithoutFeedback } from 'react-native'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { API, graphqlOperation } from 'aws-amplify';
@@ -118,26 +118,28 @@ const TeachSummaryScreen = ({ route, navigation }) => {
 
 
     return (
-        <View style={styles.root}>
-            <SearchImage style={[styles.logo, { maxHeight: height * 0.15 }]} />
-            <Text style={styles.heading}>Potwierdź dodawanie oferty</Text>
-            <Text style={styles.text2}>Podaj cenę za jedną lekcję</Text>
-            <BasicInput keyboardType={'numeric'} value={price} setValue={setPrice} placeholder={'Cena w zł'} />
-            <Text style={styles.text}>Upewnij się, czy poprawnie wprowadziłeś szczegóły udzielanych korepetycji</Text>
-            <>
-                <BlackboardImage style={{ maxHeight: height * 0.08 }} />
-                <Text style={styles.caption}>Poziom: <Text style={styles.value}>{level}</Text></Text>
-                <Text style={styles.caption}>Przedmiot: <Text style={styles.value}>{subject.name}</Text></Text>
-                <Text style={styles.caption}>Miasto: <Text style={styles.value}>{city}</Text></Text>
-                <Text style={styles.caption}>Adres: <Text style={styles.value}>{address}</Text></Text>
-                <Text style={styles.caption}>Miejsce: <Text style={styles.value}>{parseLoc()}</Text></Text>
-                <TimeImage style={{ maxHeight: height * 0.08 }} />
-                <Text style={styles.caption}>Dni: <Text style={styles.value}>{parseDays()}</Text></Text>
-                <Text style={styles.caption}>Godziny: <Text style={styles.value}>{parseTime()}</Text></Text>
-                <Text></Text>
-            </>
-            <CustomButton text="Utwórz ofertę" onPress={confirmOffer} />
-        </View>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.root}>
+                <SearchImage style={[styles.logo, { maxHeight: height * 0.15 }]} />
+                <Text style={styles.heading}>Potwierdź dodawanie oferty</Text>
+                <Text style={styles.text2}>Podaj cenę za jedną lekcję</Text>
+                <BasicInput keyboardType={'numeric'} value={price} setValue={setPrice} placeholder={'Cena w zł'} />
+                <Text style={styles.text}>Upewnij się, czy poprawnie wprowadziłeś szczegóły udzielanych korepetycji</Text>
+                <>
+                    <BlackboardImage style={{ maxHeight: height * 0.08 }} />
+                    <Text style={styles.caption}>Poziom: <Text style={styles.value}>{level}</Text></Text>
+                    <Text style={styles.caption}>Przedmiot: <Text style={styles.value}>{subject.name}</Text></Text>
+                    <Text style={styles.caption}>Miasto: <Text style={styles.value}>{city}</Text></Text>
+                    <Text style={styles.caption}>Adres: <Text style={styles.value}>{address}</Text></Text>
+                    <Text style={styles.caption}>Miejsce: <Text style={styles.value}>{parseLoc()}</Text></Text>
+                    <TimeImage style={{ maxHeight: height * 0.08 }} />
+                    <Text style={styles.caption}>Dni: <Text style={styles.value}>{parseDays()}</Text></Text>
+                    <Text style={styles.caption}>Godziny: <Text style={styles.value}>{parseTime()}</Text></Text>
+                    <Text></Text>
+                </>
+                <CustomButton text="Utwórz ofertę" onPress={confirmOffer} />
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 const styles = StyleSheet.create({

@@ -37,18 +37,21 @@ const SingleLessonScreen = ({ route, navigation }) => {
   const findNearestLesson = () => {
     const days = daysOfWeekArray()
     const today = new Date()
-    const todaysDayOfWeek = today.getDay()
     const { timeStart, timeStop } = parseTime()
-    // find the nearest day
-    var nearestDay = 99
-    for (var i = 0; i < days.length; i++) {
-      var a = (days[i] - todaysDayOfWeek) % 7
-      nearestDay = Math.min(a, nearestDay)
+    var arrayWholeWeek = [] // whole week from today
+    var arrayDatesOfLessons = [] // dates of lesson for next week
+    for (var i = 0; i < 7; i++) {
+      var d = new Date()
+      d.setDate(d.getDate() + i)
+      d.setHours(timeStart, 0, 0)
+      arrayWholeWeek[d.getDay()] = d
     }
-    var dateOfNearestLesson = new Date()
-    dateOfNearestLesson.setDate(today.getDate() + nearestDay)
-    dateOfNearestLesson.setHours(timeStart, 0, 0)
-    setNearestLesson(dateOfNearestLesson)
+    for (var i = 0; i < days.length; i++) {
+      arrayDatesOfLessons.push(arrayWholeWeek[days[i]])
+    }
+    arrayDatesOfLessons.sort((a, b) => a.getTime() - b.getTime());
+    today < arrayDatesOfLessons[0] ? setNearestLesson(arrayDatesOfLessons[0]) :
+      setNearestLesson(arrayDatesOfLessons[1])
   }
 
   const obtainCalendarPermission = async () => {

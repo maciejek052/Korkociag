@@ -7,7 +7,8 @@ import Dialog from "react-native-dialog";
 import React, { useEffect, useState } from 'react'
 import { API, graphqlOperation } from 'aws-amplify'
 import Ionicons from '@expo/vector-icons/Ionicons'
-
+import moment from 'moment'
+import 'moment/locale/pl'
 import * as queries from '../../graphql/queries'
 import * as mutations from '../../graphql/mutations'
 
@@ -87,7 +88,7 @@ const HomeworkScreen = ({ route, navigation }) => {
     }}>
       <View style={styles.item}>
 
-        <Text style={styles.title}>{date.toLocaleString()}</Text>
+        <Text style={styles.title}>{moment(date).format('LLLL')}</Text>
         <Text style={styles.descText}>{description}</Text>
 
       </View>

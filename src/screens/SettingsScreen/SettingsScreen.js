@@ -1,9 +1,7 @@
 import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import CustomButton from '../../components/CustomButton'
-import ProfilePicture from '../../../assets/images/sydney.jpg'
 import { Auth, DataStore, Hub } from 'aws-amplify'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchUser } from '../../redux/userInformation'
@@ -23,14 +21,16 @@ const SettingsScreen = () => {
   }
 
   const signOut = async () => {
-    //await DataStore.clear()
     Auth.signOut()
   }
 
+  /* 
+    <CustomButton text={notificationsBtn ? "Powiadomienia: włączone" : "Powiadomienia: wyłączone"} btnSize="30"
+      bgColor={notificationsBtn ? "green" : "red"} onPress={() => { setNotificationsBtn(!notificationsBtn) }} /> 
+  */
+
   return (
-
     <>
-
       <View style={styles.box1}>
         <Image source={{ uri: user.attributes?.picture }} style={{ width: 200, height: 200, borderRadius: 400 }} />
         <Text style={styles.userNameHeading}>Witaj{'\n'}{user.attributes?.name}</Text>
@@ -38,8 +38,7 @@ const SettingsScreen = () => {
       <View style={styles.box2}>
         <CustomButton text="Edytuj profil" btnSize="30" onPress={goEditProfileScreen} />
         <CustomButton text="Zmień hasło" btnSize="30" onPress={goChangePasswordScreen} />
-        <CustomButton text={notificationsBtn ? "Powiadomienia: włączone" : "Powiadomienia: wyłączone"} btnSize="30"
-          bgColor={notificationsBtn ? "green" : "red"} onPress={() => { setNotificationsBtn(!notificationsBtn) }} />
+
         <CustomButton text="Wyloguj się" btnSize="30" bgColor="#b5b3b9" fgColor="#555" onPress={signOut} />
       </View>
     </>

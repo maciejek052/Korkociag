@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, FlatList, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { API, graphqlOperation } from 'aws-amplify'
+import moment from 'moment'
+import 'moment/locale/pl'
 import CustomCircleCheckbox from '../../components/CustomCircleCheckbox'
 import * as mutations from '../../graphql/mutations'
 import * as queries from '../../graphql/queries'
@@ -65,7 +67,7 @@ const StudentAcceptanceScreen = ({ route, navigation }) => {
       // create connection between student and lesson
       const obj = {
         id: item.lessonofferID,
-        lessonStudentUserInfoId: item.lessonCandidateUserInfoId, 
+        lessonStudentUserInfoId: item.lessonCandidateUserInfoId,
         studentAddress: item.studentAddress
       }
       const newStudentQuery = await API.graphql({ query: mutations.createLessonStudent, variables: { input: obj } })
@@ -102,7 +104,7 @@ const StudentAcceptanceScreen = ({ route, navigation }) => {
           lessonObj.place === 'student' &&
           <Text style={styles.descText}>Adres: <Text style={styles.valText}>{studentAddress}</Text></Text>
         }
-        <Text style={styles.descText}>Data prośby o dołączenie: <Text style={styles.valText}>{createdAt.toLocaleString()}</Text></Text>
+        <Text style={styles.descText}>Data prośby o dołączenie: <Text style={styles.valText}>{moment(createdAt).format('LLLL')}</Text></Text>
         <View style={styles.horizontalBox}>
           <CustomCircleCheckbox text="Akceptuj ucznia" bgColor={'#00ff00'} onPress={() => acceptAlert(item, user)} />
           <CustomCircleCheckbox text="Odrzuć ucznia" bgColor={'#ff2100'} onPress={() => rejectAlert(item, user)} />
@@ -148,7 +150,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginVertical: 10
+    marginVertical: 30
   },
   item: {
     padding: 20,

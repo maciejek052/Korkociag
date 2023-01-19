@@ -55,7 +55,6 @@ const SignInScreen = () => {
           control={control} secureTextEntry rules={{ required: 'Hasło jest wymagane' }} />
         <CustomButton text={loading ? "Logowanie..." : "Zaloguj się"} onPress={handleSubmit(onSignInPressed)} />
         <CustomButton text="Zapomniałeś hasła?" onPress={onForgotPasswordPressed} type="TERTIARY" />
-        <SocialSignInButtons />
         <CustomButton text="Nie masz konta? Załóż je teraz" onPress={onSignUpPressed} type="TERTIARY" />
       </View>
     </ScrollView>
